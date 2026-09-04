@@ -1,7 +1,7 @@
 # Projeto Orçamento
 Descrição: Uma aplicação web que informa ao cliente o status do seu serviço e envia notificação via WhatsApp quando contrarar um serviço e quando o status do serviço mudar. Foquei em mecânica.
 
-Funcionalidade: Prestador de serviço (Mecânico), recebe um cliente e fecha um serviço de reparo de seu carro. O prestador cadastra uma ordem de serviço na aplicação e informa para o clinete um códido para ficar acompanhando quando ficar pronto. O clinete pode entrar a qualquer momento e também irá receber uma mensagem por WhatsApp.
+Funcionalidade: Prestador de serviço (Mecânico), recebe um cliente e fecha um serviço de reparo de seu carro. O prestador cadastra uma ordem de serviço na aplicação e informa para o clinete um códido para ficar acompanhando quando ficar pronto. O cliente pode entrar a qualquer momento e também irá receber uma mensagem por WhatsApp.
 
 # Tecnologias Utilizadas
 React
