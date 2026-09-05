@@ -88,3 +88,27 @@ li{
     max-width: 350px;
   }
 }
+
+
+#card-tag-adc-os .card-body{
+  background-color: black;
+  cursor: pointer;
+  transition: .3s ease;
+}
+
+#card-tag-adc-os .card-body:hover{
+  background-color: rgba(207, 201, 201, 0.25);
+}
+
+.card-animation:hover{
+  transform: translateY(-2px);
+}
+
+.card-servicos{
+  transition: .3s ease;
+}
+
+.card-servicos:hover{
+  background-color: #e5edff;
+  cursor: pointer;
+}

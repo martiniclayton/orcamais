@@ -2,9 +2,11 @@ import { useState } from "react"
 import { DashBoardContent } from "./DashBoardContent"
 import { NovaOrdemServico } from "./NovaOrdemServico"
 import { OrdemServico } from "./OrdemServico"
+import { ServicosFinalizados } from "./ServicosFinalizados"
 
 interface Tela {
-    tela: string
+    tela: string,
+    mudarTelaPai: any
 } 
 
 export const DashBoardConteudo = (tela: Tela) => {
@@ -14,9 +16,10 @@ export const DashBoardConteudo = (tela: Tela) => {
 
     return (
         <>
-        {telaSelecionada === "DashBoardContent" ? <DashBoardContent/> : null}
-        {telaSelecionada === "NovaOrdemServico" ? <NovaOrdemServico/> : null}
-        {telaSelecionada === "OrdemServico" ? <OrdemServico/> : null}
+        {telaSelecionada === "DashBoardContent" ? <DashBoardContent mudarTelaFilho={tela.mudarTelaPai}/> : null}
+        {telaSelecionada === "NovaOrdemServico" ? <NovaOrdemServico mudarTelaFilho={tela.mudarTelaPai}/> : null}
+        {telaSelecionada === "OrdemServico" ? <OrdemServico mudarTelaFilho={tela.mudarTelaPai}/> : null}
+        {telaSelecionada === "ServicosFinalizados" ? <ServicosFinalizados mudarTelaFilho={tela.mudarTelaPai}/> : null}
         </>
     )
 }

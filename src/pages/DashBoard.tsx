@@ -3,8 +3,11 @@ import { DashBoardConteudo } from "../components/DashBoardConteudo"
 import { useState } from "react"
 import { Icon } from "../components/Icon"
 import { Link } from "react-router-dom"
+import { banco } from "../services/BancoLocal"
 
 export const DashBoard = () => {
+
+    const [bancoDeOrdens, setBancoDeOrdens] = useState(banco.getData);
 
     const [tela, setTela] = useState("DashBoardContent")
     
@@ -42,7 +45,7 @@ export const DashBoard = () => {
                         </div>
                     </Col>
                     <Col md={9} className="h-100">
-                        <DashBoardConteudo tela={tela}></DashBoardConteudo>
+                        <DashBoardConteudo tela={tela} mudarTelaPai={setTela}></DashBoardConteudo>
                     </Col>
                 </Row>
             </Container>

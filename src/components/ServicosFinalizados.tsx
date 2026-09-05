@@ -2,41 +2,16 @@ import { Col, Form, InputGroup, Row } from "react-bootstrap"
 import { Header } from "./Header"
 import { banco } from "../services/BancoLocal"
 
-type status = "Em andamento" | "Pronto" | "Finalizado"
-interface Os {
-    id: string,
-    cliente: string,
-    data: Date | any
-    tipoServico: string,
-    placa: string,
-    status: status
-}
+export const ServicosFinalizados = ({ mudarTelaFilho }: any) => {
 
-const dadoExemplo: Os = {
-    id: "ASDD55",
-    cliente: "Clayton",
-    data: "15/4/2000",
-    tipoServico: "Troca de oléo",
-    placa: "FRU-5958",
-    status: "Pronto"
-
-}
-
-export const OrdemServico = ({ mudarTelaFilho }: any) => {
     const bancoOrdens = banco.getData()
 
-    const trocarStatus = (placa: string) =>{
-        console.log("Função sendo chamada")
-        const ordem = bancoOrdens.find((ordem:any) => ordem.placa === placa);
-        ordem.status = "Finalizada";
-        banco.setData({nomeCliente: ordem.nome , cpfCliente: ordem.cpf, telefone: ordem.telefone, placa: ordem.placa, tipoServico: ordem.tipoServico, data: ordem.data, status: ordem.status, descricao: ordem.descricao});
-        alert("teste");
-    }
+    const bancoFinalizado = bancoOrdens.filter((ordem:any) => ordem.status === "Finalizada")
 
 
     return (
         <>
-            <Header pag={"Ordens de Serviço"} descricao={" O.S. ativas"} funcao={mudarTelaFilho}></Header>
+            <Header pag={"Serviços Finalizados"} descricao={`${bancoFinalizado.length} O.S. Finalizadas`} funcao={mudarTelaFilho}></Header>
 
             <hr />
 
@@ -71,7 +46,7 @@ export const OrdemServico = ({ mudarTelaFilho }: any) => {
                     </thead>
                     <tbody>
                         {
-                            bancoOrdens.map((ordem: any, index: number) => (
+                            bancoFinalizado.map((ordem: any, index: number) => (
                                 <tr className="text-start align-middle">
                                     <td>{index}</td>
                                     <td>{ordem.nome}</td>
@@ -80,7 +55,7 @@ export const OrdemServico = ({ mudarTelaFilho }: any) => {
                                     <td>{ordem.data}</td>
                                     <td>{ordem.status}</td>
                                     <td>
-                                        <button onClick={()=> trocarStatus(ordem.placa)} className="btn btn-outline-dark">{ordem.status === "Em andamento" ? "Marcar como pronto" : ordem.status === "Pronto para retirada" ?  "Marcar como finalizado" : ""} </button>
+                                        <button className="btn btn-dark disabled">Finalizado</button>
                                     </td>
                                 </tr>
                             ))

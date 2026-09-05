@@ -1,11 +1,17 @@
-interface Usuario {
-    nome: string
-    email: string,
+interface OrdemServico {
+    nomeCliente: string,
+    cpfCliente: string,
+    telefone: string,
+    placa: string,
+    tipoServico: string,
+    data: Date,
+    status: string,
+    descricao?: string
 }
 
 export class bancoDados {
     nomeBanco: string
-    constructor(nomeBanco: string){
+    constructor(nomeBanco: string) {
         this.nomeBanco = nomeBanco
     }
 
@@ -14,13 +20,11 @@ export class bancoDados {
         return banco ? JSON.parse(banco) : [];
     }
 
-    setData = ({nome, email}: Usuario) =>{
+    setData = ({ nomeCliente, cpfCliente, telefone, placa, tipoServico, data, status, descricao }: OrdemServico) => {
         const banco = this.getData();
-        banco.push({nome: nome, email: email})
+        banco.push({ nome: nomeCliente, CPF: cpfCliente, telefone: telefone, placa: placa, tipoServico: tipoServico, data: data, status: status, descricao: descricao })
         localStorage.setItem(this.nomeBanco, JSON.stringify(banco))
     }
 }
 
-export const banco = new bancoDados("oficina");
-
-console.log(banco.getData());
+export const banco = new bancoDados("OrdensDeServicos");
