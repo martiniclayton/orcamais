@@ -1,20 +1,16 @@
+import { faGear } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Col, Container, Row } from "react-bootstrap"
+import { Icon } from "./Icon"
 
 export const LoginInfo = () => {
     return (
         <>
-            <div className="d-flex flex-column justify-content-between vh-100 ">
-                <div>
-                    <div>Icone</div>
-                    <div>
-                        <span>Orça Mais</span>
-                        <p>Gestão de Ordens de Serviço</p>
-                    </div>
-                </div>
-
+            <div className="d-flex flex-column justify-content-between h-100 ">
+                <Icon tela={false} empresa="Orça Mais" desc="Gestão de Ordens de Serviço"/>
                 <div>
                     <div>
-                        <h1>Cadastre, acompanhe e finalize suas Ordens de Serviço.</h1>
+                        <h2>Cadastre, acompanhe e finalize suas Ordens de Serviço.</h2>
                         <p>O prestador atualiza o status do serviço e o cliente acompanha em tempo real, sem precisar ligar para o estabelecimento.</p>
                     </div>
 

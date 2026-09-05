@@ -1,9 +1,90 @@
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-body{
+body {
   font-family: Arial, Helvetica, sans-serif;
+  background-color: #F8FAFC !important;
+}
+
+#btn-type-user {
+  background-color: #F1F5F9;
+}
+
+#btn-type-user button {
+  background-color: transparent;
+  border: none;
+  padding: 2px;
+}
+
+#btn-type-user button.clicado {
+  background-color: white;
+  border: none;
+}
+
+.caixa-componente-login-form {
+  width: 400px;
+}
+
+.icon span {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0F172A;
+}
+
+.link{
+  text-decoration: none;
+}
+
+p{
+  font-size: 15px;
+}
+
+li{
+  font-size: 15px;
+}
+
+.icon p {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: #64748B;
+}
+
+#desktop {
+  display: flex !important;
+}
+
+#mobile {
+  display: none !important;
+}
+
+@media (max-width: 991px) {
+  .row-pag-login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #desktop {
+    display: none !important;
+  }
+
+  #mobile {
+    display: flex !important;
+  }
+}
+
+@media (max-width: 400px) {
+  .container-pag-login{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .container-login-form {
+  }
+  .caixa-componente-login-form {
+    max-width: 350px;
+  }
 }
