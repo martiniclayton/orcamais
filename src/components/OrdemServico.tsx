@@ -1,6 +1,6 @@
 import { Col, Form, InputGroup, Row } from "react-bootstrap"
 import { Header } from "./Header"
-import { banco } from "../services/BancoLocal"
+import { banco, notificacoesBanco } from "../services/BancoLocal"
 import { useState } from "react"
 
 
@@ -44,7 +44,13 @@ export const OrdemServico = ({ mudarTelaFilho }: any) => {
         console.log(bancoPrincipal)
         banco.updateData(bancoPrincipal);
 
-        setBancoEstado(bancoOrdens)
+        setBancoEstado(bancoPrincipal.filter((ordem: any) => ordem.status !== "Finalizado"))
+
+        if(novoEstados === "Finalizado"){
+            notificacoesBanco.setNotification({id: `${notificacoesBanco.getData().length}`, titulo: "ORDEM FINALIZADA", mensagem: `A O.S. #${id} do cliente ${ordem.nome} foi finalizada com sucesso!`, data: new Date()})
+        } else{
+            notificacoesBanco.setNotification({id: `${notificacoesBanco.getData().length}`, titulo: `MUDANÇA DE STATUS`, mensagem: `a O.S ${ordem.id} - ${ordem.tipoServico} do cliente ${ordem.nome} agora está ${novoEstados}`, data: new Date()})
+        }
     }
 
 

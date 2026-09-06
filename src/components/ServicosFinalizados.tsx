@@ -1,12 +1,24 @@
 import { Col, Form, InputGroup, Row } from "react-bootstrap"
 import { Header } from "./Header"
 import { banco } from "../services/BancoLocal"
+import { useState } from "react"
 
 export const ServicosFinalizados = ({ mudarTelaFilho }: any) => {
 
     const bancoOrdens = banco.getData()
 
-    const bancoFinalizado = bancoOrdens.filter((ordem:any) => ordem.status === "Finalizada")
+    const [pesquisa, setPesquisa] = useState("");
+    const busca = pesquisa.toLowerCase()
+
+    const bancoFinalizado = bancoOrdens.filter((ordem:any) => ordem.status === "Finalizado")
+
+
+    const bancoFiltrarFinalizado = bancoFinalizado.filter((ordem: any) => {
+        const nome = String(ordem.nome || "").toLowerCase()
+        const id = String(ordem.id || "").toLowerCase()   
+        const placa = String(ordem.placa || "").toLowerCase()
+        return nome.includes(busca) || id.includes(busca) ||  placa.includes(busca)
+    })
 
 
     return (
@@ -26,6 +38,8 @@ export const ServicosFinalizados = ({ mudarTelaFilho }: any) => {
                             placeholder="Busque por código, cliente ou placa"
                             aria-label="Pesquisar"
                             aria-describedby="search-addon"
+                            value={pesquisa}
+                            onChange={(e)=> setPesquisa(e.target.value)}
                         />
                     </InputGroup>
                 </Col>
@@ -46,9 +60,9 @@ export const ServicosFinalizados = ({ mudarTelaFilho }: any) => {
                     </thead>
                     <tbody>
                         {
-                            bancoFinalizado.map((ordem: any, index: number) => (
-                                <tr className="text-start align-middle">
-                                    <td>{index}</td>
+                            bancoFiltrarFinalizado.map((ordem: any) => (
+                                <tr className="text-start align-middle" key={ordem.id}>
+                                    <td>{ordem.id}</td>
                                     <td>{ordem.nome}</td>
                                     <td>{ordem.tipoServico}</td>
                                     <td>{ordem.placa}</td>

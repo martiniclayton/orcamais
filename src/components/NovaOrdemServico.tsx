@@ -1,10 +1,9 @@
 import { Col, Row } from "react-bootstrap"
 import { Header } from "./Header"
 import { useState } from "react"
-import { banco } from "../services/BancoLocal"
+import { banco, notificacoesBanco } from "../services/BancoLocal"
 
 export const NovaOrdemServico = ({mudarTelaFilho}: any) => {
-
 
     const [nome, setNomeCliente] = useState("")
     const [cpf, setCpfCliente] = useState("")
@@ -53,6 +52,8 @@ export const NovaOrdemServico = ({mudarTelaFilho}: any) => {
             alert("Dados cadastrados")
             console.log(ordemDeServicoDados);
             limparForm();
+
+            notificacoesBanco.setNotification({id: `${notificacoesBanco.getData().length}` ,titulo:"NOVA ORDEM CADASTRADA", mensagem:`Nova O.S. #${ordemDeServicoDados.id} cadastrada para o cliente ${ordemDeServicoDados.nome}.`, data: new Date()})
         }
     }
 

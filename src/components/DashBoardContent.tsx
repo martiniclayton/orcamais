@@ -5,7 +5,6 @@ import { Header } from "./Header"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { banco } from "../services/BancoLocal";
-import { useEffect, useState } from "react";
 
 
 export const DashBoardContent = ({mudarTelaFilho}: any) =>{
@@ -16,7 +15,6 @@ export const DashBoardContent = ({mudarTelaFilho}: any) =>{
     const OrdemEmAndamento = bancoOrdens.filter((ordem: any) => ordem.status === "Em andamento");
     const ProntoParaRetirada = bancoOrdens.filter((ordem: any) => ordem.status === "Pronto para retirada");
     const Finalizadas = bancoOrdens.filter((ordem: any) => ordem.status === "Finalizado");
-    console.log(bancoOrdens);
     
 
     return(
@@ -31,7 +29,7 @@ export const DashBoardContent = ({mudarTelaFilho}: any) =>{
                     <div className="card-body">
                         <p className="card-subtitle mb-3">Em andamento</p>
                         <h5 className="card-title">
-                            {OrdemEmAndamento ? `${OrdemEmAndamento.length}` : "0"}
+                            {OrdemEmAndamento.length}
                         </h5>
                     </div>
                 </div>
@@ -41,7 +39,7 @@ export const DashBoardContent = ({mudarTelaFilho}: any) =>{
                     <div className="card-body">
                         <p className="card-subtitle mb-3">Prontas para retirada</p>
                         <h5 className="card-title">
-                            {ProntoParaRetirada ? `${ProntoParaRetirada.length}` : "0"}
+                            {ProntoParaRetirada.length}
                         </h5>
                     </div>
                 </div>
@@ -51,7 +49,7 @@ export const DashBoardContent = ({mudarTelaFilho}: any) =>{
                     <div className="card-body">
                         <p className="card-subtitle mb-3">Finalizadas</p>
                         <h5 className="card-title">
-                            {Finalizadas ? `${Finalizadas.length}` : "0"}
+                            {Finalizadas.length}
                         </h5>
                     </div>
                 </div>
@@ -78,7 +76,7 @@ export const DashBoardContent = ({mudarTelaFilho}: any) =>{
                         <div className="card-body">
                             <h6 className="card-title">Ordens de Serviço</h6>
                             <p className="card-text text-body-secondary">
-                                {bancoOrdens ? `${bancoOrdens.length}` : 0}
+                                {bancoOrdens.length}
                             </p>
                         </div>
                     </div>
@@ -88,8 +86,7 @@ export const DashBoardContent = ({mudarTelaFilho}: any) =>{
                     <div className="card card-servicos card-animation" onClick={()=> mudarTelaFilho("ServicosFinalizados")}>
                         <div className="card-body">
                             <h6 className="card-title">Serviços Finalizados</h6>
-                            {Finalizadas ? `${Finalizadas.length}` : "0"}
-                            <p className="card-text text-body-secondary"> </p>
+                            <p className="card-text text-body-secondary">{Finalizadas.length}</p>
                         </div>
                     </div>
                 </Col>
@@ -99,13 +96,14 @@ export const DashBoardContent = ({mudarTelaFilho}: any) =>{
             <Row className="px-5 py-1">
                 <div className="d-flex justify-content-between">
                 <h6>Ordens recentes</h6>
-                <Link to={""}>Ver todas</Link>
+                <p onClick={() => mudarTelaFilho("OrdemServico")} >Ver ordem ativas</p>
                 </div>
             </Row>
 
             <Row className="px-5" id="boxCard">
-                {bancoOrdens.toReversed().map((ordem:any) =>
-                    (<Col className="mb-2" md={12}><CardOS id={ordem.id} nomeCliente={ordem.nome} tipoServico={ordem.tipoServico} placa={ordem.placa} data={ordem.data} status={ordem.status} descricao={ordem.descricao}></CardOS></Col>)
+                {
+                bancoOrdens.slice(-5).toReversed().map((ordem:any) =>
+                    (<Col key={ordem.id} className="mb-2" md={12}><CardOS id={ordem.id} nomeCliente={ordem.nome} tipoServico={ordem.tipoServico} placa={ordem.placa} data={ordem.data} status={ordem.status} descricao={ordem.descricao}></CardOS></Col>)
                 )}
 
             </Row>

@@ -10,6 +10,13 @@ interface OrdemServico {
     descricao?: string
 }
 
+interface Notificacao {
+    id: string,
+    titulo: string,
+    mensagem: string
+    data: Date
+}
+
 export class bancoDados {
     nomeBanco: string
     constructor(nomeBanco: string) {
@@ -30,7 +37,20 @@ export class bancoDados {
     updateData = (banco: any) =>{
         localStorage.setItem(this.nomeBanco, JSON.stringify(banco))
     }
+
+}
+
+class bancoNotificacao extends bancoDados{
+    constructor(nomebanco: string){
+        super(nomebanco)
+    }
+    setNotification = (Notificacao: Notificacao) =>{
+        const banco = this.getData()
+        banco.push({id: Notificacao.id, titulo: Notificacao.titulo, mensagem: Notificacao.mensagem, data: Notificacao.data})
+        localStorage.setItem(this.nomeBanco, JSON.stringify(banco))
+    }
 }
 
 export const banco = new bancoDados("OrdensDeServicos");
+export const notificacoesBanco = new bancoNotificacao("notificações")
 

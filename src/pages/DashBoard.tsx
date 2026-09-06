@@ -3,11 +3,9 @@ import { DashBoardConteudo } from "../components/DashBoardConteudo"
 import { useState } from "react"
 import { Icon } from "../components/Icon"
 import { Link } from "react-router-dom"
-import { banco } from "../services/BancoLocal"
 
 export const DashBoard = () => {
 
-    const [bancoDeOrdens, setBancoDeOrdens] = useState(banco.getData);
 
     const [tela, setTela] = useState("DashBoardContent")
     
@@ -21,7 +19,7 @@ export const DashBoard = () => {
                     <Col md={3} className="h-100">
                         <div className="h-100 d-flex flex-column justify-content-between">
                             <div className="bg-light p-3">
-                                <Icon tela={false} empresa={"Orça Mais"} desc={"Gestão de O.S"}></Icon>
+                                <Icon tela={false} empresa={"Orça Mais"} desc={"Gestão de O.S"}/>
                                 <div>
                                     <ul className="list-group">
                                         <li className={`list-group-item list-group-item-action ${tela === "DashBoardContent" ? "active": ""}`} onClick={() => enviarPag("DashBoardContent")}>Dashboard</li>
@@ -33,7 +31,7 @@ export const DashBoard = () => {
                                     </ul>
                                 </div>
                             </div>
-                            <div className="d-flex flex-column p-3 radeos-5 m-1">
+                            <div className="d-flex flex-column p-3 m-1">
                                 <div className="card">
                                     <div className="card-body">
                                         <h5 className="card-title">Nome</h5 >
@@ -45,7 +43,7 @@ export const DashBoard = () => {
                         </div>
                     </Col>
                     <Col md={9} className="h-100">
-                        <DashBoardConteudo tela={tela} mudarTelaPai={setTela}></DashBoardConteudo>
+                        <DashBoardConteudo tela={tela} mudarTelaPai={setTela}/>
                     </Col>
                 </Row>
             </Container>
