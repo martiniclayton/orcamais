@@ -8,16 +8,18 @@ interface Card {
     placa: string,
     data: Date | any,
     status: status
+    descricao?: string
 }
 export const CardOS = (cardInfo: Card) => {
     return (
         <>
             <Col>
                 <div className="card">
-                    <div className="card-header">{cardInfo.id}</div>
+                    <div className="card-header">{`#O.S 000${cardInfo.id}`}</div>
                     <div className="card-body">
                         <h6 className="card-title">{cardInfo.nomeCliente}</h6>
                         <p className="card-text text-body-secondary">{cardInfo.tipoServico} · {cardInfo.placa}</p>
+                        <p className="card-text">{cardInfo.descricao}</p>
                         <div className="d-flex justify-content-between">
                             <div><span>{cardInfo.data}</span></div>
                             <div className="d-flex gap-1">

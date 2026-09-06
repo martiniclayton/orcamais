@@ -15,7 +15,7 @@ export const DashBoardContent = ({mudarTelaFilho}: any) =>{
 
     const OrdemEmAndamento = bancoOrdens.filter((ordem: any) => ordem.status === "Em andamento");
     const ProntoParaRetirada = bancoOrdens.filter((ordem: any) => ordem.status === "Pronto para retirada");
-    const Finalizadas = bancoOrdens.filter((ordem: any) => ordem.status === "Finalizada");
+    const Finalizadas = bancoOrdens.filter((ordem: any) => ordem.status === "Finalizado");
     console.log(bancoOrdens);
     
 
@@ -104,8 +104,8 @@ export const DashBoardContent = ({mudarTelaFilho}: any) =>{
             </Row>
 
             <Row className="px-5" id="boxCard">
-                {bancoOrdens.map((ordem:any) =>
-                    (<Col md={12}><CardOS id={ordem.id} nomeCliente={ordem.nome} tipoServico={ordem.tipoServico} placa={ordem.placa} data={ordem.data} status={ordem.status}></CardOS></Col>)
+                {bancoOrdens.toReversed().map((ordem:any) =>
+                    (<Col className="mb-2" md={12}><CardOS id={ordem.id} nomeCliente={ordem.nome} tipoServico={ordem.tipoServico} placa={ordem.placa} data={ordem.data} status={ordem.status} descricao={ordem.descricao}></CardOS></Col>)
                 )}
 
             </Row>

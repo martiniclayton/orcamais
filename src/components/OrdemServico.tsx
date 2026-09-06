@@ -1,37 +1,52 @@
 import { Col, Form, InputGroup, Row } from "react-bootstrap"
 import { Header } from "./Header"
 import { banco } from "../services/BancoLocal"
+import { useState } from "react"
 
-type status = "Em andamento" | "Pronto" | "Finalizado"
-interface Os {
-    id: string,
-    cliente: string,
-    data: Date | any
-    tipoServico: string,
-    placa: string,
-    status: status
-}
-
-const dadoExemplo: Os = {
-    id: "ASDD55",
-    cliente: "Clayton",
-    data: "15/4/2000",
-    tipoServico: "Troca de oléo",
-    placa: "FRU-5958",
-    status: "Pronto"
-
-}
 
 export const OrdemServico = ({ mudarTelaFilho }: any) => {
-    const bancoOrdens = banco.getData()
 
-    const trocarStatus = (placa: string) =>{
-        console.log("Função sendo chamada")
-        const ordem = bancoOrdens.find((ordem:any) => ordem.placa === placa);
-        ordem.status = "Finalizada";
-        banco.setData({nomeCliente: ordem.nome , cpfCliente: ordem.cpf, telefone: ordem.telefone, placa: ordem.placa, tipoServico: ordem.tipoServico, data: ordem.data, status: ordem.status, descricao: ordem.descricao});
-        alert("teste");
+    let bancoPrincipal = banco.getData()
+    let bancoOrdens = bancoPrincipal.filter((ordem: any) => ordem.status !== "Finalizado");
+
+    const [buscar, setBuscar] = useState("");
+    const termoBusca = buscar.toLowerCase();
+
+    
+    const [bancoEstado, setBancoEstado] = useState(bancoOrdens);
+    
+    const buscaFiltrada = bancoEstado.filter((ordem: any) => {
+        
+        const nome = String(ordem.nome || "").toLowerCase()
+        const id = String(ordem.id || "").toLowerCase()
+        const placa = String(ordem.placa || "").toLowerCase()
+        
+        return nome.includes(termoBusca) ||
+        id.includes(termoBusca) ||
+        placa.includes(termoBusca);
+    })
+
+    const mudarStatus = (id: number)=>{
+        const ordem = bancoPrincipal.find((ordem: any) => ordem.id === id)
+        console.log(ordem);
+
+        const novoEstados = ordem.status === "Em andamento" ? "Pronto para retirada" : ordem.status === "Pronto para retirada" ? "Finalizado" : ""
+
+        console.log(novoEstados === "Finalizado")
+
+        bancoPrincipal = bancoPrincipal.map((ordem: any) => {
+            if(ordem.id === id){
+                return {...ordem, status: novoEstados}
+            }
+            return ordem;
+        })
+
+        console.log(bancoPrincipal)
+        banco.updateData(bancoPrincipal);
+
+        setBancoEstado(bancoOrdens)
     }
+
 
 
     return (
@@ -50,6 +65,8 @@ export const OrdemServico = ({ mudarTelaFilho }: any) => {
                             id="search"
                             placeholder="Busque por código, cliente ou placa"
                             aria-label="Pesquisar"
+                            value={buscar}
+                            onChange={(e) => setBuscar(e.target.value)}
                             aria-describedby="search-addon"
                         />
                     </InputGroup>
@@ -71,16 +88,16 @@ export const OrdemServico = ({ mudarTelaFilho }: any) => {
                     </thead>
                     <tbody>
                         {
-                            bancoOrdens.map((ordem: any, index: number) => (
-                                <tr className="text-start align-middle">
-                                    <td>{index}</td>
+                            buscaFiltrada.map((ordem: any) => (
+                                <tr className="text-start align-middle" key={ordem.id}>
+                                    <td>{ordem.id}</td>
                                     <td>{ordem.nome}</td>
                                     <td>{ordem.tipoServico}</td>
                                     <td>{ordem.placa}</td>
                                     <td>{ordem.data}</td>
                                     <td>{ordem.status}</td>
                                     <td>
-                                        <button onClick={()=> trocarStatus(ordem.placa)} className="btn btn-outline-dark">{ordem.status === "Em andamento" ? "Marcar como pronto" : ordem.status === "Pronto para retirada" ?  "Marcar como finalizado" : ""} </button>
+                                        <button onClick={()=> mudarStatus(ordem.id)} className={`btn btn-outline-dark ${ordem.status === "Finalizado" ? "disabled" : ""}`}>{ordem.status === "Em andamento" ? "Marcar como pronto" : ordem.status === "Pronto para retirada" ? "Marcar como finalizado" : ordem.status === "Finalizado" ? "Finalizado" : ""} </button>
                                     </td>
                                 </tr>
                             ))

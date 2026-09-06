@@ -6,8 +6,8 @@ import { banco } from "../services/BancoLocal"
 export const NovaOrdemServico = ({mudarTelaFilho}: any) => {
 
 
-    const [nomeCliente, setNomeCliente] = useState("")
-    const [cpfCliente, setCpfCliente] = useState("")
+    const [nome, setNomeCliente] = useState("")
+    const [cpf, setCpfCliente] = useState("")
     const [telefone, setTelefone] = useState("")
     const [placa, setPlaca] = useState("")
     const [tipoServico, setTipoServico] = useState("")
@@ -15,7 +15,7 @@ export const NovaOrdemServico = ({mudarTelaFilho}: any) => {
 
     const setInputs = [setNomeCliente, setCpfCliente, setTelefone, setPlaca, setTipoServico, setDescricao ]
 
-    console.log(nomeCliente)
+    console.log(nome)
 
     const cancelarForm = ()=>{
         limparForm();
@@ -30,13 +30,16 @@ export const NovaOrdemServico = ({mudarTelaFilho}: any) => {
 
     const enviarForm = (e: any)=>{
         e.preventDefault()
-        if(!nomeCliente || !cpfCliente || !telefone || !placa || !tipoServico){
+        if(!nome || !cpf || !telefone || !placa || !tipoServico){
             alert("preencha os campos")
         }else{
+
+            let id = banco.getData().length + 1;
+
             const ordemDeServicoDados = {
-                id: "#O.S 0000",
-                nomeCliente: nomeCliente,
-                cpfCliente,
+                id: id,
+                nome,
+                cpf,
                 telefone,
                 placa,
                 tipoServico,
@@ -67,13 +70,13 @@ export const NovaOrdemServico = ({mudarTelaFilho}: any) => {
                         <Row>
                             <Col>
                                 <label htmlFor="cliente">Cliente</label>
-                                <input className="form-control" type="text" value={nomeCliente} id="cliente" placeholder="Nome Completo" onChange={(e) => setNomeCliente(e.target.value)} />
+                                <input className="form-control" type="text" value={nome} id="cliente" placeholder="Nome Completo" onChange={(e) => setNomeCliente(e.target.value)} />
                             </Col>
                         </Row>
                         <Row>
                             <Col>
                                 <label htmlFor="cpf">CPF do cliente</label>
-                                <input className="form-control" value={cpfCliente} onChange={(e) => setCpfCliente(e.target.value)} type="text" id="cpf" placeholder="000.000.000-00" />
+                                <input className="form-control" value={cpf} onChange={(e) => setCpfCliente(e.target.value)} type="text" id="cpf" placeholder="000.000.000-00" />
                             </Col>
                             <Col>
                                 <label htmlFor="tel">Telefone</label>
