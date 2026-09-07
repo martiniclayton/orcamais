@@ -17,7 +17,7 @@ export const Notificacao = (props: Notificacao) =>{
                                 <h6>{props.titulo}</h6>
                             </div>
                             <div className="card-text">
-                                <p>`${props.mensagem}</p>
+                                <p>{props.mensagem}</p>
                                 <p>{props.data}</p>
                             </div>
                         </div>

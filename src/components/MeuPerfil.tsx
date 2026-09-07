@@ -1,14 +1,14 @@
 import { Col, Row } from "react-bootstrap"
-import { Header } from "./Header"
+
+interface PerfilCliente {
+    nome: string,
+    email: string
+}
 
 
-export const Perfil = ({ mudarTelaFilho }: any) => {
+export const MeuPerfil = (cliente: PerfilCliente) => {
     return (
-        <>
-            <Header pag={"Perfil"} descricao={"Dados da sua conta"} funcao={mudarTelaFilho}></Header>
-
-            <hr />
-
+            <>
             <Row>
                 <Col>
                     <div className="card">
@@ -19,8 +19,7 @@ export const Perfil = ({ mudarTelaFilho }: any) => {
                                         Imagem
                                     </div>
                                     <div className="d-flex flex-column justify-content-center ">
-                                        <h4>Nome</h4>
-                                        <p className="text-body-secondary">empresa</p>
+                                        <h4>{cliente.nome}</h4>
                                     </div>
                                 </div>
                             </div>
@@ -29,11 +28,11 @@ export const Perfil = ({ mudarTelaFilho }: any) => {
                                     <Row>
                                         <Col md={6}>
                                             <h6>E-mail</h6>
-                                            <p>sadasdas@asdas</p>
+                                            <p>`{cliente.email}</p>
                                         </Col>
                                         <Col md={6}>
                                             <h6>Perfil</h6>
-                                            <p>Prestador de serviço</p>
+                                            <p>Cliente</p>
                                         </Col>
                                     </Row>
                                     <Row>

@@ -47,9 +47,9 @@ export const OrdemServico = ({ mudarTelaFilho }: any) => {
         setBancoEstado(bancoPrincipal.filter((ordem: any) => ordem.status !== "Finalizado"))
 
         if(novoEstados === "Finalizado"){
-            notificacoesBanco.setNotification({id: `${notificacoesBanco.getData().length}`, titulo: "ORDEM FINALIZADA", mensagem: `A O.S. #${id} do cliente ${ordem.nome} foi finalizada com sucesso!`, data: new Date()})
+            notificacoesBanco.setNotification({id: `${notificacoesBanco.getData().length}`, titulo: "ORDEM FINALIZADA", mensagem: `A O.S. #${id} do cliente ${ordem.nome} foi finalizada com sucesso!`, data: new Date(), placa: ordem.placa})
         } else{
-            notificacoesBanco.setNotification({id: `${notificacoesBanco.getData().length}`, titulo: `MUDANÇA DE STATUS`, mensagem: `a O.S ${ordem.id} - ${ordem.tipoServico} do cliente ${ordem.nome} agora está ${novoEstados}`, data: new Date()})
+            notificacoesBanco.setNotification({id: `${notificacoesBanco.getData().length}`, titulo: `MUDANÇA DE STATUS`, mensagem: `a O.S ${ordem.id} - ${ordem.tipoServico} do cliente ${ordem.nome} agora está ${novoEstados}`, data: new Date(), placa: ordem.placa})
         }
     }
 

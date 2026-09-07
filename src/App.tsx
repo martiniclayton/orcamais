@@ -5,6 +5,7 @@ import { Cadastro } from "./pages/cadastro";
 import { DashBoard } from "./pages/DashBoard";
 import { useEffect } from "react";
 import { bancoDados } from "./services/BancoLocal";
+import { Cliente } from "./pages/cliente";
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
         </Route>
         <Route path="/cadastro" element={<Cadastro/>}></Route>
         <Route path="/DashBoard" element={<DashBoard/>}></Route>
+        <Route path="/cliente" element={<Cliente/>}></Route>
       </Routes>
       </BrowserRouter>
     {/* </main> */}

@@ -14,7 +14,8 @@ interface Notificacao {
     id: string,
     titulo: string,
     mensagem: string
-    data: Date
+    data: Date,
+    placa: string
 }
 
 export class bancoDados {
@@ -46,7 +47,7 @@ class bancoNotificacao extends bancoDados{
     }
     setNotification = (Notificacao: Notificacao) =>{
         const banco = this.getData()
-        banco.push({id: Notificacao.id, titulo: Notificacao.titulo, mensagem: Notificacao.mensagem, data: Notificacao.data})
+        banco.push({id: Notificacao.id, titulo: Notificacao.titulo, mensagem: Notificacao.mensagem, data: Notificacao.data, placa: Notificacao.placa})
         localStorage.setItem(this.nomeBanco, JSON.stringify(banco))
     }
 }

@@ -21,7 +21,7 @@ export const DashBoardConteudo = (tela: Tela) => {
         {telaSelecionada === "OrdemServico" ? <OrdemServico mudarTelaFilho={tela.mudarTelaPai}/> : null}
         {telaSelecionada === "ServicosFinalizados" ? <ServicosFinalizados mudarTelaFilho={tela.mudarTelaPai}/> : null}
         {telaSelecionada === "Notificacoes" ? <Notificacoes mudarTelaFilho={tela.mudarTelaPai}/> : null}
-        {telaSelecionada === "Perfil" ? <Perfil mudarTelaFilho={tela.mudarTelaPai}/> : null}
+        {telaSelecionada === "Perfil" ? <Perfil mudarTelaFilho={tela.mudarTelaPai} /> : null}
         </>
     )
 }

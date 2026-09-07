@@ -53,7 +53,7 @@ export const NovaOrdemServico = ({mudarTelaFilho}: any) => {
             console.log(ordemDeServicoDados);
             limparForm();
 
-            notificacoesBanco.setNotification({id: `${notificacoesBanco.getData().length}` ,titulo:"NOVA ORDEM CADASTRADA", mensagem:`Nova O.S. #${ordemDeServicoDados.id} cadastrada para o cliente ${ordemDeServicoDados.nome}.`, data: new Date()})
+            notificacoesBanco.setNotification({id: `${notificacoesBanco.getData().length}` ,titulo:"NOVA ORDEM CADASTRADA", mensagem:`Nova O.S. #${ordemDeServicoDados.id} cadastrada para o cliente ${ordemDeServicoDados.nome}.`, data: new Date(), placa: ordemDeServicoDados.placa})
         }
     }
 
