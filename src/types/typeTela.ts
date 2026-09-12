@@ -1,0 +1,1 @@
+export type Tela = "Dashboard" | "NovaOrdemServico" | "OrdensServicos" | "ServicosFinalizados" | "Notificacoes" | "Perfil";

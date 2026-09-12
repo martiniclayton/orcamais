@@ -1,30 +1,32 @@
-import { Login } from "./pages/Login"
-import './App.css';
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Cadastro } from "./pages/cadastro";
-import { DashBoard } from "./pages/DashBoard";
-import { useEffect } from "react";
-import { bancoDados } from "./services/BancoLocal";
-import { Cliente } from "./pages/cliente";
+import { useState } from 'react'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import './App.css'
+import type { OrdemType } from './types/OrdemType'
+import { Login } from './pages/Login'
+import { DashboardPage } from './pages/DashboardPage'
+import { Cadastro } from './pages/Cadastro'
+import { Cliente } from './pages/Cliente'
 
 function App() {
 
-  
+  const [lista, setLista] = useState<OrdemType[]>([])
+
 
   return (
-    <>
-    {/* <main className="vh-100 py-5" style={{boxSizing: 'border-box', border: '1px solid red'}}> */}
-      <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Login/>}>
-        </Route>
-        <Route path="/cadastro" element={<Cadastro/>}></Route>
-        <Route path="/DashBoard" element={<DashBoard/>}></Route>
-        <Route path="/cliente" element={<Cliente/>}></Route>
-      </Routes>
-      </BrowserRouter>
-    {/* </main> */}
-    </>
+    <BrowserRouter>
+    <Routes>
+      <Route path='/' element={<Login />} />
+      <Route path='/Cadastro' element={<Cadastro/>}></Route>
+      <Route path='/DashboardPage' element={<DashboardPage />} />
+      <Route path='/Cliente' element={<Cliente />} />
+    </Routes>
+      {/* <OrderForm array={lista} setArrayState={setLista}></OrderForm>
+      {
+        lista.map(ordem =>(
+          <OrderCard ordem={ordem}></OrderCard>
+        ))
+      } */}
+    </BrowserRouter>
   )
 }
 

@@ -1,65 +1,70 @@
-import { Col, Row } from "react-bootstrap"
-import { Notificacao } from "./NotificacaoCard"
-import { CardOS } from "./CardOS"
-import { banco, notificacoesBanco } from "../services/BancoLocal"
+import React from 'react';
+import type { OrdemType } from '../types/OrdemType';
+import { NotificacoesPush, ordenServicos } from '../data/mockOrders';
+import { OrderCard } from './OrderCard';
+import { NotificacaoCard } from './Notificação/NotificacaroCard';
 
-export const MeusServicos = ({cliente}: any) => {
+interface MeuServico {
+    cliente: OrdemType
+}
 
+export const MeusServicos = ({cliente}: MeuServico) => {
 
-    const puxarBanco = banco.getData()
-    console.log(puxarBanco)
-    const ordens = puxarBanco.filter((ordem: any) => ordem.nome === cliente.nome && ordem.status === "Finalizado")
-    
-    const puxarNotificacao = notificacoesBanco.getData()
-    const notificacaoUser = puxarNotificacao.filter((noti: any) => noti.placa === "QER1235")
-    console.log(notificacaoUser)
+    const ordemFinalizadas = ordenServicos.filter(ordem => {
+        return ordem.status === "Finalizado"
+    })
 
+    const notificacaoUser = NotificacoesPush
 
     return (
-        <>
-            <Row className="w-100">
-                <Col md={12}>
-                    <p>{`Olá, ${cliente.nome}`}</p>
-                    <h3>Qual é o status do meu serviço?</h3>
-                </Col>
-                <Col md={12}>
-                    {notificacaoUser.slice(-1).toReversed().map((ordem: any) => ( 
-                         <Notificacao titulo={ordem.titulo} mensagem={ordem.mensagem} data={ordem.data}></Notificacao> 
-                    ))} 
-                </Col>
-            </Row>
+        <div className="flex flex-col gap-8">
+            <div>
+                <p className="text-gray-500 text-sm font-medium">{`Olá, ${cliente.nome}`}</p>
+                <h3 className="text-2xl font-bold text-gray-800 mt-1">Qual é o status do meu serviço?</h3>
+            </div>
 
-            <Row>
-                <div className="card">
-                    <div className="card-header">teste</div>
-                    <div className="card-body">
-                        <div className="card-title">
-                            <h5>Revisão elétrica</h5>
+            <div>
+                {notificacaoUser.slice(-1).toReversed().map((ordem, index) => (
+                    <NotificacaoCard key={index} titulo={ordem.titulo} mensagem={ordem.mensagem} data={ordem.data} cliente={ordem.cliente} />
+                ))}
+            </div>
+
+            <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+                <div className="bg-gray-50 px-6 py-4 border-b border-gray-200 font-semibold text-gray-700">
+                    {ordemFinalizadas[0].id}
+                </div>
+                <div className="p-6 flex flex-col gap-4">
+                    <div>
+                        <h5 className="text-1xl font-bold text-gray-800">Revisão elétrica</h5>
+                        { <p className="text-sm text-gray-500 mt-1">
+                            {notificacaoUser[0] ? `Veículo: ${notificacaoUser[0].placa}` : ''}
+                        </p> }
+                    </div>
+
+                    <div className={` ${ordemFinalizadas[0].status === "Em andamento" ? "bg-slate-300": ordemFinalizadas[0].status === "Pronto para retirada" ? "bg-green-50" : "" }bg-gray-50 border border-gray-100 p-6 rounded-lg`}>
+                        <div className="text-3xl uppercase tracking-wider font-semibold text-gray-400 mb-1">
+                            {ordemFinalizadas[0].status}
                         </div>
-                        <div className="card-subtitle">
-                            <p>{`Veículo: ${notificacaoUser[0].placa}`}</p>
-                        </div>
-                        <div className="card bg-light">
-                            <div className="card-body">
-                                <div className="card-subtitle">
-                                    Status atual
-                                </div>
-                                <div className="card-title">
-                                    <h2>{ordens.slice(-1).map((ordem: any) => (ordem.status))}</h2>
-                                </div>
-                            </div>
-                        </div>
+                        <h2 className="text-3xl font-extrabold text-blue-600">
+                            {/* {ordens.length > 0 ? ordens.slice(-1)[0].status : "Aguardando"} */}
+                        </h2>
                     </div>
                 </div>
-            </Row>
-            <Row className="py-5">
-                <h4>Serviços finalizados</h4>
-                {ordens.toReversed().map((ordem: any) => (
-                    <Col md={12} className="mb-2">
-                    <CardOS id={ordem.id} nomeCliente={ordem.nome} tipoServico={ordem.tipoServico} placa={ordem.placa} data={ordem.data} status={ordem.status}/>
-                    </Col>
-                ))}
-            </Row>
-        </>
-    )
-}
+            </div>
+
+            {/* Serviços Finalizados */}
+            <div className="flex flex-col gap-4">
+                <h4 className="text-xl font-bold text-gray-800">Serviços finalizados</h4>
+                <div className="grid grid-cols-1 gap-4">
+                    {ordemFinalizadas.toReversed().map((ordem) => {
+                        return (
+                            <div key={ordem.id} className="w-full">
+                                <OrderCard ordem={ordem}></OrderCard>
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
+        </div>
+    );
+};
