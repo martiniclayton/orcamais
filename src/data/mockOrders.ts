@@ -8,7 +8,7 @@ export const ordenServicos: OrdemType[] = [
         nome: "Clayton Timoteo",
         cpf: "12345678900",
         telefone: "11999999999",
-        placa: "ABC1234",
+        placa: "ABC-1234",
         dataCriacao: new Date(),
         status: "Em andamento",
         descricao: "Troca de óleo e revisão geral",
@@ -53,11 +53,12 @@ export const NotificacoesPush: NotificacoesType[] = [
     {
         titulo: "NOVA ORDEM CADASTRADA",
         data: new Date(),
-        placa: "PLA-1252",
+        placa: "ABC-1234",
         cliente: "Clayton Timoteo",
         id: "1",
         tipoServico: "Troca de óleo",
-        status: "Em andamento"
+        status: "Em andamento",
+        cpf: "12345678900"
     },
     {
         titulo: "NOVA ORDEM CADASTRADA",
@@ -66,7 +67,8 @@ export const NotificacoesPush: NotificacoesType[] = [
         cliente: "Clayton",
         id: "2",
         tipoServico: "Revisão elétrica",
-        status: "Em andamento"
+        status: "Em andamento",
+        cpf: "12345678900"
     },
     {
         titulo: "MUDANÇA DE STATUS",
@@ -75,6 +77,7 @@ export const NotificacoesPush: NotificacoesType[] = [
         cliente: "Amanda",
         id: "3",
         tipoServico: "Revisão elétrica",
-        status: "Pronto para retirada"
+        status: "Pronto para retirada",
+        cpf: "12345678900"
     }
 ]

@@ -35,16 +35,22 @@ export const DashboardPage = () => {
                     </svg>
                 </button>
             </div>
-            <main className="w-full flex bg-slate-50 gap-5 h-screen overflow-hidden">
-                <AsideDash open={isOpen} fechar={setIsOpen} tela={tela} setTela={setTela} prestador={prestador}></AsideDash>
-                <section className="w-full flex flex-col overflow-y-auto ">
+            {isOpen && (
+                <div
+                    className="fixed inset-0 z-40 bg-black/50 md:hidden"
+                    onClick={() => setIsOpen(false)}
+                />
+            )}
+            <main className="w-full flex bg-slate-50 gap-5  h-[calc(100vh-72px)] md:h-screen overflow-hidden">
+                <AsideDash open={isOpen} fechar={setIsOpen} tela={tela} setTela={setTela} prestador={prestador} isOpen={isOpen}></AsideDash>
+                <section className={`w-full flex flex-col  ${isOpen ? "overflow-hidden" :  "overflow-y-auto" }`}>
                     <div className=" flex flex-col m-5 gap-5 bg-slate-50">
                         {tela === "Dashboard" ? (<Dashboard mudarTela={setTela} bancoMock={bancoMock} prestador={prestador} />) : null}
                         {tela === "NovaOrdemServico" ? (<NovaOrdemServico mudartela={setTela} />) : null}
                         {tela === "OrdensServicos" ? (<OrdensServicos mudartela={setTela} bancoMock={bancoMock} setBancoMock={setbancoMock} />) : null}
-                        {tela === "ServicosFinalizados" ? (<ServicosFinalizados mudarTela={setTela} bancoMock={bancoMock} setBancoMock={setbancoMock}/>) : null}
-                        {tela === "Notificacoes" ? (<Notificacoes mudarTela={setTela}/>) : null}
-                        {tela === "Perfil" ? (<Perfil mudarTela={setTela} bancoMock={bancoMock} prestador={prestador}/>) : null}
+                        {tela === "ServicosFinalizados" ? (<ServicosFinalizados mudarTela={setTela} bancoMock={bancoMock} setBancoMock={setbancoMock} />) : null}
+                        {tela === "Notificacoes" ? (<Notificacoes mudarTela={setTela} />) : null}
+                        {tela === "Perfil" ? (<Perfil mudarTela={setTela} bancoMock={bancoMock} prestador={prestador} />) : null}
                     </div>
                 </section>
             </main>

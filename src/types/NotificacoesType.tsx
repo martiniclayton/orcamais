@@ -7,5 +7,6 @@ export interface NotificacoesType {
     placa: string,
     cliente: string,
     tipoServico: string,
-    status: StatusOS
+    status: StatusOS,
+    cpf: string
 }

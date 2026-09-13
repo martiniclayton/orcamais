@@ -36,8 +36,7 @@ export const LoginForm = () => {
                 const order = ordenServicos.find(ordem => ordem.id === code) 
 
                 if(order){
-                    alert(`Sua ordem está em ${order?.status}`)
-                    navigate(`/Cliente?${order.id}`)
+                    navigate(`/Cliente?codigo=${order.id}`)
                 } else{
                     alert("Número do código inválido");
                 }
