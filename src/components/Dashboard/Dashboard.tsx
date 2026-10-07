@@ -15,14 +15,16 @@ interface Dashboard {
 
 export const Dashboard = ({mudarTela, banco}: Dashboard) => {
 
-    const { user } = useContext(AuthContext)
+    const { user, carregarOrdens } = useContext(AuthContext)
 
     fetch('')
     const ordens = banco
-
-    const emAndamento = ordens?.filter(ordem => ordem.status === "Em andamento")
-    const pronto = ordens?.filter(ordem => ordem.status === "Pronto para retirada")
-    const finalizados = ordens?.filter(ordem => ordem.status === "Finalizado")
+    carregarOrdens
+    console.log("BANCO NO DASHBOARD:", banco)
+    
+    const emAndamento = banco?.filter(ordem => ordem.status === "Em andamento")
+    const pronto = banco?.filter(ordem => ordem.status === "Pronto para retirada")
+    const finalizados = banco?.filter(ordem => ordem.status === "Finalizado")
 
 
     return (
@@ -71,7 +73,7 @@ export const Dashboard = ({mudarTela, banco}: Dashboard) => {
                     </div>
 
                     {
-                        ordens?.slice(-5).toReversed().map(ordem => (
+                        banco?.slice(-5).toReversed().map(ordem => (
                             <OrderCard key={ordem.id} ordem={ordem} />
                         ))
                     }

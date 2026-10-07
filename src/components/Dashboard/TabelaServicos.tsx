@@ -1,7 +1,8 @@
 import { Header } from ".././Header"
 import type { OrdemType } from "../../types/OrdemType"
 import type { Tela } from "../../types/typeTela"
-import { useState } from "react"
+import { useContext, useState } from "react"
+import { AuthContext } from "../../Context/AuthContext"
 
 interface TabelaPag{
     tela: string,
@@ -16,6 +17,8 @@ interface TabelaPag{
 export const TabelaServicos = ({tela, descricao, tipoTabela, mudarTela, bancoMock, setBancoMock, renderizarOrdensAtivas}: TabelaPag, ) => {
 
     const [busca, setBusca] = useState("");
+
+    const { carregarOrdens } = useContext(AuthContext)
 
     const ordens = tipoTabela || []
     
@@ -46,6 +49,7 @@ export const TabelaServicos = ({tela, descricao, tipoTabela, mudarTela, bancoMoc
             const data = await response.json()
             console.log("Ordem atualizada com sucesso", data)
             renderizarOrdensAtivas?.()
+            carregarOrdens()
         }
         catch(error){
             console.log("Erro na requisição PATCH", error)

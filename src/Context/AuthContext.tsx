@@ -16,7 +16,7 @@ interface IAuthContext {
     logoutCliente: () => void,
     carregarOrdens: () => void,
     banco: any[]
-    // token: any
+    // token: any,
 }
 
 export const AuthContext = createContext({} as IAuthContext);
@@ -45,6 +45,7 @@ export const AuthContextProvider = ({ children }: any) => {
 
 
     const carregarOrdens = () => {
+        console.log("CARREGAR ORDENS CHAMADO")
 
         const token = localStorage.getItem('tokenTrack')
 
