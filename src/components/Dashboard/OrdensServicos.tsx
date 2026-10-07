@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react"
 import type { OrdemType } from "../../types/OrdemType"
 import type { Tela } from "../../types/typeTela"
 import { TabelaServicos } from "./TabelaServicos"
@@ -8,14 +9,43 @@ interface OrdensServicosProps {
     setBancoMock: (value: OrdemType[]) => void
 }
 
-export const OrdensServicos = ({mudartela, bancoMock, setBancoMock}: OrdensServicosProps) =>{
+export const OrdensServicos = ({ mudartela, bancoMock, setBancoMock }: OrdensServicosProps) => {
 
-    const tabela = bancoMock.filter(ordem => ordem.status !== "Finalizado")
+    const [bancoAtivos, setbancoAtivos] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    const token = localStorage.getItem('tokenTrack')
+
+    const carregarOrdensAtivas = () => {
+        fetch('http://localhost:3000/ordem?status=Ativos', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                setbancoAtivos(data.ordens);
+                setLoading(false)
+            })
+            .catch(error => {
+                console.error("Erro ao buscar ordens", error);
+            })
+    }
+
+    useEffect(() => {
+        carregarOrdensAtivas()
+    }, [])
+
+    const tabela = bancoMock?.filter(ordem => ordem.status !== "Finalizado")
 
     const quantidades = tabela.length
-    return(
+
+    if (loading) {
+        return <p className="p-5 text-zinc-500">Carregando ordens...</p>;
+    }
+    return (
         <>
-        <TabelaServicos tela={"Ordens de Serviço"} descricao={`${quantidades} O.S Ativas`} tipoTabela={tabela} mudarTela={mudartela} setBancoMock={setBancoMock} bancoMock={bancoMock}></TabelaServicos>
+            <TabelaServicos tela={"Ordens de Serviço"} descricao={`${quantidades} O.S Ativas`} tipoTabela={bancoAtivos} mudarTela={mudartela} setBancoMock={setBancoMock} bancoMock={bancoMock} renderizarOrdensAtivas={carregarOrdensAtivas}></TabelaServicos>
         </>
     )
 }

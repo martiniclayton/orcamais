@@ -1,22 +1,22 @@
-import type { User } from "../../data/mockUsers"
+import { useContext } from "react"
 import type { OrdemType } from "../../types/OrdemType"
 import type { Tela } from "../../types/typeTela"
 import { Header } from ".././Header"
+import { AuthContext } from "../../Context/AuthContext"
 
 interface PerfilProps {
     mudarTela: (value: Tela) => void,
-    prestador: User,
     bancoMock: OrdemType[]
 }
 
-export const Perfil = ({mudarTela, prestador, bancoMock}: PerfilProps) => {
+export const Perfil = ({mudarTela, bancoMock}: PerfilProps) => {
 
     const ordensAtivas = bancoMock.filter(ordem => ordem.status !== "Finalizado")
     const ordensFinalizadas = bancoMock.filter(ordem => ordem.status === "Finalizado")
-
-    const iniciaisEmpresa = prestador.empresa
+    const { user } = useContext(AuthContext)
+    const iniciaisEmpresa = user?.estabelecimento
     .split(" ")
-    .map(nome => nome[0])
+    .map((nome: string) => nome[0])
     .slice(0, 2)
     .join("")
     .toUpperCase();
@@ -33,8 +33,8 @@ export const Perfil = ({mudarTela, prestador, bancoMock}: PerfilProps) => {
                                     <div className="w-9 h-9 rounded-full bg-slate-700 flex items-center justify-center font-bold text-white text-sm">{iniciaisEmpresa}</div>
                                 </div>
                                 <div className="flex flex-col justify-center">
-                                    <h4 className="text-xl font-bold text-gray-800">{prestador.nome}</h4>
-                                    <p className="text-gray-500">{prestador.empresa}</p>
+                                    <h4 className="text-xl font-bold text-gray-800">{user?.nome}</h4>
+                                    <p className="text-gray-500">{user?.estabelecimento}</p>
                                 </div>
                             </div>
                         </div>
@@ -44,11 +44,11 @@ export const Perfil = ({mudarTela, prestador, bancoMock}: PerfilProps) => {
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
                                         <h6 className="font-semibold text-gray-700">E-mail</h6>
-                                        <p className="text-gray-600">{prestador.email}</p>
+                                        <p className="text-gray-600">{user?.email}</p>
                                     </div>
                                     <div>
                                         <h6 className="font-semibold text-gray-700">Perfil</h6>
-                                        <p className="text-gray-600">{prestador.type}</p>
+                                        <p className="text-gray-600">{user?.type}</p>
                                     </div>
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

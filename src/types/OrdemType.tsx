@@ -9,6 +9,7 @@ export interface OrdemType {
     dataCriacao: Date,
     tipoServico: string
     status: StatusOS,
-    descricao?: string
+    descricao?: string,
+    codAcesso: string
 }
 

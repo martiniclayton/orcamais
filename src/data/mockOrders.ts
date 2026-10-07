@@ -12,7 +12,8 @@ export const ordenServicos: OrdemType[] = [
         dataCriacao: new Date(),
         status: "Em andamento",
         descricao: "Troca de óleo e revisão geral",
-        tipoServico: "Troca de óleo"
+        tipoServico: "Troca de óleo",
+        codAcesso: "ABC123"
     },
     {
         id: "1",
@@ -23,7 +24,8 @@ export const ordenServicos: OrdemType[] = [
         dataCriacao: new Date("2026-09-08T10:30:00"),
         status: "Em andamento",
         descricao: "Troca das pastilhas de freio e alinhamento",
-        tipoServico: "Revisão do sistema de freios"
+        tipoServico: "Revisão do sistema de freios",
+        codAcesso: "XYZ789"
     },
     {
         id: "2",
@@ -34,7 +36,8 @@ export const ordenServicos: OrdemType[] = [
         dataCriacao: new Date("2026-09-07T14:15:00"),
         status: "Finalizado",
         descricao: "Diagnóstico elétrico e substituição da bateria",
-        tipoServico: "Diagnóstico elétrico"
+        tipoServico: "Diagnóstico elétrico",
+        codAcesso: "ASDD87"
     },
     {
         id: "3",
@@ -45,7 +48,8 @@ export const ordenServicos: OrdemType[] = [
         dataCriacao: new Date("2026-09-09T09:00:00"),
         status: "Em andamento",
         descricao: "Balanceamento de rodas e checagem de suspensão",
-        tipoServico: "Alinhamento e balanceamento"
+        tipoServico: "Alinhamento e balanceamento",
+        codAcesso: "EQD548"
     }
 ]
 

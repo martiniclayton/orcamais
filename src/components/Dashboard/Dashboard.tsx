@@ -4,32 +4,37 @@ import { OrderCard } from ".././OrderCard.js";
 import type { Tela } from "../../types/typeTela.js";
 import { CardInfo } from "../Cards/CardInfo.js";
 import type { OrdemType } from "../../types/OrdemType.js";
-import type { User } from "../../data/mockUsers.js";
+import { useContext } from "react";
+import { AuthContext } from "../../Context/AuthContext.js";
 
 interface Dashboard {
     mudarTela: (value: Tela) => void,
-    bancoMock: OrdemType[],
-    prestador: User
+    banco: OrdemType[],
 }
 
-export const Dashboard = ({mudarTela, bancoMock, prestador}: Dashboard) => {
-    const ordens = bancoMock
 
-    const emAndamento = ordens.filter(ordem => ordem.status === "Em andamento")
-    const pronto = ordens.filter(ordem => ordem.status === "Pronto para retirada")
-    const finalizados = ordens.filter(ordem => ordem.status === "Finalizado")
+export const Dashboard = ({mudarTela, banco}: Dashboard) => {
+
+    const { user } = useContext(AuthContext)
+
+    fetch('')
+    const ordens = banco
+
+    const emAndamento = ordens?.filter(ordem => ordem.status === "Em andamento")
+    const pronto = ordens?.filter(ordem => ordem.status === "Pronto para retirada")
+    const finalizados = ordens?.filter(ordem => ordem.status === "Finalizado")
 
 
     return (
         <>
             {/* <section id="dashboard-pag" className="w-full flex flex-col overflow-y-auto ">
                 <div className=" flex flex-col m-5 gap-5 bg-slate-50"> */}
-            <Header titulo={"Dashboard"} descricao={`Olá, ${prestador.nome}. Acompanhe suas Ordens de Serviço.`} mudarTela={mudarTela}></Header>
+            <Header titulo={"Dashboard"} descricao={`Olá, ${user?.nome}. Acompanhe suas Ordens de Serviço.`} mudarTela={mudarTela}></Header>
             <div id="info" className="w-full flex flex-col gap-5 p-5 bg-card shadow-2xs rounded-xl">
                 <div className="flex flex-wrap w-full gap-2">
-                    <CardInfo titulo={"Em andamento"} numeros={emAndamento.length}/>
-                    <CardInfo titulo={"Prontas para retirada"} numeros={pronto.length}/>
-                    <CardInfo titulo={"Finalizadas"} numeros={finalizados.length}/>
+                    <CardInfo titulo={"Em andamento"} numeros={emAndamento?.length}/>
+                    <CardInfo titulo={"Prontas para retirada"} numeros={pronto?.length}/>
+                    <CardInfo titulo={"Finalizadas"} numeros={finalizados?.length}/>
                 </div>
 
                 <div className="flex flex-wrap w-full gap-2">
@@ -66,7 +71,7 @@ export const Dashboard = ({mudarTela, bancoMock, prestador}: Dashboard) => {
                     </div>
 
                     {
-                        ordens.slice(-5).toReversed().map(ordem => (
+                        ordens?.slice(-5).toReversed().map(ordem => (
                             <OrderCard key={ordem.id} ordem={ordem} />
                         ))
                     }

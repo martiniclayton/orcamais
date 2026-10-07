@@ -1,8 +1,8 @@
-import React from 'react';
 import type { OrdemType } from '../../types/OrdemType';
-import { NotificacoesPush, ordenServicos } from '../../data/mockOrders';
+import { ordenServicos } from '../../data/mockOrders';
 import { OrderCard } from '.././OrderCard';
 import { NotificacaoCard } from '.././Notificação/NotificacaroCard';
+import { getNotificacoes } from '../../services/notificacaoMockStorage';
 
 interface MeuServicoProps {
     cliente: OrdemType
@@ -14,7 +14,7 @@ export const MeusServicos = ({cliente}: MeuServicoProps) => {
         return ordem.status === "Finalizado" && ordem.cpf === cliente.cpf
     })
 
-    const notificacaoUser = NotificacoesPush.filter(notificacao => notificacao.cpf === cliente.cpf)
+    const notificacaoUser = getNotificacoes().filter(notificacao => notificacao.cpf === cliente.cpf)
 
     return (
         <div className="flex flex-col gap-8">

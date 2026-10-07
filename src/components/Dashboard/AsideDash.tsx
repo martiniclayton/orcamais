@@ -1,27 +1,21 @@
-import { useNavigate } from "react-router-dom"
-import type { User } from "../../data/mockUsers"
 import type { Tela } from "../../types/typeTela"
+import { useContext } from "react"
+import { AuthContext } from "../../Context/AuthContext"
 
 interface AsideProps {
     open: boolean
     fechar: (value: boolean) => void,
     tela: Tela,
     setTela: (value: Tela) => void,
-    prestador: User,
     isOpen: boolean,
 }
-export const AsideDash = ({ open, fechar, tela, setTela, prestador, isOpen }: AsideProps) => {
+export const AsideDash = ({ open, fechar, tela, setTela }: AsideProps) => {
 
-    const navigation = useNavigate();
+    const { user, logout } = useContext(AuthContext)
 
-    const Sair = () =>{
-        localStorage.removeItem("prestador");
-        navigation("/")
-    }
-
-    const iniciaisEmpresa = prestador.empresa
+    const iniciaisEmpresa = user?.estabelecimento
     .split(" ")
-    .map(nome => nome[0])
+    .map((nome: string) => nome[0])
     .slice(0, 2)
     .join("")
     .toUpperCase();
@@ -47,14 +41,14 @@ export const AsideDash = ({ open, fechar, tela, setTela, prestador, isOpen }: As
                     <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">
                     {iniciaisEmpresa}
                     </div>
-                    <span className="text-white font-bold text-lg tracking-wide">{prestador.empresa}</span>
+                    <span className="text-white font-bold text-lg tracking-wide">{user?.estabelecimento}</span>
                 </div>
 
                 <nav className="flex flex-col gap-1 flex-1 justify-between">
                     <div>
 
                         <button type="button" className={`w-full cursor-pointer flex items-center gap-3 px-3 py-2.5 rounded-lg ${tela === "Dashboard" ? "text-white bg-slate-400 font-medium" : "hover:text-white hover:bg-slate-800/60"} transition-colors`} onClick={() => {setTela("Dashboard") ; fechar(false)}}>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <rect x="3" y="3" width="7" height="7"></rect>
                                 <rect x="14" y="3" width="7" height="7"></rect>
                                 <rect x="14" y="14" width="7" height="7"></rect>
@@ -117,12 +111,12 @@ export const AsideDash = ({ open, fechar, tela, setTela, prestador, isOpen }: As
                                     CM
                                 </div>
                                 <div className="flex flex-col text-xs">
-                                    <span className="font-medium text-white">{prestador.nome}</span>
+                                    <span className="font-medium text-white">{user?.nome}</span>
                                     <span className="text-slate-500">Prestador</span>
                                 </div>
                             </div>
                             <div className="flex justify-end" >
-                                <button className="btn flex items-center gap-2 cursor-pointer hover:text-red-400" onClick={Sair}>
+                                <button className="btn flex items-center gap-2 cursor-pointer hover:text-red-400" onClick={logout}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
                                         <polyline points="16 17 21 12 16 7"></polyline>

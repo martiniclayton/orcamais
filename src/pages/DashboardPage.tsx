@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AsideDash } from "../components/Dashboard/AsideDash"
 import { Dashboard } from "../components/Dashboard/Dashboard"
 import { NovaOrdemServico } from "../components/Dashboard/NovaOrdemServico";
@@ -8,18 +8,37 @@ import { Notificacoes } from "../components/Dashboard/Notificacoes";
 import { Perfil } from "../components/Dashboard/Perfil";
 import type { Tela } from "../types/typeTela";
 import { ordenServicos } from "../data/mockOrders";
+import { useNavigate, useParams } from "react-router-dom";
+import { AuthContext } from "../Context/AuthContext";
 
 export const DashboardPage = () => {
 
-    const userSalvo = localStorage.getItem("prestador");
+    // const userSalvo = localStorage.getItem("prestador");
+    // console.log(userSalvo)
 
-    const prestador = userSalvo ? JSON.parse(userSalvo) : null
+    // const user = userSalvo ? JSON.parse(userSalvo) : null;
+    // console.log(user)
+
+    const navigate = useNavigate();
+    const { user, isLoggedIn, carregarOrdens, banco } = useContext(AuthContext)
+
+
+    useEffect(() => {
+        if (!isLoggedIn) {
+            navigate("/");
+        }
+    }, [isLoggedIn, navigate]);
 
     const [bancoMock, setbancoMock] = useState(ordenServicos);
+
+    useEffect(() => {
+        carregarOrdens()
+    },[])
 
     const [isOpen, setIsOpen] = useState(false);
 
     const [tela, setTela] = useState<Tela>("Dashboard")
+
 
     return (
         <>
@@ -42,15 +61,15 @@ export const DashboardPage = () => {
                 />
             )}
             <main className="w-full flex bg-slate-50 gap-5  h-[calc(100vh-72px)] md:h-screen overflow-hidden">
-                <AsideDash open={isOpen} fechar={setIsOpen} tela={tela} setTela={setTela} prestador={prestador} isOpen={isOpen}></AsideDash>
-                <section className={`w-full flex flex-col  ${isOpen ? "overflow-hidden" :  "overflow-y-auto" }`}>
+                <AsideDash open={isOpen} fechar={setIsOpen} tela={tela} setTela={setTela} isOpen={isOpen}></AsideDash>
+                <section className={`w-full flex flex-col  ${isOpen ? "overflow-hidden" : "overflow-y-auto"}`}>
                     <div className=" flex flex-col m-5 gap-5 bg-slate-50">
-                        {tela === "Dashboard" ? (<Dashboard mudarTela={setTela} bancoMock={bancoMock} prestador={prestador} />) : null}
+                        {tela === "Dashboard" ? (<Dashboard mudarTela={setTela} banco={banco} />) : null}
                         {tela === "NovaOrdemServico" ? (<NovaOrdemServico mudartela={setTela} />) : null}
                         {tela === "OrdensServicos" ? (<OrdensServicos mudartela={setTela} bancoMock={bancoMock} setBancoMock={setbancoMock} />) : null}
                         {tela === "ServicosFinalizados" ? (<ServicosFinalizados mudarTela={setTela} bancoMock={bancoMock} setBancoMock={setbancoMock} />) : null}
                         {tela === "Notificacoes" ? (<Notificacoes mudarTela={setTela} />) : null}
-                        {tela === "Perfil" ? (<Perfil mudarTela={setTela} bancoMock={bancoMock} prestador={prestador} />) : null}
+                        {tela === "Perfil" ? (<Perfil mudarTela={setTela} bancoMock={bancoMock} />) : null}
                     </div>
                 </section>
             </main>

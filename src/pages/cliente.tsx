@@ -1,27 +1,28 @@
-import { useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { MeusServicos } from "../components/Cliente/MeusServicos"
 import { MeuPerfil } from "../components/Cliente/MeuPerfil"
 import { MinhasNotificacoes } from "../components/Cliente/MinhasNotificacoes"
 import { ordenServicos } from "../data/mockOrders"
 import type { OrdemType } from "../types/OrdemType"
 import { useNavigate } from "react-router-dom"
+import { AuthContext } from "../Context/AuthContext"
 
 export const Cliente = () => {
 
-
-    const parametros = new URLSearchParams(window.location.search);
-    const codigo = parametros.get("codigo");
-
-    const cliente = ordenServicos.find(ordem => ordem.id === codigo)
-    const [aba, setAba] = useState("Meus Servicos")
-
+    const { ordem, logoutCliente } = useContext(AuthContext)
     const navigate = useNavigate();
 
-    const Sair = ()=>{
-        navigate("/");
-    }
+    useEffect(()=>{
+        !ordem && navigate("/");
+    },[ordem])
 
-    if(!cliente){
+    // const parametros = new URLSearchParams(window.location.search);
+    // const codigo = parametros.get("codigo");
+
+    const [aba, setAba] = useState("Meus Servicos")
+
+
+    if(!ordem){
         return (
         <div className="min-h-screen flex items-center justify-center">
             <p className="text-slate-600">
@@ -46,7 +47,7 @@ export const Cliente = () => {
                             </div>
                         </div>
                         <div className="">
-                            <button className="w-20 border border-slate-400 cursor-pointer text-slate-400 hover:bg-slate-800 hover:text-slate-50 transition-all duration-300 ease-in-out " onClick={Sair}>Sair</button>
+                            <button className="w-20 border border-slate-400 cursor-pointer text-slate-400 hover:bg-slate-800 hover:text-slate-50 transition-all duration-300 ease-in-out " onClick={logoutCliente}>Sair</button>
                         </div>
                     </div>
 
@@ -57,9 +58,9 @@ export const Cliente = () => {
                     </nav>
                 </header>
 
-                {aba === "Meus Servicos" ? (<MeusServicos cliente={cliente}/>) : null}
-                {aba === "Meu Perfil" ? (<MeuPerfil cliente={cliente}/>) : null}
-                {aba === "Minhas notificacoes" ? (<MinhasNotificacoes cliente={cliente}/>) : null}
+                {aba === "Meus Servicos" ? (<MeusServicos cliente={ordem}/>) : null}
+                {aba === "Meu Perfil" ? (<MeuPerfil cliente={ordem}/>) : null}
+                {aba === "Minhas notificacoes" ? (<MinhasNotificacoes cliente={ordem}/>) : null}
             </main>
         </>
     )

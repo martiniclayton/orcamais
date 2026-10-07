@@ -1,44 +1,42 @@
-import { useState } from "react";
+import { use, useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import type { typeUser } from "../../types/typeUser";
-import { MockUsers } from "../../data/mockUsers";
 import { ordenServicos } from "../../data/mockOrders";
+import { AuthContext } from "../../Context/AuthContext";
+import { changeLocalStorage } from "../../services/storage";
 
 export const LoginForm = () => {
 
+    const { login, cliente, setIsLoggedIn } = useContext(AuthContext);
+
     const [typeUser, setTypeUser] = useState<typeUser>("Prestador");
-    
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [code, setCode] = useState("");
+    const [CPF, setCPF] = useState("");
 
-    const enviarDados = (e: React.FormEvent<HTMLFormElement>, tipo: typeUser) => {
+    const enviarDados = async (e: React.FormEvent<HTMLFormElement>, tipo: typeUser) => {
         e.preventDefault();
 
-        if(tipo === "Prestador"){
-            if(!email || !password){
+        if (tipo === "Prestador") {
+            if (!email || !password) {
                 alert("Preencha os campos necessários");
-            } else{
-                const user = MockUsers.find(user => user.email === email && user.password === password);
-
-                if(user){
-                    alert(`Seja bem vindo ${user.nome}`)
-                    localStorage.setItem("prestador", JSON.stringify(user))
-                    navigate("/DashboardPage")
-                } else{
-                    alert("E-mail ou senha inválidos")
+            } else {
+                const user = await login(email, password);
+                if (user) {
+                    changeLocalStorage({ login: true });
+                    setIsLoggedIn(true)
+                    navigate('/DashboardPage')
                 }
             }
-        } else if(tipo === "Cliente"){
-            if(!code){
-                alert("Informe o código da ordem de serviço")
-            } else{
-                const order = ordenServicos.find(ordem => ordem.id === code) 
-
-                if(order){
-                    navigate(`/Cliente?codigo=${order.id}`)
-                } else{
-                    alert("Número do código inválido");
+        } else if (tipo === "Cliente") {
+            if (!code || !CPF) {
+                alert("Informe os dados necessários")
+            } else {
+                const order = cliente(code, CPF)
+                if (order) {
+                    navigate(`/Cliente?codigo=${order.codAcesso}`)
                 }
             }
         }
@@ -114,6 +112,16 @@ export const LoginForm = () => {
                                     placeholder="Digite o código do serviço"
                                     onChange={(e) => setCode(e.target.value)}
                                     value={code}
+                                />
+
+                                <label htmlFor="codigoServico" className="text-sm font-medium text-gray-700">CPF</label>
+                                <input
+                                    type="text"
+                                    id="cpf"
+                                    className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                                    placeholder="000.000.000-00"
+                                    onChange={(e) => setCPF(e.target.value)}
+                                    value={CPF}
                                 />
                             </div>
                         )}

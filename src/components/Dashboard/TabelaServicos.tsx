@@ -1,7 +1,7 @@
-import { useState } from "react"
 import { Header } from ".././Header"
-import type { OrdemType, StatusOS } from "../../types/OrdemType"
+import type { OrdemType } from "../../types/OrdemType"
 import type { Tela } from "../../types/typeTela"
+import { useState } from "react"
 
 interface TabelaPag{
     tela: string,
@@ -10,13 +10,14 @@ interface TabelaPag{
     mudarTela: (value: Tela) => void,
     setBancoMock: (value: OrdemType[]) => void
     bancoMock: OrdemType[]
+    renderizarOrdensAtivas?: () => void
 }
 
-export const TabelaServicos = ({tela, descricao, tipoTabela, mudarTela, bancoMock, setBancoMock}: TabelaPag) => {
+export const TabelaServicos = ({tela, descricao, tipoTabela, mudarTela, bancoMock, setBancoMock, renderizarOrdensAtivas}: TabelaPag, ) => {
 
     const [busca, setBusca] = useState("");
 
-    const ordens = tipoTabela
+    const ordens = tipoTabela || []
     
     const filtrar = ordens.filter((ordem: OrdemType) => {
         const termoBusca = busca.toLowerCase()
@@ -28,19 +29,28 @@ export const TabelaServicos = ({tela, descricao, tipoTabela, mudarTela, bancoMoc
         return nomeStr.includes(termoBusca) || placaStr.includes(termoBusca) || idStr.includes(termoBusca)
     })
 
-    const mudarStatus = (id: string) =>{
+    const atualizarStatus = async (id: string) =>{
+        try{
+            const response = await fetch(`http://localhost:3000/ordem/${id}`, {
+                method: "PATCH",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: ""
+            })
 
-        const ordensAtualizadas = bancoMock.map((ordem: OrdemType) => {
-            if(ordem.id === id){
-                const novoStatus: StatusOS = ordem.status === "Em andamento" ? "Pronto para retirada":  "Finalizado";
-                return{
-                    ...ordem, status: novoStatus
-                }
+            if(!response){
+                throw new Error("Erro ao atualizar ordem")
             }
-            return ordem
-        })
-        
-        setBancoMock(ordensAtualizadas);
+
+            const data = await response.json()
+            console.log("Ordem atualizada com sucesso", data)
+            renderizarOrdensAtivas?.()
+        }
+        catch(error){
+            console.log("Erro na requisição PATCH", error)
+        }
+        fetch('')
     }
 
     return (
@@ -106,10 +116,10 @@ export const TabelaServicos = ({tela, descricao, tipoTabela, mudarTela, bancoMoc
 
                     <tbody className="divide-y divide-slate-200 ">
                         {
-                            filtrar.map((ordem: OrdemType) => (
+                            filtrar.map((ordem: any) => (
                                 <tr className="hover:bg-slate-100 transition-colors h-16" key={ordem.id}>
                                     <td className="w-16 py-1 text-slate-600 align-middle">{ordem.id}</td>
-                                    <td className="py-1 text-slate-600 align-middle">{ordem.nome}</td>
+                                    <td className="py-1 text-slate-600 align-middle">{ordem.cliente.nome}</td>
                                     <td><span className="py-1 text-slate-600 badge badge-soft badge-success text-xs align-middle ">{ordem.tipoServico}</span></td>
                                     <td className="py-1 text-slate-600 align-middle">{ordem.placa}</td>
                                     <td className="py-1 text-slate-600 align-middle">
@@ -119,7 +129,7 @@ export const TabelaServicos = ({tela, descricao, tipoTabela, mudarTela, bancoMoc
                                         {ordem.status}
                                     </td>
                                     <td className="py-1 text-slate-500 align-middle">
-                                        <button onClick={()=> mudarStatus(ordem.id)} className={`border p-1 px-2 w-full border-slate-400 text-slate-400 cursor-pointer transiton-all duration-300 ease-in-out not-disabled:hover:bg-slate-700 not-disabled:hover:text-slate-100 ${ordem.status === "Finalizado" ? "disabled:bg-gray-400 disabled:cursor-not-allowed hidden" : ""}`}>{ordem.status === "Em andamento" ? "Retirada" : ordem.status === "Pronto para retirada" ? "Finalizar" : "Finalizado"}</button>
+                                        <button onClick={()=> atualizarStatus(ordem.id)} className={`border p-1 px-2 w-full border-slate-400 text-slate-400 cursor-pointer transiton-all duration-300 ease-in-out not-disabled:hover:bg-slate-700 not-disabled:hover:text-slate-100 ${ordem.status === "Finalizado" ? "disabled:bg-gray-400 disabled:cursor-not-allowed hidden" : ""}`}>{ordem.status === "Em andamento" ? "Retirada" : ordem.status === "Pronto para retirada" ? "Finalizar" : "Finalizado"}</button>
                                     </td>
                                 </tr>
                             ))
