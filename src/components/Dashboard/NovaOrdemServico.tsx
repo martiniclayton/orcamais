@@ -39,7 +39,7 @@ export const NovaOrdemServico = ({ mudartela }: NovaOrdemServicoProps) => {
         }
 
         try {
-            const response = await fetch('http://localhost:3000/ordem', {
+            const response = await fetch('https://orca-mais-backend.onrender.com/ordem', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

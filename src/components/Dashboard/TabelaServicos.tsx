@@ -34,7 +34,7 @@ export const TabelaServicos = ({tela, descricao, tipoTabela, mudarTela, bancoMoc
 
     const atualizarStatus = async (id: string) =>{
         try{
-            const response = await fetch(`http://localhost:3000/ordem/${id}`, {
+            const response = await fetch(`https://orca-mais-backend.onrender.com/ordem/${id}`, {
                 method: "PATCH",
                 headers: {
                     'Content-Type': 'application/json',

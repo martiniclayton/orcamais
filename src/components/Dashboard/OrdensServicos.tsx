@@ -17,7 +17,7 @@ export const OrdensServicos = ({ mudartela, bancoMock, setBancoMock }: OrdensSer
     const token = localStorage.getItem('tokenTrack')
 
     const carregarOrdensAtivas = () => {
-        fetch('http://localhost:3000/ordem?status=Ativos', {
+        fetch('https://orca-mais-backend.onrender.com/ordem?status=Ativos', {
             headers: {
                 Authorization: `Bearer ${token}`
             }

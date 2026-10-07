@@ -1,10 +1,1 @@
-import { ordenServicos } from "../data/mockOrders";
-
-const ordens = ordenServicos
-
-
-export const API = new Promise((resolve) =>{
-    setTimeout(()=>{
-        resolve(ordens)
-    }, 3000)
-})
+export const API_URL = "https://orca-mais-backend.onrender.com";

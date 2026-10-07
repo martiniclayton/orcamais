@@ -16,7 +16,7 @@ export const ServicosFinalizados = ({ mudarTela, bancoMock, setBancoMock }: Serv
     const token = localStorage.getItem('tokenTrack')
 
     useEffect(() => {
-        fetch('http://localhost:3000/ordem?status=Finalizado', {
+        fetch('https://orca-mais-backend.onrender.com/ordem?status=Finalizado', {
             headers: {
                 Authorization: `Bearer ${token}`
             }

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { ordenServicos } from "../data/mockOrders";
 import type { OrdemType } from "../types/OrdemType";
 import { changeLocalStorage } from "../services/storage";
+import { API_URL } from "../services/api";
 
 interface IAuthContext {
     user: User | null,
@@ -49,7 +50,7 @@ export const AuthContextProvider = ({ children }: any) => {
 
         const token = localStorage.getItem('tokenTrack')
 
-        fetch('http://localhost:3000/ordem', {
+        fetch('https://orca-mais-backend.onrender.com/ordem', {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -73,7 +74,7 @@ export const AuthContextProvider = ({ children }: any) => {
 
     const login = async (email: string, password: string) => {
 
-        const response = await fetch('http://localhost:3000/login', {
+        const response = await fetch(`${API_URL}/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
