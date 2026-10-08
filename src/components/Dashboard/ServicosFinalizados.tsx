@@ -1,5 +1,4 @@
 import type { Tela } from "../../types/typeTela"
-import type { OrdemType } from "../../types/OrdemType"
 import { TabelaServicos } from "./TabelaServicos"
 import { useEffect, useState } from "react"
 
