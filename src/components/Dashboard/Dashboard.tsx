@@ -4,7 +4,7 @@ import { OrderCard } from ".././OrderCard.js";
 import type { Tela } from "../../types/typeTela.js";
 import { CardInfo } from "../Cards/CardInfo.js";
 import type { OrdemType } from "../../types/OrdemType.js";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "../../Context/AuthContext.js";
 
 interface Dashboard {
@@ -17,7 +17,10 @@ export const Dashboard = ({mudarTela, banco}: Dashboard) => {
 
     const { user, carregarOrdens } = useContext(AuthContext)
 
-    carregarOrdens()
+    useEffect(()=>{
+        carregarOrdens()
+    }, [])
+
     console.log("BANCO NO DASHBOARD:", banco)
     
     const emAndamento = banco?.filter(ordem => ordem.status === "Em andamento")
