@@ -2,8 +2,6 @@ import { useContext, useEffect, useState } from "react"
 import { MeusServicos } from "../components/Cliente/MeusServicos"
 import { MeuPerfil } from "../components/Cliente/MeuPerfil"
 import { MinhasNotificacoes } from "../components/Cliente/MinhasNotificacoes"
-import { ordenServicos } from "../data/mockOrders"
-import type { OrdemType } from "../types/OrdemType"
 import { useNavigate } from "react-router-dom"
 import { AuthContext } from "../Context/AuthContext"
 
