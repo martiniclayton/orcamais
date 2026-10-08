@@ -29,7 +29,7 @@ export const DashboardPage = () => {
         }
     }, [isLoggedIn, navigate]);
 
-    const [bancoMock, setbancoMock] = useState(ordenServicos);
+    const [bancoMock] = useState(ordenServicos);
 
     useEffect(() => {
         carregarOrdens()
@@ -66,8 +66,8 @@ export const DashboardPage = () => {
                     <div className=" flex flex-col m-5 gap-5 bg-slate-50">
                         {tela === "Dashboard" ? (<Dashboard mudarTela={setTela} banco={banco} />) : null}
                         {tela === "NovaOrdemServico" ? (<NovaOrdemServico mudartela={setTela} />) : null}
-                        {tela === "OrdensServicos" ? (<OrdensServicos mudartela={setTela} bancoMock={bancoMock} setBancoMock={setbancoMock} />) : null}
-                        {tela === "ServicosFinalizados" ? (<ServicosFinalizados mudarTela={setTela} bancoMock={bancoMock} setBancoMock={setbancoMock} />) : null}
+                        {tela === "OrdensServicos" ? (<OrdensServicos mudartela={setTela} />) : null}
+                        {tela === "ServicosFinalizados" ? (<ServicosFinalizados mudarTela={setTela} />) : null}
                         {tela === "Notificacoes" ? (<Notificacoes mudarTela={setTela} />) : null}
                         {tela === "Perfil" ? (<Perfil mudarTela={setTela} bancoMock={bancoMock} />) : null}
                     </div>

@@ -1,15 +1,12 @@
 import { useEffect, useState } from "react"
-import type { OrdemType } from "../../types/OrdemType"
 import type { Tela } from "../../types/typeTela"
 import { TabelaServicos } from "./TabelaServicos"
 
 interface OrdensServicosProps {
     mudartela: (value: Tela) => void,
-    bancoMock: OrdemType[],
-    setBancoMock: (value: OrdemType[]) => void
 }
 
-export const OrdensServicos = ({ mudartela, bancoMock, setBancoMock }: OrdensServicosProps) => {
+export const OrdensServicos = ({ mudartela }: OrdensServicosProps) => {
 
     const [bancoAtivos, setbancoAtivos] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -36,9 +33,8 @@ export const OrdensServicos = ({ mudartela, bancoMock, setBancoMock }: OrdensSer
         carregarOrdensAtivas()
     }, [])
 
-    const tabela = bancoMock?.filter(ordem => ordem.status !== "Finalizado")
 
-    const quantidades = tabela.length
+    const quantidades = bancoAtivos.length
 
     if (loading) {
         return <p className="p-5 text-zinc-500">Carregando ordens...</p>;
