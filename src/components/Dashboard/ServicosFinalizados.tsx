@@ -1,4 +1,3 @@
-import { ordenServicos } from "../../data/mockOrders"
 import type { Tela } from "../../types/typeTela"
 import type { OrdemType } from "../../types/OrdemType"
 import { TabelaServicos } from "./TabelaServicos"
@@ -6,11 +5,9 @@ import { useEffect, useState } from "react"
 
 interface ServicosFinalizadosProps {
     mudarTela: (value: Tela) => void,
-    bancoMock: OrdemType[],
-    setBancoMock: (value: OrdemType[]) => void
 }
 
-export const ServicosFinalizados = ({ mudarTela, bancoMock, setBancoMock }: ServicosFinalizadosProps) => {
+export const ServicosFinalizados = ({ mudarTela }: ServicosFinalizadosProps) => {
 
     const [bancoFinalizado, setBancoFinalizado] = useState([])
     const token = localStorage.getItem('tokenTrack')
@@ -30,13 +27,11 @@ export const ServicosFinalizados = ({ mudarTela, bancoMock, setBancoMock }: Serv
             })
     }, [])
 
-    const tabela = bancoMock?.filter(ordem => ordem.status === "Finalizado");
-
-    const quantidade = tabela.length
+    const quantidade = bancoFinalizado.length
 
     return (
         <>
-            <TabelaServicos tela={"Serviços Finalizados"} descricao={`${quantidade} O.S ${quantidade > 1 ? "Finalizadas" : "Finalizada"}`} tipoTabela={bancoFinalizado} mudarTela={mudarTela} setBancoMock={setBancoMock} bancoMock={bancoMock}  ></TabelaServicos>
+            <TabelaServicos tela={"Serviços Finalizados"} descricao={`${quantidade} O.S ${quantidade > 1 ? "Finalizadas" : "Finalizada"}`} tipoTabela={bancoFinalizado} mudarTela={mudarTela}  ></TabelaServicos>
         </>
     )
 }

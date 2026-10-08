@@ -9,12 +9,10 @@ interface TabelaPag{
     descricao: string,
     tipoTabela: OrdemType[]
     mudarTela: (value: Tela) => void,
-    setBancoMock: (value: OrdemType[]) => void
-    bancoMock: OrdemType[]
     renderizarOrdensAtivas?: () => void
 }
 
-export const TabelaServicos = ({tela, descricao, tipoTabela, mudarTela, bancoMock, setBancoMock, renderizarOrdensAtivas}: TabelaPag, ) => {
+export const TabelaServicos = ({tela, descricao, tipoTabela, mudarTela, renderizarOrdensAtivas}: TabelaPag, ) => {
 
     const [busca, setBusca] = useState("");
 

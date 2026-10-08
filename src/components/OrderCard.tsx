@@ -1,7 +1,7 @@
 import type { OrdemType } from "../types/OrdemType"
 
 interface OrderCardProps  {
-    ordem: OrdemType
+    ordem: OrdemType | any
 }
 
 export const OrderCard = ({ ordem }: OrderCardProps ) => {

@@ -8,7 +8,7 @@ import { Notificacoes } from "../components/Dashboard/Notificacoes";
 import { Perfil } from "../components/Dashboard/Perfil";
 import type { Tela } from "../types/typeTela";
 import { ordenServicos } from "../data/mockOrders";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../Context/AuthContext";
 
 export const DashboardPage = () => {
@@ -20,7 +20,7 @@ export const DashboardPage = () => {
     // console.log(user)
 
     const navigate = useNavigate();
-    const { user, isLoggedIn, carregarOrdens, banco } = useContext(AuthContext)
+    const { isLoggedIn, carregarOrdens, banco } = useContext(AuthContext)
 
 
     useEffect(() => {

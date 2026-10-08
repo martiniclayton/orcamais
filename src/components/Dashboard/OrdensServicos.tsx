@@ -45,7 +45,7 @@ export const OrdensServicos = ({ mudartela, bancoMock, setBancoMock }: OrdensSer
     }
     return (
         <>
-            <TabelaServicos tela={"Ordens de Serviço"} descricao={`${quantidades} O.S Ativas`} tipoTabela={bancoAtivos} mudarTela={mudartela} setBancoMock={setBancoMock} bancoMock={bancoMock} renderizarOrdensAtivas={carregarOrdensAtivas}></TabelaServicos>
+            <TabelaServicos tela={"Ordens de Serviço"} descricao={`${quantidades} O.S Ativas`} tipoTabela={bancoAtivos} mudarTela={mudartela} renderizarOrdensAtivas={carregarOrdensAtivas}></TabelaServicos>
         </>
     )
 }

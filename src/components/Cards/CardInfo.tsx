@@ -1,5 +1,3 @@
-import type { Tela } from "../../types/typeTela"
-
 interface CardInfoProps {
     titulo: string,
     numeros: number,

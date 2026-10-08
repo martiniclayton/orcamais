@@ -17,9 +17,7 @@ export const Dashboard = ({mudarTela, banco}: Dashboard) => {
 
     const { user, carregarOrdens } = useContext(AuthContext)
 
-    fetch('')
-    const ordens = banco
-    carregarOrdens
+    carregarOrdens()
     console.log("BANCO NO DASHBOARD:", banco)
     
     const emAndamento = banco?.filter(ordem => ordem.status === "Em andamento")

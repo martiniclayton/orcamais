@@ -1,4 +1,3 @@
-import type { User } from "../data/mockUsers"
 import type { Tela } from "../types/typeTela"
 
 interface Header{
