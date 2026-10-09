@@ -7,7 +7,7 @@ import { ServicosFinalizados } from "../components/Dashboard/ServicosFinalizados
 import { Notificacoes } from "../components/Dashboard/Notificacoes";
 import { Perfil } from "../components/Dashboard/Perfil";
 import type { Tela } from "../types/typeTela";
-import { ordenServicos } from "../data/mockOrders";
+// import { ordenServicos } from "../data/mockOrders";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../Context/AuthContext";
 
@@ -29,7 +29,6 @@ export const DashboardPage = () => {
         }
     }, [isLoggedIn, navigate]);
 
-    const [bancoMock] = useState(ordenServicos);
 
     useEffect(() => {
         carregarOrdens()
@@ -69,7 +68,7 @@ export const DashboardPage = () => {
                         {tela === "OrdensServicos" ? (<OrdensServicos mudartela={setTela} />) : null}
                         {tela === "ServicosFinalizados" ? (<ServicosFinalizados mudarTela={setTela} />) : null}
                         {tela === "Notificacoes" ? (<Notificacoes mudarTela={setTela} />) : null}
-                        {tela === "Perfil" ? (<Perfil mudarTela={setTela} bancoMock={bancoMock} />) : null}
+                        {tela === "Perfil" ? (<Perfil mudarTela={setTela} bancoMock={banco} />) : null}
                     </div>
                 </section>
             </main>
