@@ -24,7 +24,7 @@ export const TabelaServicos = ({tela, descricao, tipoTabela, mudarTela, renderiz
     const filtrar = ordens.filter((ordem: OrdemType) => {
         const termoBusca = busca.toLowerCase()
         
-        const nomeStr = String(ordem.nome || "").toLowerCase()
+        const nomeStr = String(ordem.cliente.nome || "").toLowerCase()
         const placaStr = String(ordem.placa || "").toLowerCase()
         const idStr = String(ordem.id || "").toLowerCase()
         

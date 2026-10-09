@@ -75,7 +75,7 @@ export const Dashboard = ({mudarTela, banco}: Dashboard) => {
 
                     {
                         banco?.slice(-5).toReversed().map(ordem => (
-                            <OrderCard key={ordem.id} ordem={ordem} />
+                            <OrderCard key={1} ordem={ordem} /> //arrumar a key depois
                         ))
                     }
                 </div>

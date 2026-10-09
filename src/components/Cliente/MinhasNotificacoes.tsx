@@ -1,4 +1,3 @@
-import { getNotificacoes } from "../../services/notificacaoMockStorage"
 import type { OrdemType } from "../../types/OrdemType"
 import { NotificacaoCard } from ".././Notificação/NotificacaroCard"
 
@@ -9,7 +8,9 @@ interface MinhasNotificacoes {
 export const MinhasNotificacoes = ({cliente}: MinhasNotificacoes) =>{
 
 
-    const notificacoes = getNotificacoes().filter(notificacao => notificacao.cpf === cliente.cpf)
+    // const notificacoes = getNotificacoes().filter(notificacao => notificacao.cpf === cliente.cpf)
+    const notificacoes: any[] = []
+    console.log(cliente)
     return(
         <>{
             notificacoes.length > 0 ? 

@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react"
 import { MeusServicos } from "../components/Cliente/MeusServicos"
 import { MeuPerfil } from "../components/Cliente/MeuPerfil"
 import { MinhasNotificacoes } from "../components/Cliente/MinhasNotificacoes"
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { AuthContext } from "../Context/AuthContext"
 
 export const Cliente = () => {
@@ -12,7 +12,7 @@ export const Cliente = () => {
 
     const token = localStorage.getItem("tokenClienteTrack")
 
-    const [ ordens, setOrdens] = useState([])
+    const [ ordens] = useState([])
 
     // useEffect(()=>{
     //     fetch(`${API_URL}/acesso/${code}`,{

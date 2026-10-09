@@ -182,37 +182,6 @@ export const AuthContextProvider = ({ children }: any) => {
     }
 
 
-    const clienteLoginaa = async (cod: string, cpf: string): Promise<any> => {
-        // try {
-        //     const response = await fetch(`${API_URL}/ordem/acesso/${cod}`, {
-        //         method: "POST",
-        //         headers: {
-        //             "Content-Type": "application/json"
-        //         },
-        //         body: JSON.stringify({
-        //             cpf: cpf
-        //         })
-        //     });
-
-        //     const data = await response.json();
-
-        //     if (!response.ok) {
-        //         throw new Error(data?.mensagem || "Erro na API");
-        //     }
-
-        //     console.log(data);
-
-        //     setOrdem(data.ordens);
-        //     setUser(data.cliente);
-
-        //     return data;
-        // } catch (error: any) {
-        //     console.error("Erro no login:", error);
-        //     alert(error?.message || "Falha ao realizar o acesso. Verifique os dados.");
-        //     return undefined;
-        // }
-    }
-
     const logoutCliente = () => {
         setOrdem(undefined);
         localStorage.removeItem("tokenClienteTrack")

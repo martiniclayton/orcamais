@@ -9,7 +9,7 @@ import { AuthContext } from "./Context/AuthContext"
 
 export const MainRoutes = () => {
 
-    const { isLoggedIn, ordem } = useContext(AuthContext)
+    const { isLoggedIn } = useContext(AuthContext)
 
     const token = localStorage.getItem("tokenClienteTrack")
 
