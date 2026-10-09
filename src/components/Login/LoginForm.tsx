@@ -6,7 +6,7 @@ import { changeLocalStorage } from "../../services/storage";
 
 export const LoginForm = () => {
 
-    const { login, cliente, setIsLoggedIn } = useContext(AuthContext);
+    const { login, clienteLogin, setIsLoggedIn } = useContext(AuthContext);
 
     const [typeUser, setTypeUser] = useState<typeUser>("Prestador");
 
@@ -33,9 +33,9 @@ export const LoginForm = () => {
             if (!code || !CPF) {
                 alert("Informe os dados necessários")
             } else {
-                const order = cliente(code, CPF)
-                if (order) {
-                    navigate(`/Cliente?codigo=${order.codAcesso}`)
+                const order =  await clienteLogin(code, CPF)
+                if(order) {
+                    navigate(`/Cliente?codigo=${code}`)
                 }
             }
         }

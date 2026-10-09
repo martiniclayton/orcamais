@@ -11,13 +11,15 @@ export const MainRoutes = () => {
 
     const { isLoggedIn, ordem } = useContext(AuthContext)
 
+    const token = localStorage.getItem("tokenClienteTrack")
+
     return (
         <>
             <Routes>
                 <Route path='/' element={<Login />} />
                 <Route path='/Cadastro' element={<Cadastro />}></Route>
                 <Route path='/DashboardPage' element={isLoggedIn ? <DashboardPage /> : <NotFound /> } />
-                <Route path='/Cliente' element={ ordem ? <Cliente /> : <NotFound /> } />
+                <Route path='/Cliente' element={ token ? <Cliente /> : <NotFound /> } />
                 <Route path='*' element={<NotFound />} />
             </Routes>
         </>

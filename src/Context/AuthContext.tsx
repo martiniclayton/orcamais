@@ -1,7 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { type User } from "../data/mockUsers";
 import { useNavigate } from "react-router-dom";
-import { ordenServicos } from "../data/mockOrders";
 import type { OrdemType } from "../types/OrdemType";
 import { changeLocalStorage } from "../services/storage";
 import { API_URL } from "../services/api";
@@ -13,7 +12,7 @@ interface IAuthContext {
     isLoggedIn: boolean,
     setIsLoggedIn: (value: boolean) => void
     ordem: OrdemType | undefined,
-    cliente: (cod: string, cpf: string) => OrdemType | undefined,
+    clienteLogin: (cod: string, cpf: string) => Promise<OrdemType | undefined>,
     logoutCliente: () => void,
     carregarOrdens: () => void,
     banco: any[]
@@ -50,7 +49,7 @@ export const AuthContextProvider = ({ children }: any) => {
 
         const token = localStorage.getItem('tokenTrack')
 
-        fetch('https://orca-mais-backend.onrender.com/ordem', {
+        fetch(`${API_URL}/ordem`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -131,31 +130,100 @@ export const AuthContextProvider = ({ children }: any) => {
         navigate("/");
     }
 
+    const clienteLogin = async (code: string, cpf: string): Promise<any> => {
 
-    const cliente = (cod: string, cpf: string) => {
-        const order: OrdemType | undefined = ordenServicos.find(ordem => ordem.codAcesso === cod && ordem.cpf === cpf)
+        try {
+            const resposta = await fetch(`${API_URL}/ordem/acesso`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    code: code,
+                    cpf: cpf
+                })
+            }
+            )
+            const data = await resposta.json()
 
-        console.log(order);
-        if (order) {
-            setOrdem(order)
-            setUser(null)
-            console.log(`Setou a ordem ${order}`);
-            return order
-        } else {
-            alert("Número do código inválido");
-            return undefined
+            if (!resposta.ok) {
+                alert(data.mensagem)
+                return false
+            }
+
+            localStorage.setItem('tokenClienteTrack', data.token)
+
+            return true
         }
+        catch {
+            throw new Error("Erro")
+        }
+
+        // const resposta = await fetch(`${API_URL}/ordem/acesso`, {
+        //     method: "POST",
+        //     headers: {
+        //         "Content-Type": "application/json"
+        //     },
+        //     body: JSON.stringify( {
+        //         code: code,
+        //         cpf: cpf
+        //     })
+        // });
+        // const dados = await resposta.json()
+
+        // if(!resposta.ok){
+        //     alert(dados.mensagem)
+        //     return false
+        // }
+
+        // localStorage.setItem("tokenClienteTrack", dados.token )
+
+        // return true
+    }
+
+
+    const clienteLoginaa = async (cod: string, cpf: string): Promise<any> => {
+        // try {
+        //     const response = await fetch(`${API_URL}/ordem/acesso/${cod}`, {
+        //         method: "POST",
+        //         headers: {
+        //             "Content-Type": "application/json"
+        //         },
+        //         body: JSON.stringify({
+        //             cpf: cpf
+        //         })
+        //     });
+
+        //     const data = await response.json();
+
+        //     if (!response.ok) {
+        //         throw new Error(data?.mensagem || "Erro na API");
+        //     }
+
+        //     console.log(data);
+
+        //     setOrdem(data.ordens);
+        //     setUser(data.cliente);
+
+        //     return data;
+        // } catch (error: any) {
+        //     console.error("Erro no login:", error);
+        //     alert(error?.message || "Falha ao realizar o acesso. Verifique os dados.");
+        //     return undefined;
+        // }
     }
 
     const logoutCliente = () => {
         setOrdem(undefined);
+        localStorage.removeItem("tokenClienteTrack")
+        localStorage.removeItem("clienteTrack")
         navigate("/");
     }
 
 
     return (
         <>
-            <AuthContext.Provider value={{ user, login, logout, isLoggedIn, setIsLoggedIn, ordem, cliente, logoutCliente, carregarOrdens, banco }}>
+            <AuthContext.Provider value={{ user, login, logout, isLoggedIn, setIsLoggedIn, ordem, clienteLogin, logoutCliente, carregarOrdens, banco }}>
                 {children}
             </AuthContext.Provider>
         </>

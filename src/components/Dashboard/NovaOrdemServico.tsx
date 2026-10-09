@@ -2,6 +2,7 @@ import { useContext, useState } from "react"
 import { Header } from ".././Header"
 import type { Tela } from "../../types/typeTela"
 import { AuthContext } from "../../Context/AuthContext"
+import { API_URL } from "../../services/api"
 interface NovaOrdemServicoProps {
     mudartela: (value: Tela) => void
 }
@@ -39,7 +40,7 @@ export const NovaOrdemServico = ({ mudartela }: NovaOrdemServicoProps) => {
         }
 
         try {
-            const response = await fetch('https://orca-mais-backend.onrender.com/ordem', {
+            const response = await fetch(`${API_URL}/ordem`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

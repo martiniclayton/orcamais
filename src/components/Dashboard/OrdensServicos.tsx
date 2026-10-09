@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import type { Tela } from "../../types/typeTela"
 import { TabelaServicos } from "./TabelaServicos"
+import { API_URL } from "../../services/api";
 
 interface OrdensServicosProps {
     mudartela: (value: Tela) => void,
@@ -14,7 +15,7 @@ export const OrdensServicos = ({ mudartela }: OrdensServicosProps) => {
     const token = localStorage.getItem('tokenTrack')
 
     const carregarOrdensAtivas = () => {
-        fetch('https://orca-mais-backend.onrender.com/ordem?status=Ativos', {
+        fetch(`${API_URL}/ordem?status=Ativos`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

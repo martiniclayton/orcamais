@@ -1,3 +1,4 @@
+import { API_URL } from "../../services/api"
 import type { Tela } from "../../types/typeTela"
 import { TabelaServicos } from "./TabelaServicos"
 import { useEffect, useState } from "react"
@@ -12,7 +13,7 @@ export const ServicosFinalizados = ({ mudarTela }: ServicosFinalizadosProps) => 
     const token = localStorage.getItem('tokenTrack')
 
     useEffect(() => {
-        fetch('https://orca-mais-backend.onrender.com/ordem?status=Finalizado', {
+        fetch(`${API_URL}/ordem?status=Finalizado`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

@@ -12,7 +12,7 @@ export const NotificacaoCard = ({titulo, data, tipoServico, cliente, status, pla
                     <div className="bg-white border border-gray-200 rounded-lg shadow-sm">
                         <div className="p-4">
                             <div className="mb-2">
-                                <h6 className="text-base font-semibold text-gray-800">{titulo}</h6>
+                                <h6 className="text-base font-semibold text-gray-800">{status === "Finalizado" ? "ORDEM FINALIZADA" : titulo}</h6>
                             </div>
                             <div className="text-sm text-gray-600">
                                 <p className="mb-1">{`Servico: ${tipoServico} para o cliente ${cliente}`}</p>

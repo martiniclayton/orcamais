@@ -1,10 +1,14 @@
 import type { OrdemType } from '../../types/OrdemType';
 import { ordenServicos } from '../../data/mockOrders';
+import type { typeCliente } from '../../types/typeCliente';
 interface MeuPerfil {
-    cliente: OrdemType
+    cliente: typeCliente
 }
 
 export const MeuPerfil = ({cliente}: MeuPerfil) => {
+
+    const clienteSalvo = localStorage.getItem("clienteTrack")
+    cliente = JSON.parse(clienteSalvo)
 
     const ordensFinalizadas = ordenServicos.filter(ordem => ordem.cpf === cliente.cpf && ordem.status === "Finalizado");
     const ordensAtiva = ordenServicos.filter(ordem => ordem.cpf === cliente.cpf && ordem.status !== "Finalizado");
@@ -30,6 +34,10 @@ export const MeuPerfil = ({cliente}: MeuPerfil) => {
                         <div>
                             <h6 className="text-xs uppercase tracking-wider font-semibold text-gray-400">Telefone</h6>
                             <p className="text-gray-700 font-medium mt-1">{cliente.telefone}</p>
+                        </div>
+                        <div>
+                            <h6 className="text-xs uppercase tracking-wider font-semibold text-gray-400">Código de Acesso</h6>
+                            <p className="text-gray-700 font-medium mt-1">{cliente.codAcesso}</p>
                         </div>
                         <div>
                             <h6 className="text-xs uppercase tracking-wider font-semibold text-gray-400">Perfil</h6>

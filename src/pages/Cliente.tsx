@@ -2,17 +2,34 @@ import { useContext, useEffect, useState } from "react"
 import { MeusServicos } from "../components/Cliente/MeusServicos"
 import { MeuPerfil } from "../components/Cliente/MeuPerfil"
 import { MinhasNotificacoes } from "../components/Cliente/MinhasNotificacoes"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { AuthContext } from "../Context/AuthContext"
 
 export const Cliente = () => {
 
-    const { ordem, logoutCliente } = useContext(AuthContext)
+    const { logoutCliente } = useContext(AuthContext)
     const navigate = useNavigate();
 
+    const token = localStorage.getItem("tokenClienteTrack")
+
+    const [ ordens, setOrdens] = useState([])
+
+    // useEffect(()=>{
+    //     fetch(`${API_URL}/acesso/${code}`,{
+    //         headers: {
+    //             Authorization: `Barer ${token}`
+    //         }
+    //     })
+    //     .then(resposta => resposta.json())
+    //     .then(data =>{
+    //         setOrdens(data.ordens)
+    //         setClinte(data.cliente)
+    //     })
+    // },[])
+
     useEffect(()=>{
-        !ordem && navigate("/");
-    },[ordem])
+        !token && navigate("/");
+    },[token])
 
     // const parametros = new URLSearchParams(window.location.search);
     // const codigo = parametros.get("codigo");
@@ -20,7 +37,7 @@ export const Cliente = () => {
     const [aba, setAba] = useState("Meus Servicos")
 
 
-    if(!ordem){
+    if(!ordens){
         return (
         <div className="min-h-screen flex items-center justify-center">
             <p className="text-slate-600">
@@ -56,9 +73,9 @@ export const Cliente = () => {
                     </nav>
                 </header>
 
-                {aba === "Meus Servicos" ? (<MeusServicos cliente={ordem}/>) : null}
-                {aba === "Meu Perfil" ? (<MeuPerfil cliente={ordem}/>) : null}
-                {aba === "Minhas notificacoes" ? (<MinhasNotificacoes cliente={ordem}/>) : null}
+                {aba === "Meus Servicos" ? (<MeusServicos/>) : null}
+                {aba === "Meu Perfil" ? (<MeuPerfil cliente={ordens[0]}/>) : null}
+                {aba === "Minhas notificacoes" ? (<MinhasNotificacoes cliente={ordens[0]}/>) : null}
             </main>
         </>
     )

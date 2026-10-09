@@ -3,6 +3,7 @@ import type { OrdemType } from "../../types/OrdemType"
 import type { Tela } from "../../types/typeTela"
 import { useContext, useState } from "react"
 import { AuthContext } from "../../Context/AuthContext"
+import { API_URL } from "../../services/api"
 
 interface TabelaPag{
     tela: string,
@@ -32,7 +33,7 @@ export const TabelaServicos = ({tela, descricao, tipoTabela, mudarTela, renderiz
 
     const atualizarStatus = async (id: string) =>{
         try{
-            const response = await fetch(`https://orca-mais-backend.onrender.com/ordem/${id}`, {
+            const response = await fetch(`${API_URL}/ordem/${id}`, {
                 method: "PATCH",
                 headers: {
                     'Content-Type': 'application/json',
