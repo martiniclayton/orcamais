@@ -73,32 +73,36 @@ export const AuthContextProvider = ({ children }: any) => {
 
     const login = async (email: string, password: string) => {
 
-        const response = await fetch(`${API_URL}/login`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                email,
-                senha: password
+        return new Promise(async(resolve) => {
+            const response = await fetch(`${API_URL}/login`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email,
+                    senha: password
+                })
             })
+
+            const data = await response.json();
+            console.log(response)
+
+            if (!response.ok) {
+                console.log(data.mensagem)
+                alert(data.mensagem)
+                resolve(undefined)
+                return
+            }
+            const { prestador, token } = data.resposta
+            console.log(prestador)
+
+            localStorage.setItem('tokenTrack', token);
+            localStorage.setItem('userTrack', JSON.stringify(prestador));
+
+            resolve(true)
+
         })
-
-        const data = await response.json();
-        console.log(response)
-
-        if (!response.ok) {
-            console.log(data.mensagem)
-            alert(data.mensagem)
-            return
-        }
-        const { prestador, token } = data.resposta
-        console.log(prestador)
-
-        localStorage.setItem('tokenTrack', token);
-        localStorage.setItem('userTrack', JSON.stringify(prestador));
-
-        return true
 
         // const userMock = MockUsers.find(user => user.email === email && user.password === password);
 

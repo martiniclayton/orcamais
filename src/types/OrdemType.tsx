@@ -11,18 +11,18 @@ export type StatusOS = "Em andamento" | "Pronto para retirada" | "Finalizado" | 
 
 export interface OrdemType {
     cliente: {
-            codAcesso: string,
-            cpf: string,
-            id: number,
-            nome: string,
-            telefone: string
-        }
-        clienteId: number,
-        dataCriacao: string,
-        descricao?: string,
+        codAcesso: string,
+        cpf: string,
         id: number,
-        placa: string,
-        status: string,
-        tipoServico: string
+        nome: string,
+        telefone: string
+    }
+    clienteId: number,
+    dataCriacao: string,
+    descricao?: string,
+    id: number,
+    placa: string,
+    status: string,
+    tipoServico: string
 }
 

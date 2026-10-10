@@ -1,4 +1,7 @@
+import { useEffect, useState } from 'react';
 import type { typeCliente } from '../../types/typeCliente';
+import { API_URL } from '../../services/api';
+import type { OrdemType } from '../../types/OrdemType';
 interface MeuPerfil {
     cliente: typeCliente
 }
@@ -10,8 +13,26 @@ export const MeuPerfil = ({cliente}: MeuPerfil) => {
         cliente = JSON.parse(clienteSalvo)
     }
 
-    const ordensAtiva: any[] = [];
-    const ordensFinalizadas: any[] = [];
+    const [ordens, setOrdens] = useState<OrdemType[]>([])
+    const queryParams = new URLSearchParams(window.location.search);
+    const cod = queryParams.get("codigo");
+    const token = localStorage.getItem("tokenClienteTrack");
+
+    useEffect(()=>{
+        fetch(`${API_URL}/ordem/acesso/${cod}`, {
+            headers: {
+                Authorization: `Baerer ${token}`
+            }
+        })
+
+        .then(res => res.json())
+        .then(data =>{
+            setOrdens(data.ordens)
+        })
+    },[])
+
+    const ordensAtiva: OrdemType[] = ordens.filter(ordem => ordem.status !== "Finalizado")
+    const ordensFinalizadas: OrdemType[] = ordens.filter(ordem => ordem.status === "Finalizado")
 
     const inicial = cliente.nome.charAt(0).toUpperCase();
 

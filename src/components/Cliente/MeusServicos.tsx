@@ -4,16 +4,28 @@ import { useEffect, useState } from 'react';
 import { API_URL } from '../../services/api';
 import type { typeCliente } from '../../types/typeCliente';
 import type { OrdemType } from '../../types/OrdemType';
+import type { notificacaoData } from '../../types/NotificacoesType';
 
 export const MeusServicos = () => {
     const [ordens, setOrdens] = useState<any[]>([]);
     const [cliente, setCliente] = useState<typeCliente>();
     const queryParams = new URLSearchParams(window.location.search);
     const codigo = queryParams.get("codigo");
-    const [ordem, setOrdem] = useState<OrdemType | undefined>()
+    const [ordem, setOrdem] = useState<OrdemType | undefined>();
+    const [notificacoes, setNotificacoes] = useState<notificacaoData[]>([])
 
     useEffect(() => {
         const token = localStorage.getItem('tokenClienteTrack');
+
+        fetch(`${API_URL}/notification/cliente/${codigo}`, {
+            headers: {
+                Authorization: `Baerer ${token}`
+            }
+        })
+        .then(res => res.json())
+        .then(data =>{
+            setNotificacoes(data.ordens)
+        })
 
         const carregarOrdens = async () => {
             console.log("CarregarOrdens funcionado")
@@ -55,6 +67,8 @@ export const MeusServicos = () => {
         carregarOrdens();
     }, [codigo]);
 
+    const ordensFinalizadas = ordens.filter(ordem => ordem.status === "Finalizado")
+
 
     // const notificacaoUser = getNotificacoes().filter(notificacao => notificacao.cpf === cliente.cpf)
 
@@ -66,8 +80,8 @@ export const MeusServicos = () => {
             </div>
 
             <div>
-                {ordens.slice(-1).toReversed().map((ordem, index) => (
-                    <NotificacaoCard key={index} titulo={ordem.titulo} data={ordem.data} cliente={ordem.cliente} id={ordem.id} placa={ordem.placa} tipoServico={ordem.tipoServico} status={ordem.status} cpf={ordem.cpf} />
+                {notificacoes.slice(-1).toReversed().map((ordem, index) => (
+                    <NotificacaoCard key={index} titulo={ordem.titulo} data={ordem.data} cliente={ordem.ordens.cliente.nome} id={ordem.id} placa={ordem.ordens.placa} tipoServico={ordem.ordens.tipoServico} status={ordem.status} cpf={ordem.ordens.cliente.cpf} />
                 ))}
             </div>
 
@@ -97,8 +111,8 @@ export const MeusServicos = () => {
                 <h4 className="text-xl font-bold text-gray-800">Serviços finalizados</h4>
                 <div className="grid grid-cols-1 gap-4">
                     {
-                        ordens.length > 0 ? (
-                            ordens.toReversed().map((ordem) => {
+                        ordensFinalizadas.length > 0 ? (
+                            ordensFinalizadas.toReversed().map((ordem) => {
                                 return (
                                     <div key={ordem.id} className="w-full">
                                         <OrderCard ordem={ordem}></OrderCard>

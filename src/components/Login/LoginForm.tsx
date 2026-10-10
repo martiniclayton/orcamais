@@ -3,12 +3,14 @@ import { Link, useNavigate } from "react-router-dom";
 import type { typeUser } from "../../types/typeUser";
 import { AuthContext } from "../../Context/AuthContext";
 import { changeLocalStorage } from "../../services/storage";
+import { Spinner } from "../Spinner";
 
 export const LoginForm = () => {
 
     const { login, clienteLogin, setIsLoggedIn } = useContext(AuthContext);
 
     const [typeUser, setTypeUser] = useState<typeUser>("Prestador");
+    const [loading, setLoading] = useState(false)
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -22,28 +24,39 @@ export const LoginForm = () => {
             if (!email || !password) {
                 alert("Preencha os campos necessários");
             } else {
+                setLoading(true)
                 const user = await login(email, password);
                 if (user) {
                     changeLocalStorage({ login: true });
                     setIsLoggedIn(true)
                     navigate('/DashboardPage')
+                    setLoading(false)
                 }
             }
         } else if (tipo === "Cliente") {
             if (!code || !CPF) {
                 alert("Informe os dados necessários")
             } else {
+                setLoading(true)
                 const order =  await clienteLogin(code, CPF)
                 if(order) {
-                    navigate(`/Cliente?codigo=${code}`)
+                    navigate(`/cliente?codigo=${code}`)
                 }
+                setLoading(false)
             }
         }
     };
 
     const navigate = useNavigate();
+
     return (
         <>
+        {loading ? (
+            <div className="flex flex-col justify-center items-center w-full lg:w-1/2 p-8 lg:p-12">
+                <Spinner/>
+            </div>
+        ) : (
+
             <div className="flex flex-col justify-center items-center w-full lg:w-1/2 p-8 lg:p-12">
                 <div className="w-full max-w-md">
 
@@ -146,6 +159,7 @@ export const LoginForm = () => {
 
                 </div>
             </div>
+        )}
         </>
     )
 }
