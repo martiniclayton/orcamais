@@ -73,7 +73,7 @@ export const AuthContextProvider = ({ children }: any) => {
 
     const login = async (email: string, password: string) => {
 
-        return new Promise(async(resolve) => {
+        return new Promise<boolean | undefined>(async(resolve) => {
             const response = await fetch(`${API_URL}/login`, {
                 method: "POST",
                 headers: {

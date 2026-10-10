@@ -75,7 +75,7 @@ export const Cliente = () => {
 
                 {aba === "Meus Servicos" ? (<MeusServicos/>) : null}
                 {aba === "Meu Perfil" ? (<MeuPerfil cliente={ordens[0]}/>) : null}
-                {aba === "Minhas notificacoes" ? (<MinhasNotificacoes cliente={ordens[0]}/>) : null}
+                {aba === "Minhas notificacoes" ? (<MinhasNotificacoes/>) : null}
             </main>
         </>
     )

@@ -1,14 +1,10 @@
 import { useEffect, useState } from "react"
-import type { OrdemType } from "../../types/OrdemType"
 import { NotificacaoCard } from ".././Notificação/NotificacaroCard"
 import { API_URL } from "../../services/api"
 import type { notificacaoData } from "../../types/NotificacoesType"
 
-interface MinhasNotificacoes {
-    cliente: OrdemType
-}
 
-export const MinhasNotificacoes = ({cliente}: MinhasNotificacoes) =>{
+export const MinhasNotificacoes = () =>{
 
 
     const queryParans = new URLSearchParams(window.location.search)
