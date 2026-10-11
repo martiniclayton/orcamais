@@ -3,6 +3,14 @@ Descrição: Uma aplicação web que informa ao cliente o status do seu serviço
 
 Funcionalidade: Prestador de serviço (Mecânico), recebe um cliente e fecha um serviço de reparo de seu carro. O prestador cadastra uma ordem de serviço na aplicação e informa para o clinete um códido para ficar acompanhando quando ficar pronto. O cliente pode entrar a qualquer momento e também irá receber uma mensagem por WhatsApp.
 
+FRONT END - VERCEL
+React + TypeScript
+
+BACK END - RENDER
+Node.js + Express.js + TypeScript + TypeORM + JWT
+
+BANCO - SQLITE ---- Provisório
+
 # Tecnologias Utilizadas
 React
 TypeScript
