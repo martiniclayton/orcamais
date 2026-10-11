@@ -5,7 +5,6 @@ import { AuthContext } from "../../Context/AuthContext";
 import { changeLocalStorage } from "../../services/storage";
 import { Spinner } from "../Spinner";
 import sigaOS from '../../assets/sigaOS.svg';
-import logotipoSigaOS from '../../assets/logotipoSigaOS.png';
 
 export const LoginForm = () => {
 
