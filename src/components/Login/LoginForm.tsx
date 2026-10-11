@@ -32,6 +32,7 @@ export const LoginForm = () => {
                     navigate('/DashboardPage')
                     setLoading(false)
                 }
+                setLoading(false)
             }
         } else if (tipo === "Cliente") {
             if (!code || !CPF) {
