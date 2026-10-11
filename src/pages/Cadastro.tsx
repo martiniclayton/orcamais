@@ -43,7 +43,8 @@ export const Cadastro = () => {
             alert("Senhas não coincidem")
             return
         }
-
+        
+        setLoading(true)
         const resposta = await fetch(`${API_URL}/prestadores`, {
             method: "POST",
             headers: {
@@ -51,7 +52,6 @@ export const Cadastro = () => {
             },
             body: JSON.stringify(user)
         })
-        setLoading(true)
         const dados = await resposta.json()
 
         if (resposta.ok) {
