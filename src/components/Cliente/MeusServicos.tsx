@@ -28,8 +28,6 @@ export const MeusServicos = () => {
         })
 
         const carregarOrdens = async () => {
-            console.log("CarregarOrdens funcionado")
-            console.log(codigo)
             if (!codigo) return;
 
             fetch(`${API_URL}/ordem/acesso/${codigo}`, {
@@ -46,7 +44,6 @@ export const MeusServicos = () => {
                 })
 
                 .then(data => {
-                    console.log(data)
                     setCliente(data.cliente)
                     localStorage.setItem("clienteTrack", JSON.stringify(data.cliente))
                     setOrdens(data.ordens)
@@ -54,14 +51,11 @@ export const MeusServicos = () => {
                     if(data.ordens && data.ordens.length > 0) {
                         setOrdem(data.ordens[data.ordens.length -1])
                     }
-                    console.log(ordem)
                 })
                 .catch(error => {
                     console.error("Erro ao buscar acesso:", error);
                 });
 
-
-            // if (!resposta.ok) return;
         };
 
         carregarOrdens();

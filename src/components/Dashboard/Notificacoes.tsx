@@ -23,7 +23,6 @@ export const Notificacoes = ({mudarTela}: NotificacoesProps) =>{
         .then(res => res.json())
         .then(data =>{
             setNotificacoes(data.resposta)
-            console.log(data.resposta)
         })
     },[])
     return(

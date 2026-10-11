@@ -21,8 +21,6 @@ export const Dashboard = ({mudarTela, banco}: Dashboard) => {
         carregarOrdens()
     }, [])
 
-    console.log("BANCO NO DASHBOARD:", banco)
-    
     const emAndamento = banco?.filter(ordem => ordem.status === "Em andamento")
     const pronto = banco?.filter(ordem => ordem.status === "Pronto para retirada")
     const finalizados = banco?.filter(ordem => ordem.status === "Finalizado")
@@ -75,7 +73,7 @@ export const Dashboard = ({mudarTela, banco}: Dashboard) => {
 
                     {
                         banco?.slice(-5).toReversed().map(ordem => (
-                            <OrderCard key={1} ordem={ordem} /> //arrumar a key depois
+                            <OrderCard key={ordem.id} ordem={ordem} /> //arrumar a key depois
                         ))
                     }
                 </div>

@@ -12,7 +12,6 @@ export const MinhasNotificacoes = () =>{
     const [notificacoes, setNotificacoes] = useState<notificacaoData[]>([])
     const token = localStorage.getItem("tokenClienteTrack")
 
-    console.log(cod)
     useEffect(()=>{
         if(!cod){
             return;
@@ -30,7 +29,6 @@ export const MinhasNotificacoes = () =>{
             console.error(err)
         })
     },[cod, token])
-    // const notificacoes = getNotificacoes().filter(notificacao => notificacao.cpf === cliente.cpf)
     return(
         <>{
             notificacoes!.length > 0 ? 

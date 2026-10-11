@@ -7,17 +7,10 @@ import { ServicosFinalizados } from "../components/Dashboard/ServicosFinalizados
 import { Notificacoes } from "../components/Dashboard/Notificacoes";
 import { Perfil } from "../components/Dashboard/Perfil";
 import type { Tela } from "../types/typeTela";
-// import { ordenServicos } from "../data/mockOrders";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../Context/AuthContext";
 
 export const DashboardPage = () => {
-
-    // const userSalvo = localStorage.getItem("prestador");
-    // console.log(userSalvo)
-
-    // const user = userSalvo ? JSON.parse(userSalvo) : null;
-    // console.log(user)
 
     const navigate = useNavigate();
     const { isLoggedIn, carregarOrdens, banco } = useContext(AuthContext)

@@ -26,14 +26,8 @@ export const AuthContextProvider = ({ children }: any) => {
     const [user, setUser] = useState<User | null>(null);
     const [ordem, setOrdem] = useState<OrdemType | undefined>(undefined);
     const navigate = useNavigate()
-    // const isLoggedIn = user ? true : false
     const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [banco, setBanco] = useState([])
-    // const [Loading, setLoading] = useState(false)
-    // const [token, setToken] = useState(null)
-
-    // const userTrack: any = localStorage.getItem('userTrack');
-    // const user = JSON.parse(userTrack)
 
     useEffect(() => {
         const tokenTrack = localStorage.getItem('tokenTrack')
@@ -44,8 +38,7 @@ export const AuthContextProvider = ({ children }: any) => {
     }, [])
 
 
-    const carregarOrdens = () => {
-        console.log("CARREGAR ORDENS CHAMADO")
+    const carregarOrdens = (): void => {
 
         const token = localStorage.getItem('tokenTrack')
 
@@ -73,7 +66,7 @@ export const AuthContextProvider = ({ children }: any) => {
 
     const login = async (email: string, password: string) => {
 
-        return new Promise<boolean | undefined>(async(resolve) => {
+        return new Promise<boolean | undefined>(async (resolve) => {
             const response = await fetch(`${API_URL}/login`, {
                 method: "POST",
                 headers: {
@@ -86,16 +79,13 @@ export const AuthContextProvider = ({ children }: any) => {
             })
 
             const data = await response.json();
-            console.log(response)
 
             if (!response.ok) {
-                console.log(data.mensagem)
                 alert(data.mensagem)
                 resolve(undefined)
                 return
             }
             const { prestador, token } = data.resposta
-            console.log(prestador)
 
             localStorage.setItem('tokenTrack', token);
             localStorage.setItem('userTrack', JSON.stringify(prestador));
@@ -104,29 +94,9 @@ export const AuthContextProvider = ({ children }: any) => {
 
         })
 
-        // const userMock = MockUsers.find(user => user.email === email && user.password === password);
-
-        // if(userMock){
-        //     setUser(userMock);
-        //     setIsLoggedIn(true);
-        //     setOrdem(undefined);
-        //     return userMock
-        // } else{
-        //     alert("E-mail ou password inválidos")
-        //     return null
-        // }
     }
 
-    // const storage = getAllLocalStorage()
-
-    // useEffect(() => {
-    //     if (storage) {
-    //         const { login } = JSON.parse(storage);
-    //         setIsLoggedIn(login)
-    //     }
-    // }, [])
-
-    const logout = () => {
+    const logout = (): void => {
         setUser(null);
         changeLocalStorage({ login: false })
         localStorage.removeItem('tokenTrack')
@@ -162,27 +132,6 @@ export const AuthContextProvider = ({ children }: any) => {
         catch {
             throw new Error("Erro")
         }
-
-        // const resposta = await fetch(`${API_URL}/ordem/acesso`, {
-        //     method: "POST",
-        //     headers: {
-        //         "Content-Type": "application/json"
-        //     },
-        //     body: JSON.stringify( {
-        //         code: code,
-        //         cpf: cpf
-        //     })
-        // });
-        // const dados = await resposta.json()
-
-        // if(!resposta.ok){
-        //     alert(dados.mensagem)
-        //     return false
-        // }
-
-        // localStorage.setItem("tokenClienteTrack", dados.token )
-
-        // return true
     }
 
 

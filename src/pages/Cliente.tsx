@@ -4,7 +4,7 @@ import { MeuPerfil } from "../components/Cliente/MeuPerfil"
 import { MinhasNotificacoes } from "../components/Cliente/MinhasNotificacoes"
 import { useNavigate } from "react-router-dom"
 import { AuthContext } from "../Context/AuthContext"
-import sigaOS from '../assets/sigaOS.svg'
+import logoSigaOS from '../assets/logoSigaOS.svg'
 
 export const Cliente = () => {
 
@@ -15,25 +15,11 @@ export const Cliente = () => {
 
     const [ ordens] = useState([])
 
-    // useEffect(()=>{
-    //     fetch(`${API_URL}/acesso/${code}`,{
-    //         headers: {
-    //             Authorization: `Barer ${token}`
-    //         }
-    //     })
-    //     .then(resposta => resposta.json())
-    //     .then(data =>{
-    //         setOrdens(data.ordens)
-    //         setClinte(data.cliente)
-    //     })
-    // },[])
 
     useEffect(()=>{
         !token && navigate("/");
     },[token])
 
-    // const parametros = new URLSearchParams(window.location.search);
-    // const codigo = parametros.get("codigo");
 
     const [aba, setAba] = useState("Meus Servicos")
 
@@ -55,7 +41,7 @@ export const Cliente = () => {
                     <div className="w-full items-center flex justify-between">
                         <div className="flex items-center gap-3">
                             <div>
-                                <img src={sigaOS} alt="" width={40} />
+                                <img src={logoSigaOS} alt="" width={40} />
                             </div>
                             <div className="flex flex-col">
                                 <h1 className="font-bold text-slate-900 leading-tight">Ordem Track</h1>
