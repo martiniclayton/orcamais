@@ -4,6 +4,7 @@ import { MeuPerfil } from "../components/Cliente/MeuPerfil"
 import { MinhasNotificacoes } from "../components/Cliente/MinhasNotificacoes"
 import { useNavigate } from "react-router-dom"
 import { AuthContext } from "../Context/AuthContext"
+import sigaOS from '../assets/sigaOS.svg'
 
 export const Cliente = () => {
 
@@ -53,8 +54,8 @@ export const Cliente = () => {
                 <header>
                     <div className="w-full items-center flex justify-between">
                         <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-teal-600 text-white p-2.5 rounded-xl flex items-center justify-center font-bold">
-                                OT
+                            <div>
+                                <img src={sigaOS} alt="" width={40} />
                             </div>
                             <div className="flex flex-col">
                                 <h1 className="font-bold text-slate-900 leading-tight">Ordem Track</h1>

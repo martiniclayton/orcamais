@@ -110,10 +110,10 @@ export const TabelaServicos = ({tela, descricao, tipoTabela, mudarTela, renderiz
                             <th scope="col" className="text-start py-3 min-w-[50px] whitespace-nowrap">ID</th>
                             <th scope="col" className="text-start py-3 min-w-[130px] whitespace-nowrap">Cliente</th>
                             <th scope="col" className="text-start py-3 min-w-[130px] whitespace-nowrap">Tipo de Serviço</th>
-                            <th scope="col" className="text-start py-3 min-w-[130px] whitespace-nowrap">PLaca</th>
+                            <th scope="col" className="text-start py-3 min-w-[130px] whitespace-nowrap">Placa</th>
                             <th scope="col" className="text-start py-3 min-w-[130px] whitespace-nowrap">Data</th>
                             <th scope="col" className="text-start py-3 min-w-[130px] whitespace-nowrap">Status</th>
-                            <th scope="col" className="text-start py-3 min-w-[130px] whitespace-nowrap">Acções</th>
+                            <th scope="col" className="text-start py-3 min-w-[130px] whitespace-nowrap">Ações</th>
                         </tr>
                     </thead>
 
@@ -121,7 +121,7 @@ export const TabelaServicos = ({tela, descricao, tipoTabela, mudarTela, renderiz
                         {
                             filtrar.map((ordem: any) => (
                                 <tr className="hover:bg-slate-100 transition-colors h-16" key={ordem.id}>
-                                    <td className="w-16 py-1 text-slate-600 align-middle">{ordem.id}</td>
+                                    <td className="w-16 py-1 text-slate-600 align-middle">{ordem.cliente.codAcesso}</td>
                                     <td className="py-1 text-slate-600 align-middle">{ordem.cliente.nome}</td>
                                     <td><span className="py-1 text-slate-600 badge badge-soft badge-success text-xs align-middle ">{ordem.tipoServico}</span></td>
                                     <td className="py-1 text-slate-600 align-middle">{ordem.placa}</td>

@@ -4,6 +4,8 @@ import type { typeUser } from "../../types/typeUser";
 import { AuthContext } from "../../Context/AuthContext";
 import { changeLocalStorage } from "../../services/storage";
 import { Spinner } from "../Spinner";
+import sigaOS from '../../assets/sigaOS.svg';
+import logotipoSigaOS from '../../assets/logotipoSigaOS.png';
 
 export const LoginForm = () => {
 
@@ -60,7 +62,10 @@ export const LoginForm = () => {
 
             <div className="flex flex-col justify-center items-center w-full lg:w-1/2 p-8 lg:p-12">
                 <div className="w-full max-w-md">
-
+                    <div className="flex w-full justify-between">
+                        <img src={sigaOS} alt="" width={80} />
+                        {/* <img src={logotipoSigaOS} alt="" width={200} /> */}
+                    </div>
                     <div className="mb-6">
                         <h4 className="text-2xl font-bold text-gray-800 mt-4">Entrar no sistema</h4>
                         <p className="text-sm text-gray-500">Escolha seu perfil de acesso para continuar.</p>
