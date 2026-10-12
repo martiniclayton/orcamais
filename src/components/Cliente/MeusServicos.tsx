@@ -73,11 +73,7 @@ export const MeusServicos = () => {
                 <h3 className="text-2xl font-bold text-gray-800 mt-1">Qual é o status do meu serviço?</h3>
             </div>
 
-            <div>
-                {notificacoes.slice(-1).toReversed().map((ordem, index) => (
-                    <NotificacaoCard key={index} titulo={ordem.titulo} data={ordem.data} cliente={ordem.ordens.cliente.nome} id={ordem.id} placa={ordem.ordens.placa} tipoServico={ordem.ordens.tipoServico} status={ordem.status} cpf={ordem.ordens.cliente.cpf} />
-                ))}
-            </div>
+            
 
             <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
                 <div className="bg-gray-50 px-6 py-4 border-b border-gray-200 font-semibold text-gray-700">
@@ -100,6 +96,14 @@ export const MeusServicos = () => {
                     </div>
                 </div>
             </div>
+
+            <div>
+                <h1 className='text-xl font-bold text-gray-800 mb-2'>Notificação Recente</h1>
+                {notificacoes.slice(-1).toReversed().map((ordem, index) => (
+                    <NotificacaoCard key={index} titulo={ordem.titulo} data={ordem.data} cliente={ordem.ordens.cliente.nome} id={ordem.id} placa={ordem.ordens.placa} tipoServico={ordem.ordens.tipoServico} status={ordem.status} cpf={ordem.ordens.cliente.cpf} />
+                ))}
+            </div>
+
 
             <div className="flex flex-col gap-4">
                 <h4 className="text-xl font-bold text-gray-800">Serviços finalizados</h4>
