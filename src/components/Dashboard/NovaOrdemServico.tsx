@@ -3,6 +3,7 @@ import { Header } from ".././Header"
 import type { Tela } from "../../types/typeTela"
 import { AuthContext } from "../../Context/AuthContext"
 import { API_URL } from "../../services/api"
+import { InputMask } from "@react-input/mask"
 interface NovaOrdemServicoProps {
     mudartela: (value: Tela) => void
 }
@@ -58,9 +59,9 @@ export const NovaOrdemServico = ({ mudartela }: NovaOrdemServicoProps) => {
             console.log("Erro na requisição POST", error);
         }
 
-            limparInputs();
-            carregarOrdens();
-            mudartela("Dashboard")
+        limparInputs();
+        carregarOrdens();
+        mudartela("Dashboard")
 
     }
 
@@ -82,11 +83,17 @@ export const NovaOrdemServico = ({ mudartela }: NovaOrdemServicoProps) => {
                                 </div>
                                 <div className="">
                                     <label htmlFor="cpf" className="block text-sm font-medium mb-1">CPF do Cliente</label>
-                                    <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" className="w-full px-3 py-2 border bg-slate-50 border border-slate-200 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent focus:bg-white transition-all shadow-sm " value={cpf} onChange={(e) => setCpf(e.target.value)} />
+                                    <InputMask 
+                                    mask="___.___.___-__"
+                                    replacement={{ _: /\d/ }}
+                                    type="text" id="cpf" name="cpf" placeholder="000.000.000-00" className="w-full px-3 py-2 border bg-slate-50 border border-slate-200 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent focus:bg-white transition-all shadow-sm " value={cpf} onChange={(e) => setCpf(e.target.value)} />
                                 </div>
                                 <div className="">
                                     <label htmlFor="telefone" className="block text-sm font-medium mb-1">Telefone</label>
-                                    <input type="text" id="telefone" name="telefone" placeholder="(00) 99999-9999" className="w-full px-3 py-2 border bg-slate-50 border border-slate-200 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent focus:bg-white transition-all shadow-sm " value={telefone} onChange={(e) => setTelefone(e.target.value)} />
+                                    <InputMask
+                                    mask="(__) _____-____)"
+                                    replacement={{ _: /\d/ }}
+                                    type="text" id="telefone" name="telefone" placeholder="(00) 99999-9999" className="w-full px-3 py-2 border bg-slate-50 border border-slate-200 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent focus:bg-white transition-all shadow-sm " value={telefone} onChange={(e) => setTelefone(e.target.value)} />
                                 </div>
                             </div>
                         </div>
@@ -98,7 +105,10 @@ export const NovaOrdemServico = ({ mudartela }: NovaOrdemServicoProps) => {
                             <div className="card-body grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div className="col-span-1 sm:col-span-1">
                                     <label htmlFor="placa" className="block text-sm font-medium mb-1">Placa do veículo</label>
-                                    <input type="text" id="placa" name="placa" placeholder="ABC-4545" className="w-full px-3 py-2 border bg-slate-50 border border-slate-200 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent focus:bg-white transition-all shadow-sm " value={placa} onChange={(e) => setPlaca(e.target.value)} />
+                                    <InputMask
+                                    mask="___-9_99"
+                                    replacement={{ _: /[A-Za-z]/, 9: /\d/}}
+                                    type="text" id="placa" name="placa" placeholder="ABC-4S45" className="w-full px-3 py-2 border bg-slate-50 border border-slate-200 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent focus:bg-white transition-all shadow-sm " value={(placa).toUpperCase()} onChange={(e) => setPlaca(e.target.value)} />
                                 </div>
                                 <div className="">
                                     <label htmlFor="servico" className="block text-sm font-medium mb-1">Tipo do Serviço</label>

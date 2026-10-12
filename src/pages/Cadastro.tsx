@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import type { Prestador } from '../types/typePrestador';
 import { Spinner } from '../components/Spinner';
 import { API_URL } from '../services/api';
+import { InputMask } from '@react-input/mask';
 
 
 
@@ -35,6 +36,13 @@ export const Cadastro = () => {
         }
         const todosPreenchidos = Object.values(user).every(valor => Boolean(valor));
 
+        const senhaValida = validarSenha();
+
+        if(!senhaValida){
+            alert("insira uma senha mais forte")
+            return
+        }
+
         if (!todosPreenchidos) {
             alert("Preencha os campos necessários")
             return
@@ -43,7 +51,7 @@ export const Cadastro = () => {
             alert("Senhas não coincidem")
             return
         }
-        
+
         setLoading(true)
         const resposta = await fetch(`${API_URL}/prestadores`, {
             method: "POST",
@@ -55,7 +63,7 @@ export const Cadastro = () => {
         const dados = await resposta.json()
 
         if (resposta.ok) {
-            console.log(dados.mensagem)
+            alert(dados.mensagem)
             setLoading(false)
         } else {
             console.log("Erro", dados.mensagem)
@@ -68,6 +76,35 @@ export const Cadastro = () => {
         navigate('/')
 
     }
+
+    const tamanhoSenha = senha.length >= 8;
+    const temNumero = /\d/.test(senha);
+    const temMaiuscula = /[A-Z]/.test(senha);
+    const temEspecial = /[^a-zA-Z0-9]/.test(senha);
+
+    const validaSenha = [tamanhoSenha, temNumero, temMaiuscula, temEspecial];
+
+    const validarSenha = () =>{
+        const valido = validaSenha.every(item => item === true);
+        return valido
+    }
+
+    // const formatarCPF = (valor: string) => {
+    //     return valor
+    //         .replace(/\D/g, '')
+    //         .replace(/(\d{3})(\d)/, '$1.$2')
+    //         .replace(/(\d{3})(\d)/, '$1.$2')
+    //         .replace(/(\d{3})(\d{1,2})/, '$1-$2')
+    //         .replace(/(-\d{2})\d+?$/, '$1');
+    // };
+
+    // const formatarTelefone = (valor: string) => {
+    //     return valor
+    //         .replace(/\D/g, '')
+    //         .replace(/^(\d{2})(\d)/g, '($1) $2')
+    //         .replace(/(\d{5})(\d{4})$/, '$1-$2')
+    //         .replace(/(-\d{4})\d+?$/, '$1');
+    // };
     return (
         <>
             {loading ? (
@@ -106,7 +143,9 @@ export const Cadastro = () => {
 
                                     <div className="flex flex-col gap-1">
                                         <label htmlFor="nome" className="text-sm font-medium text-gray-700">CPF</label>
-                                        <input
+                                        <InputMask
+                                            mask='___.___.___-__'
+                                            replacement={{ _: /\d/ }}
                                             className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                                             type="text"
                                             name="nome"
@@ -142,7 +181,9 @@ export const Cadastro = () => {
 
                                     <div className="flex flex-col gap-1">
                                         <label htmlFor="telefone" className="text-sm font-medium text-gray-700">Telefone</label>
-                                        <input
+                                        <InputMask
+                                            mask='(__) _____-____'
+                                            replacement={{ _: /\d/ }}
                                             className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                                             type="tel"
                                             name="telefone"
@@ -162,6 +203,12 @@ export const Cadastro = () => {
                                             value={senha}
                                             onChange={(e) => setSenha(e.target.value)}
                                         />
+                                        <ul style={{ fontSize: '0.85rem', color: '#666' }}>
+                                            <li className={ tamanhoSenha ? "text-emerald-600 font-semibold"  : ""}>Mínimo de 8 caracteres</li>
+                                            <li className={ temNumero ? "text-emerald-600 font-semibold"  : ""}>Pelo menos um número</li>
+                                            <li className={ temMaiuscula ? "text-emerald-600 font-semibold"  : ""}>Pelo menos uma letra maiúscula</li>
+                                            <li className={ temEspecial ? "text-emerald-600 font-semibold"  : ""}>Pelo menos um caractere especial (!@#$%&*</li>
+                                        </ul>
                                     </div>
 
                                     <div className="flex flex-col gap-1">

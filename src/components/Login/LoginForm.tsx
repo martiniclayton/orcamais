@@ -4,6 +4,7 @@ import type { typeUser } from "../../types/typeUser";
 import { AuthContext } from "../../Context/AuthContext";
 import { changeLocalStorage } from "../../services/storage";
 import { Spinner } from "../Spinner";
+import { InputMask } from "@react-input/mask";
 
 export const LoginForm = () => {
 
@@ -126,7 +127,9 @@ export const LoginForm = () => {
                                     />
 
                                     <label htmlFor="codigoServico" className="text-sm font-medium text-gray-700">CPF</label>
-                                    <input
+                                    <InputMask
+                                        mask="___.___.___-__"
+                                        replacement={{_: /\d/}}
                                         type="text"
                                         id="cpf"
                                         className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
