@@ -13,17 +13,17 @@ export const MinhasNotificacoes = () =>{
     const token = localStorage.getItem("tokenClienteTrack")
 
     useEffect(()=>{
-        if(!cod){
-            return;
-        }
-        fetch(`${API_URL}/notification/cliente/${cod}`, {
+        // if(!cod){
+        //     return;
+        // }
+        fetch(`${API_URL}/notification/cliente`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         })
         .then(res => res.json())
         .then(data =>{
-            setNotificacoes(data.ordens)
+            setNotificacoes(data.notificacoes)
         })
         .catch(err =>{
             console.error(err)

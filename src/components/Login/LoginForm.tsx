@@ -42,7 +42,7 @@ export const LoginForm = () => {
                 setLoading(true)
                 const order = await clienteLogin(code, CPF)
                 if (order) {
-                    navigate(`/cliente?codigo=${code}`)
+                    navigate(`/cliente`)
                 }
                 setLoading(false)
             }

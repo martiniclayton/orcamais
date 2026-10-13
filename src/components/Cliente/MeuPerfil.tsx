@@ -2,79 +2,101 @@ import { useEffect, useState } from 'react';
 import type { typeCliente } from '../../types/typeCliente';
 import { API_URL } from '../../services/api';
 import type { OrdemType } from '../../types/OrdemType';
-interface MeuPerfil {
-    cliente: typeCliente
-}
+import { Spinner } from '../Spinner';
+// interface MeuPerfil {
+//     cliente: typeCliente
+// }
 
-export const MeuPerfil = ({cliente}: MeuPerfil) => {
+export const MeuPerfil = () => {
 
-    const clienteSalvo = localStorage.getItem("clienteTrack")
-    if (clienteSalvo) {
-        cliente = JSON.parse(clienteSalvo)
-    }
+    // const clienteSalvo = localStorage.getItem("clienteTrack")
+    // if (clienteSalvo) {
+    //     cliente = JSON.parse(clienteSalvo)
+    // }
 
+
+    const [cliente, setCliente] = useState<typeCliente>()
     const [ordens, setOrdens] = useState<OrdemType[]>([])
     const queryParams = new URLSearchParams(window.location.search);
     const cod = queryParams.get("codigo");
     const token = localStorage.getItem("tokenClienteTrack");
 
-    useEffect(()=>{
-        fetch(`${API_URL}/ordem/acesso/${cod}`, {
+    useEffect(() => {
+        fetch(`${API_URL}/cliente/ordens`, {
             headers: {
                 Authorization: `Baerer ${token}`
             }
         })
 
+            .then(res => res.json())
+            .then(data => {
+                setOrdens(data.ordens)
+                // setCliente(data.cliente)
+            })
+
+        fetch(`${API_URL}/cliente`, {
+            headers: {
+                Authorization: `Barer ${token}`
+            }
+        })
         .then(res => res.json())
         .then(data =>{
-            setOrdens(data.ordens)
+            setCliente(data.cliente)
         })
-    },[])
+    }, [])
 
     const ordensAtiva: OrdemType[] = ordens.filter(ordem => ordem.status !== "Finalizado")
     const ordensFinalizadas: OrdemType[] = ordens.filter(ordem => ordem.status === "Finalizado")
 
-    const inicial = cliente.nome.charAt(0).toUpperCase();
+    const inicial = cliente?.nome.charAt(0).toUpperCase();
 
     return (
-        <div className="w-full max-w-2xl">
-            <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
-                <div className="p-6 bg-white border-b border-gray-200">
-                    <div className="flex items-center gap-4">
-                        <div className="w-14 h-14 bg-gray-100 border border-gray-200 rounded-full flex justify-center items-center font-medium text-gray-500">
-    {inicial}
-</div>
-                        <div className="flex flex-col justify-center">
-                            <h4 className="text-2xl font-bold text-gray-800">{cliente.nome}</h4>
+        <>
+            {!cliente ? (
+                <>
+                    <Spinner />
+                </>
+            ) : (
+                <div className="w-full max-w-2xl">
+                    <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+                        <div className="p-6 bg-white border-b border-gray-200">
+                            <div className="flex items-center gap-4">
+                                <div className="w-14 h-14 bg-gray-100 border border-gray-200 rounded-full flex justify-center items-center font-medium text-gray-500">
+                                    {inicial}
+                                </div>
+                                <div className="flex flex-col justify-center">
+                                    <h4 className="text-2xl font-bold text-gray-800">{cliente?.nome}</h4>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
 
-                <div className="p-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <h6 className="text-xs uppercase tracking-wider font-semibold text-gray-400">Telefone</h6>
-                            <p className="text-gray-700 font-medium mt-1">{cliente.telefone}</p>
-                        </div>
-                        <div>
-                            <h6 className="text-xs uppercase tracking-wider font-semibold text-gray-400">Código de Acesso</h6>
-                            <p className="text-gray-700 font-medium mt-1">{cliente.codAcesso}</p>
-                        </div>
-                        <div>
-                            <h6 className="text-xs uppercase tracking-wider font-semibold text-gray-400">Perfil</h6>
-                            <p className="text-gray-700 font-medium mt-1">Cliente</p>
-                        </div>
-                        <div>
-                            <h6 className="text-xs uppercase tracking-wider font-semibold text-gray-400">O.S. ativas</h6>
-                            <p className="text-gray-700 font-medium mt-1">{ordensAtiva.length}</p>
-                        </div>
-                        <div>
-                            <h6 className="text-xs uppercase tracking-wider font-semibold text-gray-400">Serviços finalizados</h6>
-                            <p className="text-gray-700 font-medium mt-1">{ordensFinalizadas.length}</p>
+                        <div className="p-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <h6 className="text-xs uppercase tracking-wider font-semibold text-gray-400">Telefone</h6>
+                                    <p className="text-gray-700 font-medium mt-1">{cliente?.telefone}</p>
+                                </div>
+                                <div>
+                                    <h6 className="text-xs uppercase tracking-wider font-semibold text-gray-400">Código de Acesso</h6>
+                                    <p className="text-gray-700 font-medium mt-1">{cliente?.codAcesso}</p>
+                                </div>
+                                <div>
+                                    <h6 className="text-xs uppercase tracking-wider font-semibold text-gray-400">Perfil</h6>
+                                    <p className="text-gray-700 font-medium mt-1">Cliente</p>
+                                </div>
+                                <div>
+                                    <h6 className="text-xs uppercase tracking-wider font-semibold text-gray-400">O.S. ativas</h6>
+                                    <p className="text-gray-700 font-medium mt-1">{ordensAtiva.length}</p>
+                                </div>
+                                <div>
+                                    <h6 className="text-xs uppercase tracking-wider font-semibold text-gray-400">Serviços finalizados</h6>
+                                    <p className="text-gray-700 font-medium mt-1">{ordensFinalizadas.length}</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            )}
+        </>
     );
 };

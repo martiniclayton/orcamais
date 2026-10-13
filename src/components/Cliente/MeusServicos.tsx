@@ -5,61 +5,84 @@ import { API_URL } from '../../services/api';
 import type { typeCliente } from '../../types/typeCliente';
 import type { OrdemType } from '../../types/OrdemType';
 import type { notificacaoData } from '../../types/NotificacoesType';
+import { Spinner } from '../Spinner';
 
 export const MeusServicos = () => {
+
+    const clienteDefault: typeCliente = {
+        id: 'Carregando',
+        nome: 'Carregando',
+        cpf: 'Carregando',
+        telefone: 'Carregando',
+        codAcesso: 'Carregando'
+    }
+
     const [ordens, setOrdens] = useState<any[]>([]);
-    const [cliente, setCliente] = useState<typeCliente>();
-    const queryParams = new URLSearchParams(window.location.search);
-    const codigo = queryParams.get("codigo");
+    const [cliente, setCliente] = useState<typeCliente>(clienteDefault);
+    // const queryParams = new URLSearchParams(window.location.search);
+    // const codigo = queryParams.get("codigo");
     const [ordem, setOrdem] = useState<OrdemType | undefined>();
     const [notificacoes, setNotificacoes] = useState<notificacaoData[]>([])
 
     useEffect(() => {
         const token = localStorage.getItem('tokenClienteTrack');
 
-        fetch(`${API_URL}/notification/cliente/${codigo}`, {
+        fetch(`${API_URL}/notification/cliente/`, {
             headers: {
                 Authorization: `Baerer ${token}`
             }
         })
         .then(res => res.json())
         .then(data =>{
-            setNotificacoes(data.ordens)
+            setNotificacoes(data.notificacoes)
         })
 
         const carregarOrdens = async () => {
-            if (!codigo) return;
-
-            fetch(`${API_URL}/ordem/acesso/${codigo}`, {
-                method: "GET",
+            fetch(`${API_URL}/cliente/ordens`, {
                 headers: {
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Barer ${token}`
                 }
             })
-                .then(res => {
-                    if (!res.ok) {
-                        throw new Error("Erro na requisição")
-                    }
-                    return res.json();
-                })
+            .then(res => res.json())
+            .then(data =>{
+                setCliente(data.cliente);
+                setOrdens(data.ordens);
 
-                .then(data => {
-                    setCliente(data.cliente)
-                    localStorage.setItem("clienteTrack", JSON.stringify(data.cliente))
-                    setOrdens(data.ordens)
+                if(data.ordens && data.ordens.length > 0){
+                    setOrdem(data.ordens[0])
+                }
+            })
+            // if (!codigo) return;
 
-                    if(data.ordens && data.ordens.length > 0) {
-                        setOrdem(data.ordens[data.ordens.length -1])
-                    }
-                })
-                .catch(error => {
-                    console.error("Erro ao buscar acesso:", error);
-                });
+            // fetch(`${API_URL}/ordem/acesso/${codigo}`, {
+            //     method: "GET",
+            //     headers: {
+            //         Authorization: `Bearer ${token}`
+            //     }
+            // })
+            //     .then(res => {
+            //         if (!res.ok) {
+            //             throw new Error("Erro na requisição")
+            //         }
+            //         return res.json();
+            //     })
+
+            //     .then(data => {
+            //         setCliente(data.cliente)
+            //         setOrdens(data.ordens)
+
+            //         if(data.ordens && data.ordens.length > 0) {
+            //             setOrdem(data.ordens[data.ordens.length -1])
+            //         }
+            //     })
+            //     .catch(error => {
+            //         console.error("Erro ao buscar acesso:", error);
+            //     });
 
         };
 
         carregarOrdens();
-    }, [codigo]);
+    }, []);
 
     const ordensFinalizadas = ordens.filter(ordem => ordem.status === "Finalizado")
 
@@ -74,7 +97,7 @@ export const MeusServicos = () => {
             </div>
 
             
-
+            {ordem ? (
             <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
                 <div className="bg-gray-50 px-6 py-4 border-b border-gray-200 font-semibold text-gray-700">
                     {`#O.S ${cliente?.id}`}
@@ -96,13 +119,20 @@ export const MeusServicos = () => {
                     </div>
                 </div>
             </div>
+            ) : (
+                <Spinner/>
+            )}
 
+            {notificacoes ? (
             <div>
                 <h1 className='text-xl font-bold text-gray-800 mb-2'>Notificação Recente</h1>
                 {notificacoes.slice(-1).toReversed().map((ordem, index) => (
                     <NotificacaoCard key={index} titulo={ordem.titulo} data={ordem.data} cliente={ordem.ordens.cliente.nome} id={ordem.id} placa={ordem.ordens.placa} tipoServico={ordem.ordens.tipoServico} status={ordem.status} cpf={ordem.ordens.cliente.cpf} />
                 ))}
             </div>
+            ) : (
+                <Spinner/>
+            )}
 
 
             <div className="flex flex-col gap-4">
