@@ -31,12 +31,15 @@ export const TabelaServicos = ({tela, descricao, tipoTabela, mudarTela, renderiz
         return nomeStr.includes(termoBusca) || placaStr.includes(termoBusca) || idStr.includes(termoBusca)
     })
 
+    const token = localStorage.getItem("tokenTrack");
+
     const atualizarStatus = async (id: string) =>{
         try{
             const response = await fetch(`${API_URL}/ordem/${id}`, {
                 method: "PATCH",
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: `Baerer ${token}`
                 },
                 body: ""
             })

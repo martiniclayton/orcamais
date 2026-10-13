@@ -17,7 +17,7 @@ export const Notificacoes = ({mudarTela}: NotificacoesProps) =>{
     useEffect(()=>{
         fetch(`${API_URL}/notification`, {
             headers: {
-                Authorizarion: `Barer ${token}`
+                Authorization: `Barer ${token}`
             }
         })
         .then(res => res.json())

@@ -107,7 +107,7 @@ export const AuthContextProvider = ({ children }: any) => {
     const clienteLogin = async (code: string, cpf: string): Promise<any> => {
 
         try {
-            const resposta = await fetch(`${API_URL}/ordem/acesso`, {
+            const resposta = await fetch(`${API_URL}/cliente/acesso`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
