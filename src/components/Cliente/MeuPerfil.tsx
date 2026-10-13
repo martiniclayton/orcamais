@@ -17,7 +17,7 @@ export const MeuPerfil = () => {
 
     const [cliente, setCliente] = useState<typeCliente>()
     const [ordens, setOrdens] = useState<OrdemType[]>([])
-    const queryParams = new URLSearchParams(window.location.search);
+    // const queryParams = new URLSearchParams(window.location.search);
     // const cod = queryParams.get("codigo");
     const token = localStorage.getItem("tokenClienteTrack");
 
