@@ -49,7 +49,7 @@ export const AuthContextProvider = ({ children }: any) => {
         })
             .then(response => response.json())
             .then(data => {
-                setBanco(data.Ordens)
+                setBanco(data.ordens)
             })
             .catch(error => {
                 console.error("Erro ao buscar ordens", error);
@@ -102,6 +102,7 @@ export const AuthContextProvider = ({ children }: any) => {
         localStorage.removeItem('tokenTrack')
         localStorage.removeItem('userTrack')
         navigate("/");
+        window.location.reload();
     }
 
     const clienteLogin = async (code: string, cpf: string): Promise<any> => {
@@ -140,6 +141,7 @@ export const AuthContextProvider = ({ children }: any) => {
         localStorage.removeItem("tokenClienteTrack")
         localStorage.removeItem("clienteTrack")
         navigate("/");
+        window.location.reload();
     }
 
 
