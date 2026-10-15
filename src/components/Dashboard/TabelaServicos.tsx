@@ -124,7 +124,7 @@ export const TabelaServicos = ({tela, descricao, tipoTabela, mudarTela, renderiz
                         {
                             filtrar.map((ordem: any) => (
                                 <tr className="hover:bg-slate-100 transition-colors h-16" key={ordem.id}>
-                                    <td className="w-16 py-1 text-slate-600 align-middle">{ordem.cliente.codAcesso}</td>
+                                    <td className="w-16 py-1 text-slate-600 align-middle">{ordem.id}</td>
                                     <td className="py-1 text-slate-600 align-middle">{ordem.cliente.nome}</td>
                                     <td><span className="py-1 text-slate-600 badge badge-soft badge-success text-xs align-middle ">{ordem.tipoServico}</span></td>
                                     <td className="py-1 text-slate-600 align-middle">{ordem.placa}</td>

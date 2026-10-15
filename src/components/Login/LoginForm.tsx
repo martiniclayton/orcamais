@@ -2,13 +2,12 @@ import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import type { typeUser } from "../../types/typeUser";
 import { AuthContext } from "../../Context/AuthContext";
-import { changeLocalStorage } from "../../services/storage";
 import { Spinner } from "../Spinner";
 import { InputMask } from "@react-input/mask";
 
 export const LoginForm = () => {
 
-    const { login, clienteLogin, setIsLoggedIn } = useContext(AuthContext);
+    const { login, clienteLogin } = useContext(AuthContext);
     const [typeUser, setTypeUser] = useState<typeUser>("Prestador");
     const [loading, setLoading] = useState<boolean>(false);
     const [email, setEmail] = useState("");
@@ -24,17 +23,22 @@ export const LoginForm = () => {
         if (tipo === "Prestador") {
             if (!email || !password) {
                 alert("Preencha os campos necessários");
-            } else {
-                setLoading(true)
+                return
+            } 
+            
+            setLoading(true);
+
+            try{
                 const user = await login(email, password);
-                if (user) {
-                    changeLocalStorage({ login: true });
-                    setIsLoggedIn(true)
+                if(user) {
                     navigate('/DashboardPage')
-                    setLoading(false)
                 }
+            } catch {
+                alert("Não foi possivel conectar ao servidor")
+            } finally {
                 setLoading(false)
             }
+            
         } else if (tipo === "Cliente") {
             if (!code || !CPF) {
                 alert("Informe os dados necessários")

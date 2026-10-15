@@ -2,12 +2,11 @@ import { createContext, useEffect, useState } from "react";
 import { type User } from "../data/mockUsers";
 import { useNavigate } from "react-router-dom";
 import type { OrdemType } from "../types/OrdemType";
-import { changeLocalStorage } from "../services/storage";
 import { API_URL } from "../services/api";
 
 interface IAuthContext {
     user: User | null,
-    login: (email: string, password: string) => Promise<boolean | undefined>,
+    login: (email: string, password: string) => Promise<boolean>,
     logout: () => void,
     isLoggedIn: boolean,
     setIsLoggedIn: (value: boolean) => void
@@ -31,10 +30,15 @@ export const AuthContextProvider = ({ children }: any) => {
 
     useEffect(() => {
         const tokenTrack = localStorage.getItem('tokenTrack')
+        const userTrack = localStorage.getItem('userTrack');
+
         if (tokenTrack) {
             setIsLoggedIn(true)
         }
 
+        if(userTrack){
+            setUser(JSON.parse(userTrack))
+        }
     }, [])
 
 
@@ -55,18 +59,11 @@ export const AuthContextProvider = ({ children }: any) => {
                 console.error("Erro ao buscar ordens", error);
             })
 
-        const userTrack = localStorage.getItem('userTrack')
-        if (userTrack) {
-            const user = JSON.parse(userTrack)
-            setUser(user)
-        }
-
-
     }
 
-    const login = async (email: string, password: string) => {
+    const login = async (email: string, password: string): Promise<boolean> => {
 
-        return new Promise<boolean | undefined>(async (resolve) => {
+        try{
             const response = await fetch(`${API_URL}/login`, {
                 method: "POST",
                 headers: {
@@ -79,26 +76,30 @@ export const AuthContextProvider = ({ children }: any) => {
             })
 
             const data = await response.json();
-
+            
             if (!response.ok) {
                 alert(data.mensagem)
-                resolve(undefined)
-                return
+                return false
             }
-            const { prestador, token } = data.resposta
 
+            const { prestador, token } = data.resposta
+    
             localStorage.setItem('tokenTrack', token);
             localStorage.setItem('userTrack', JSON.stringify(prestador));
+            setIsLoggedIn(true)
+            setUser(prestador)
+    
+            return true
 
-            resolve(true)
-
-        })
-
+        } catch {
+            alert("Não foi possivel conectar ao servidor")
+            return false;
+        }
     }
 
     const logout = (): void => {
         setUser(null);
-        changeLocalStorage({ login: false })
+        setIsLoggedIn(false);
         localStorage.removeItem('tokenTrack')
         localStorage.removeItem('userTrack')
         navigate("/");

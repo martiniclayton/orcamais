@@ -35,7 +35,7 @@ export const OrdensServicos = ({ mudartela }: OrdensServicosProps) => {
     }, [])
 
 
-    const quantidades = bancoAtivos.length
+    const quantidades = bancoAtivos.length 
 
     if (loading) {
         return <p className="p-5 text-zinc-500">Carregando ordens...</p>;
