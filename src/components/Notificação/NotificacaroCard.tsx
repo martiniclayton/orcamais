@@ -2,9 +2,7 @@ import type { NotificacoesType } from "../../types/NotificacoesType";
 
 export const NotificacaoCard = ({titulo, data, tipoServico, cliente, status, placa}: NotificacoesType) => {
 
-    const dataFormatada = data instanceof Date 
-        ? data.toLocaleString('pt-BR') 
-        : String(data);
+    const dataFormatada = new Date(data).toLocaleString("pt-br")
     return (
         <>
             <div className="mb-2">

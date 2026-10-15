@@ -30,6 +30,11 @@ export const NovaOrdemServico = ({ mudartela }: NovaOrdemServicoProps) => {
 
         e.preventDefault()
 
+        if(!nome.trim() || !cpf.trim() || !telefone.trim() || !placa.trim() || !servico){
+            alert("Preencha os campos obrigatórios");
+            return
+        }
+
         const novaOrdem: any = {
             nome: nome,
             cpf: cpf,
@@ -47,7 +52,7 @@ export const NovaOrdemServico = ({ mudartela }: NovaOrdemServicoProps) => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Barer ${token}`
+                    Authorization: `Bearer ${token}`
                 },
                 body: JSON.stringify(novaOrdem)
             });
@@ -58,13 +63,14 @@ export const NovaOrdemServico = ({ mudartela }: NovaOrdemServicoProps) => {
 
             const data = await response.json()
             console.log("Ordem crriada com sucesso", data);
+
+            limparInputs();
+            await carregarOrdens();
+            mudartela("Dashboard")
+
         } catch (error) {
             console.log("Erro na requisição POST", error);
         }
-
-        limparInputs();
-        carregarOrdens();
-        mudartela("Dashboard")
 
     }
 
@@ -94,7 +100,7 @@ export const NovaOrdemServico = ({ mudartela }: NovaOrdemServicoProps) => {
                                 <div className="">
                                     <label htmlFor="telefone" className="block text-sm font-medium mb-1">Telefone</label>
                                     <InputMask
-                                    mask="(__) _____-____)"
+                                    mask="(__) _____-____"
                                     replacement={{ _: /\d/ }}
                                     type="text" id="telefone" name="telefone" placeholder="(00) 99999-9999" className="w-full px-3 py-2 border bg-slate-50 border border-slate-200 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent focus:bg-white transition-all shadow-sm " value={telefone} onChange={(e) => setTelefone(e.target.value)} />
                                 </div>

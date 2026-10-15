@@ -20,6 +20,18 @@ export const Cadastro = () => {
     const [confirmarSenha, setConfirmarSenha] = useState('');
     const [loading, setLoading] = useState(false);
 
+    const tamanhoSenha = senha.length >= 8;
+    const temNumero = /\d/.test(senha);
+    const temMaiuscula = /[A-Z]/.test(senha);
+    const temEspecial = /[^a-zA-Z0-9]/.test(senha);
+
+    const validaSenha = [tamanhoSenha, temNumero, temMaiuscula, temEspecial];
+
+    const validarSenha = () =>{
+        const valido = validaSenha.every(item => item === true);
+        return valido
+    }
+
     const navigate = useNavigate()
 
     const enviarCadastro = async (e: any) => {
@@ -31,8 +43,7 @@ export const Cadastro = () => {
             estabelecimento: estabelecimento,
             email: email,
             telefone: telefone,
-            senha: senha,
-            confirmarSenha: confirmarSenha
+            senha: senha
         }
         const todosPreenchidos = Object.values(user).every(valor => Boolean(valor));
 
@@ -53,58 +64,31 @@ export const Cadastro = () => {
         }
 
         setLoading(true)
-        const resposta = await fetch(`${API_URL}/prestadores`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(user)
-        })
-        const dados = await resposta.json()
 
-        if (resposta.ok) {
-            alert(dados.mensagem)
-            setLoading(false)
-        } else {
-            console.log("Erro", dados.mensagem)
-            setLoading(false)
-        }
-        if (dados.mensagem === "Prestador já existe") {
-            alert("CPF já cadastrado")
-            setLoading(false)
-        }
-        navigate('/')
+        try{
+            const resposta = await fetch(`${API_URL}/prestadores`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(user)
+            })
+            const dados = await resposta.json();
 
+            if(!resposta.ok) {
+                alert(dados.mensagem || "Erro ao cadastrar prestador");
+                return
+            }
+
+            alert(dados.mensagem);
+            navigate('/')
+        } catch {
+            alert("Não foi possivel conectar ao servidor");
+        } finally {
+            setLoading(false);
+        }
     }
 
-    const tamanhoSenha = senha.length >= 8;
-    const temNumero = /\d/.test(senha);
-    const temMaiuscula = /[A-Z]/.test(senha);
-    const temEspecial = /[^a-zA-Z0-9]/.test(senha);
-
-    const validaSenha = [tamanhoSenha, temNumero, temMaiuscula, temEspecial];
-
-    const validarSenha = () =>{
-        const valido = validaSenha.every(item => item === true);
-        return valido
-    }
-
-    // const formatarCPF = (valor: string) => {
-    //     return valor
-    //         .replace(/\D/g, '')
-    //         .replace(/(\d{3})(\d)/, '$1.$2')
-    //         .replace(/(\d{3})(\d)/, '$1.$2')
-    //         .replace(/(\d{3})(\d{1,2})/, '$1-$2')
-    //         .replace(/(-\d{2})\d+?$/, '$1');
-    // };
-
-    // const formatarTelefone = (valor: string) => {
-    //     return valor
-    //         .replace(/\D/g, '')
-    //         .replace(/^(\d{2})(\d)/g, '($1) $2')
-    //         .replace(/(\d{5})(\d{4})$/, '$1-$2')
-    //         .replace(/(-\d{4})\d+?$/, '$1');
-    // };
     return (
         <>
             {loading ? (

@@ -15,16 +15,32 @@ export const Notificacoes = ({mudarTela}: NotificacoesProps) =>{
     const token = localStorage.getItem('tokenTrack');
 
     useEffect(()=>{
-        fetch(`${API_URL}/notification`, {
-            headers: {
-                Authorization: `Barer ${token}`
+
+        const buscarNotificacoes = async () =>{
+            try{
+                const response = await fetch(`${API_URL}/notification`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+    
+                const data = await response.json()
+    
+                if(!response.ok){
+                    console.log("Erro na requisição das notificações", data.mensagem)
+                };
+    
+                setNotificacoes(data.resposta ?? [])
+
+            } catch (error) {
+                alert(error || "Erro na requisição")
             }
-        })
-        .then(res => res.json())
-        .then(data =>{
-            setNotificacoes(data.resposta)
-        })
+        };
+
+        buscarNotificacoes();
     },[])
+
+
     return(
         <>
             <Header titulo={"Notificações"} descricao={"Mensagens de atualização enviadas aos clientes"} mudarTela={mudarTela}></Header>

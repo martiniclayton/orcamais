@@ -4,6 +4,5 @@ export interface Prestador {
     estabelecimento: string,
     email: string,
     telefone: string,
-    senha: string,
-    confirmarSenha: string
+    senha: string
 }

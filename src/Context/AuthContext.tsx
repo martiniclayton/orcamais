@@ -42,23 +42,27 @@ export const AuthContextProvider = ({ children }: any) => {
     }, [])
 
 
-    const carregarOrdens = (): void => {
+    const carregarOrdens = async (): Promise<void> => {
 
         const token = localStorage.getItem('tokenTrack')
 
-        fetch(`${API_URL}/ordem`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
-            .then(response => response.json())
-            .then(data => {
-                setBanco(data.ordens)
-            })
-            .catch(error => {
-                console.error("Erro ao buscar ordens", error);
+        try{
+            const response = await fetch(`${API_URL}/ordem`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
             })
 
+            if(!response.ok){
+                throw new Error("Erro ao carregar ordens")
+            }
+
+            const data = await response.json();
+            setBanco(data.ordens);
+
+        } catch (error){
+            console.error("Erro ao carregar ordens", error)
+        }
     }
 
     const login = async (email: string, password: string): Promise<boolean> => {

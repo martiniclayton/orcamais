@@ -5,7 +5,7 @@ import { useContext, useState } from "react"
 import { AuthContext } from "../../Context/AuthContext"
 import { API_URL } from "../../services/api"
 
-interface TabelaPag{
+interface TabelaPag {
     tela: string,
     descricao: string,
     tipoTabela: OrdemType[]
@@ -13,50 +13,50 @@ interface TabelaPag{
     renderizarOrdensAtivas?: () => void
 }
 
-export const TabelaServicos = ({tela, descricao, tipoTabela, mudarTela, renderizarOrdensAtivas}: TabelaPag, ) => {
+export const TabelaServicos = ({ tela, descricao, tipoTabela, mudarTela, renderizarOrdensAtivas }: TabelaPag,) => {
 
     const [busca, setBusca] = useState("");
 
     const { carregarOrdens } = useContext(AuthContext)
 
     const ordens = tipoTabela || []
-    
+
     const filtrar = ordens.filter((ordem: OrdemType) => {
         const termoBusca = busca.toLowerCase()
-        
+
         const nomeStr = String(ordem.cliente.nome || "").toLowerCase()
         const placaStr = String(ordem.placa || "").toLowerCase()
         const idStr = String(ordem.id || "").toLowerCase()
-        
+
         return nomeStr.includes(termoBusca) || placaStr.includes(termoBusca) || idStr.includes(termoBusca)
     })
 
     const token = localStorage.getItem("tokenTrack");
 
-    const atualizarStatus = async (id: string) =>{
-        try{
+    const atualizarStatus = async (id: number): Promise<void> => {
+        try {
             const response = await fetch(`${API_URL}/ordem/${id}`, {
                 method: "PATCH",
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Baerer ${token}`
-                },
-                body: ""
+                    Authorization: `Bearer ${token}`
+                }
             })
+            
+            const data = await response.json();
 
-            if(!response){
-                throw new Error("Erro ao atualizar ordem")
+            if (!response.ok) {
+                alert(data.mensagem || "Erro ao atualizar ordem");
+                return
             }
 
-            const data = await response.json()
-            console.log("Ordem atualizada com sucesso", data)
+            alert(data.mensagem || "Ordem atualizada com sucesso")
             renderizarOrdensAtivas?.()
-            carregarOrdens()
+            await carregarOrdens()
         }
-        catch(error){
-            console.log("Erro na requisição PATCH", error)
+        catch (error) {
+            alert(error || "Erro na requisição PATCH")
         }
-        fetch('')
     }
 
     return (
@@ -135,7 +135,7 @@ export const TabelaServicos = ({tela, descricao, tipoTabela, mudarTela, renderiz
                                         {ordem.status}
                                     </td>
                                     <td className="py-1 text-slate-500 align-middle">
-                                        <button onClick={()=> atualizarStatus(ordem.id)} className={`border p-1 px-2 w-full border-slate-400 text-slate-400 cursor-pointer transiton-all duration-300 ease-in-out not-disabled:hover:bg-slate-700 not-disabled:hover:text-slate-100 ${ordem.status === "Finalizado" ? "disabled:bg-gray-400 disabled:cursor-not-allowed hidden" : ""}`}>{ordem.status === "Em andamento" ? "Retirada" : ordem.status === "Pronto para retirada" ? "Finalizar" : "Finalizado"}</button>
+                                        <button onClick={() => atualizarStatus(ordem.id)} className={`border p-1 px-2 w-full border-slate-400 text-slate-400 cursor-pointer transiton-all duration-300 ease-in-out not-disabled:hover:bg-slate-700 not-disabled:hover:text-slate-100 ${ordem.status === "Finalizado" ? "disabled:bg-gray-400 disabled:cursor-not-allowed hidden" : ""}`}>{ordem.status === "Em andamento" ? "Retirada" : ordem.status === "Pronto para retirada" ? "Finalizar" : "Finalizado"}</button>
                                     </td>
                                 </tr>
                             ))
