@@ -8,36 +8,21 @@ import { Spinner } from '../Spinner';
 // }
 
 export const MeuPerfil = () => {
-
-    // const clienteSalvo = localStorage.getItem("clienteTrack")
-    // if (clienteSalvo) {
-    //     cliente = JSON.parse(clienteSalvo)
-    // }
-
-
     const [cliente, setCliente] = useState<typeCliente>()
     const [ordens, setOrdens] = useState<OrdemType[]>([])
-    // const queryParams = new URLSearchParams(window.location.search);
-    // const cod = queryParams.get("codigo");
-    const token = localStorage.getItem("tokenClienteTrack");
 
     useEffect(() => {
         fetch(`${API_URL}/cliente/ordens`, {
-            headers: {
-                Authorization: `Baerer ${token}`
-            }
+            credentials: "include"
         })
 
             .then(res => res.json())
             .then(data => {
                 setOrdens(data.ordens)
-                // setCliente(data.cliente)
             })
 
         fetch(`${API_URL}/cliente`, {
-            headers: {
-                Authorization: `Barer ${token}`
-            }
+            credentials: "include"
         })
         .then(res => res.json())
         .then(data =>{

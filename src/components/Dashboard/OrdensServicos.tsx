@@ -16,9 +16,7 @@ export const OrdensServicos = ({ mudartela }: OrdensServicosProps) => {
 
     const carregarOrdensAtivas = () => {
         fetch(`${API_URL}/ordem?status=Ativos`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
+            credentials: "include"
         })
             .then(response => response.json())
             .then(data => {

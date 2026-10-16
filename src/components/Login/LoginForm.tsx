@@ -44,11 +44,17 @@ export const LoginForm = () => {
                 alert("Informe os dados necessários")
             } else {
                 setLoading(true)
-                const order = await clienteLogin(code, CPF)
-                if (order) {
-                    navigate(`/cliente`)
+
+                try{
+                    const order = await clienteLogin(code, CPF)
+                    if (order) {
+                        navigate(`/cliente`)
+                    }
+                } catch(err){
+                    console.error("Erro na requisição", err)
+                } finally{
+                    setLoading(false)
                 }
-                setLoading(false)
             }
         }
     };

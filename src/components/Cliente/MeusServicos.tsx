@@ -19,29 +19,23 @@ export const MeusServicos = () => {
 
     const [ordens, setOrdens] = useState<any[]>([]);
     const [cliente, setCliente] = useState<typeCliente>(clienteDefault);
-    // const queryParams = new URLSearchParams(window.location.search);
-    // const codigo = queryParams.get("codigo");
     const [ordem, setOrdem] = useState<OrdemType | undefined>();
     const [notificacoes, setNotificacoes] = useState<notificacaoData[]>([])
 
     useEffect(() => {
-        const token = localStorage.getItem('tokenClienteTrack');
-
-        fetch(`${API_URL}/notification/cliente/`, {
-            headers: {
-                Authorization: `Baerer ${token}`
-            }
-        })
-        .then(res => res.json())
-        .then(data =>{
-            setNotificacoes(data.notificacoes)
-        })
+        const pegarCliente = async () =>{
+            await fetch(`${API_URL}/notification/cliente/`, {
+                credentials: "include"
+            })
+            .then(res => res.json())
+            .then(data =>{
+                setNotificacoes(data.notificacoes)
+            })
+        }
 
         const carregarCliente = async () => {
             fetch(`${API_URL}/cliente`, {
-                headers:{
-                    Authorization: `Barer ${token}`
-                }
+                credentials: "include"
             })
             .then(res => res.json())
             .then(data =>{
@@ -52,9 +46,7 @@ export const MeusServicos = () => {
 
         const carregarOrdens = async () => {
             fetch(`${API_URL}/cliente/ordens`, {
-                headers: {
-                    Authorization: `Barer ${token}`
-                }
+                credentials: "include"
             })
             .then(res => res.json())
             .then(data =>{
@@ -64,43 +56,14 @@ export const MeusServicos = () => {
                     setOrdem(data.ordens[0])
                 }
             })
-            // if (!codigo) return;
-
-            // fetch(`${API_URL}/ordem/acesso/${codigo}`, {
-            //     method: "GET",
-            //     headers: {
-            //         Authorization: `Bearer ${token}`
-            //     }
-            // })
-            //     .then(res => {
-            //         if (!res.ok) {
-            //             throw new Error("Erro na requisição")
-            //         }
-            //         return res.json();
-            //     })
-
-            //     .then(data => {
-            //         setCliente(data.cliente)
-            //         setOrdens(data.ordens)
-
-            //         if(data.ordens && data.ordens.length > 0) {
-            //             setOrdem(data.ordens[data.ordens.length -1])
-            //         }
-            //     })
-            //     .catch(error => {
-            //         console.error("Erro ao buscar acesso:", error);
-            //     });
-
         };
 
         carregarOrdens();
         carregarCliente();
+        pegarCliente();
     }, []);
 
     const ordensFinalizadas = ordens.filter(ordem => ordem.status === "Finalizado")
-
-
-    // const notificacaoUser = getNotificacoes().filter(notificacao => notificacao.cpf === cliente.cpf)
 
     return (
         <div className="flex flex-col gap-8">

@@ -45,14 +45,14 @@ export const NovaOrdemServico = ({ mudartela }: NovaOrdemServicoProps) => {
             descricao: descricao,
         }
 
-        const token = localStorage.getItem("tokenTrack");
+        // const token = localStorage.getItem("tokenTrack");
 
         try {
             const response = await fetch(`${API_URL}/ordem`, {
                 method: 'POST',
+                credentials: "include",
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`
                 },
                 body: JSON.stringify(novaOrdem)
             });

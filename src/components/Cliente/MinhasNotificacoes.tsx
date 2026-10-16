@@ -10,16 +10,10 @@ export const MinhasNotificacoes = () =>{
     const queryParans = new URLSearchParams(window.location.search)
     const cod  = queryParans.get("codigo")
     const [notificacoes, setNotificacoes] = useState<notificacaoData[]>([])
-    const token = localStorage.getItem("tokenClienteTrack")
 
     useEffect(()=>{
-        // if(!cod){
-        //     return;
-        // }
         fetch(`${API_URL}/notification/cliente`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
+            credentials: "include"
         })
         .then(res => res.json())
         .then(data =>{
@@ -28,7 +22,7 @@ export const MinhasNotificacoes = () =>{
         .catch(err =>{
             console.error(err)
         })
-    },[cod, token])
+    },[cod])
     return(
         <>{
             notificacoes!.length > 0 ? 

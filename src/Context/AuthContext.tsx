@@ -16,6 +16,7 @@ interface IAuthContext {
     carregarOrdens: () => void,
     banco: any[]
     // token: any,
+    clienteLogged: boolean
 }
 
 export const AuthContext = createContext({} as IAuthContext);
@@ -27,52 +28,85 @@ export const AuthContextProvider = ({ children }: any) => {
     const navigate = useNavigate()
     const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [banco, setBanco] = useState([])
+    const [clienteLogged, setClienteLogged] = useState(false)
 
     useEffect(() => {
-        const tokenTrack = localStorage.getItem('tokenTrack')
-        const userTrack = localStorage.getItem('userTrack');
+        const verificarSessaoCliente = async () => {
+            try {
+                const response = await fetch(`${API_URL}/cliente/auth`, {
+                    credentials: "include"
+                })
 
-        if (tokenTrack) {
-            setIsLoggedIn(true)
+                if (response.ok) {
+                    setClienteLogged(true)
+                } else {
+                    setClienteLogged(false)
+                }
+            } catch (error) {
+                console.error("Erro ao verificar sessão", error);
+                setClienteLogged(false)
+            }
         }
 
-        if(userTrack){
-            setUser(JSON.parse(userTrack))
+        const verificarSessao = async () => {
+            try {
+                const response = await fetch(`${API_URL}/auth`, {
+                    credentials: "include",
+                })
+
+                if (response.ok) {
+                    const userTrack = localStorage.getItem('userTrack');
+
+                    if (userTrack) {
+                        setUser(JSON.parse(userTrack))
+                        setIsLoggedIn(true)
+                    }
+
+                } else {
+                    setUser(null),
+                        setIsLoggedIn(false);
+                    localStorage.removeItem("userTrack");
+                }
+            } catch (error) {
+                console.error("Erro ao verificar sessão", error);
+                setUser(null);
+                setIsLoggedIn(false);
+            }
         }
+
+        verificarSessao();
+        verificarSessaoCliente();
     }, [])
 
 
     const carregarOrdens = async (): Promise<void> => {
 
-        const token = localStorage.getItem('tokenTrack')
-
-        try{
+        try {
             const response = await fetch(`${API_URL}/ordem`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
+                credentials: "include"
             })
 
-            if(!response.ok){
+            if (!response.ok) {
                 throw new Error("Erro ao carregar ordens")
             }
 
             const data = await response.json();
             setBanco(data.ordens);
 
-        } catch (error){
+        } catch (error) {
             console.error("Erro ao carregar ordens", error)
         }
     }
 
     const login = async (email: string, password: string): Promise<boolean> => {
 
-        try{
+        try {
             const response = await fetch(`${API_URL}/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
+                credentials: "include",
                 body: JSON.stringify({
                     email,
                     senha: password
@@ -80,19 +114,19 @@ export const AuthContextProvider = ({ children }: any) => {
             })
 
             const data = await response.json();
-            
+
             if (!response.ok) {
                 alert(data.mensagem)
                 return false
             }
 
-            const { prestador, token } = data.resposta
-    
-            localStorage.setItem('tokenTrack', token);
+            const { prestador } = data.resposta
+
+            // localStorage.setItem('tokenTrack', token);
             localStorage.setItem('userTrack', JSON.stringify(prestador));
             setIsLoggedIn(true)
             setUser(prestador)
-    
+
             return true
 
         } catch {
@@ -101,13 +135,23 @@ export const AuthContextProvider = ({ children }: any) => {
         }
     }
 
-    const logout = (): void => {
-        setUser(null);
-        setIsLoggedIn(false);
-        localStorage.removeItem('tokenTrack')
-        localStorage.removeItem('userTrack')
-        navigate("/");
-        window.location.reload();
+    const logout = async (): Promise<void> => {
+
+        try {
+            await fetch(`${API_URL}/logout`, {
+                method: "POST",
+                credentials: "include"
+            });
+        } catch (err) {
+            console.error("Erro ao encerrar sessão no servido", err)
+        } finally {
+            setUser(null);
+            setIsLoggedIn(false);
+            localStorage.removeItem('tokenTrack')
+            localStorage.removeItem('userTrack')
+            navigate("/");
+            window.location.reload();
+        }
     }
 
     const clienteLogin = async (code: string, cpf: string): Promise<any> => {
@@ -115,6 +159,7 @@ export const AuthContextProvider = ({ children }: any) => {
         try {
             const resposta = await fetch(`${API_URL}/cliente/acesso`, {
                 method: "POST",
+                credentials: "include",
                 headers: {
                     "Content-Type": "application/json"
                 },
@@ -131,7 +176,8 @@ export const AuthContextProvider = ({ children }: any) => {
                 return false
             }
 
-            localStorage.setItem('tokenClienteTrack', data.token)
+            setClienteLogged(true)
+            // localStorage.setItem('tokenClienteTrack', data.token)
 
             return true
         }
@@ -141,18 +187,28 @@ export const AuthContextProvider = ({ children }: any) => {
     }
 
 
-    const logoutCliente = () => {
-        setOrdem(undefined);
-        localStorage.removeItem("tokenClienteTrack")
-        localStorage.removeItem("clienteTrack")
-        navigate("/");
-        window.location.reload();
+    const logoutCliente = async () => {
+        try {
+            await fetch(`${API_URL}/logout/cliente`, {
+                method: "POST",
+                credentials: "include"
+            });
+
+        } catch (err) {
+            console.error("Erro ao encerrar sessão no servido", err)
+        } finally {
+            setOrdem(undefined);
+            // localStorage.removeItem("tokenClienteTrack")
+            localStorage.removeItem("clienteTrack")
+            navigate("/");
+            window.location.reload();
+        }
     }
 
 
     return (
         <>
-            <AuthContext.Provider value={{ user, login, logout, isLoggedIn, setIsLoggedIn, ordem, clienteLogin, logoutCliente, carregarOrdens, banco }}>
+            <AuthContext.Provider value={{ user, login, logout, isLoggedIn, setIsLoggedIn, ordem, clienteLogin, logoutCliente, carregarOrdens, banco, clienteLogged }}>
                 {children}
             </AuthContext.Provider>
         </>

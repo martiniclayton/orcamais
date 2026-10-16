@@ -31,15 +31,15 @@ export const TabelaServicos = ({ tela, descricao, tipoTabela, mudarTela, renderi
         return nomeStr.includes(termoBusca) || placaStr.includes(termoBusca) || idStr.includes(termoBusca)
     })
 
-    const token = localStorage.getItem("tokenTrack");
+    // const token = localStorage.getItem("tokenTrack");
 
     const atualizarStatus = async (id: number): Promise<void> => {
         try {
             const response = await fetch(`${API_URL}/ordem/${id}`, {
                 method: "PATCH",
+                credentials: "include",
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`
                 }
             })
             

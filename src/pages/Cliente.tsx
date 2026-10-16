@@ -8,17 +8,17 @@ import logoSigaOS from '../assets/logoSigaOS.svg'
 
 export const Cliente = () => {
 
-    const { logoutCliente } = useContext(AuthContext)
+    const { logoutCliente, clienteLogged } = useContext(AuthContext)
     const navigate = useNavigate();
 
-    const token = localStorage.getItem("tokenClienteTrack")
+    // const token = localStorage.getItem("tokenClienteTrack")
 
     const [ ordens] = useState([])
 
 
     useEffect(()=>{
-        !token && navigate("/");
-    },[token])
+        !clienteLogged && navigate("/");
+    },[clienteLogged])
 
 
     const [aba, setAba] = useState("Meus Servicos")

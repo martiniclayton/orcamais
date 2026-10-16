@@ -10,13 +10,11 @@ interface ServicosFinalizadosProps {
 export const ServicosFinalizados = ({ mudarTela }: ServicosFinalizadosProps) => {
 
     const [bancoFinalizado, setBancoFinalizado] = useState([])
-    const token = localStorage.getItem('tokenTrack')
+    // const token = localStorage.getItem('tokenTrack')
 
     useEffect(() => {
         fetch(`${API_URL}/ordem?status=Finalizado`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
+            credentials: "include"
         })
             .then(response => response.json())
             .then(data => {

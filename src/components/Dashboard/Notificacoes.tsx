@@ -12,24 +12,23 @@ interface NotificacoesProps{
 export const Notificacoes = ({mudarTela}: NotificacoesProps) =>{
 
     const [notificacoes, setNotificacoes] = useState<notificacaoData[]>([]);
-    const token = localStorage.getItem('tokenTrack');
+    // const token = localStorage.getItem('tokenTrack');
 
     useEffect(()=>{
 
         const buscarNotificacoes = async () =>{
             try{
                 const response = await fetch(`${API_URL}/notification`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
+                    credentials: "include"
                 });
     
                 const data = await response.json()
     
                 if(!response.ok){
                     console.log("Erro na requisição das notificações", data.mensagem)
+                    return
                 };
-    
+
                 setNotificacoes(data.resposta ?? [])
 
             } catch (error) {
