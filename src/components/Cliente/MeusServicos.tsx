@@ -24,7 +24,7 @@ export const MeusServicos = () => {
 
     useEffect(() => {
         const pegarCliente = async () =>{
-            await fetch(`${API_URL}/notification/cliente/`, {
+            await fetch(`${API_URL}/notification/cliente`, {
                 credentials: "include"
             })
             .then(res => res.json())
