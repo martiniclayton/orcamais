@@ -11,8 +11,6 @@ export const MainRoutes = () => {
 
     const { isLoggedIn, clienteLogged } = useContext(AuthContext)
 
-    const token = localStorage.getItem("tokenClienteTrack")
-
     return (
         <>
             <Routes>

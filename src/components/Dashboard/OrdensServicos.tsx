@@ -12,8 +12,6 @@ export const OrdensServicos = ({ mudartela }: OrdensServicosProps) => {
     const [bancoAtivos, setbancoAtivos] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    const token = localStorage.getItem('tokenTrack')
-
     const carregarOrdensAtivas = () => {
         fetch(`${API_URL}/ordem?status=Ativos`, {
             credentials: "include"
