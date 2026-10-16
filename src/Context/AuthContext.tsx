@@ -16,7 +16,8 @@ interface IAuthContext {
     carregarOrdens: () => void,
     banco: any[]
     // token: any,
-    clienteLogged: boolean
+    clienteLogged: boolean;
+    verificandoSessao: boolean
 }
 
 export const AuthContext = createContext({} as IAuthContext);
@@ -28,7 +29,8 @@ export const AuthContextProvider = ({ children }: any) => {
     const navigate = useNavigate()
     const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [banco, setBanco] = useState([])
-    const [clienteLogged, setClienteLogged] = useState(false)
+    const [clienteLogged, setClienteLogged] = useState(false);
+    const [verificandoSessao, setVerificandoSessao] = useState(true);
 
     useEffect(() => {
         const verificarSessaoCliente = async () => {
@@ -45,6 +47,8 @@ export const AuthContextProvider = ({ children }: any) => {
             } catch (error) {
                 console.error("Erro ao verificar sessão", error);
                 setClienteLogged(false)
+            } finally {
+                setVerificandoSessao(false);
             }
         }
 
@@ -71,6 +75,8 @@ export const AuthContextProvider = ({ children }: any) => {
                 console.error("Erro ao verificar sessão", error);
                 setUser(null);
                 setIsLoggedIn(false);
+            } finally {
+                setVerificandoSessao(false)
             }
         }
 
@@ -208,7 +214,7 @@ export const AuthContextProvider = ({ children }: any) => {
 
     return (
         <>
-            <AuthContext.Provider value={{ user, login, logout, isLoggedIn, setIsLoggedIn, ordem, clienteLogin, logoutCliente, carregarOrdens, banco, clienteLogged }}>
+            <AuthContext.Provider value={{ user, login, logout, isLoggedIn, setIsLoggedIn, ordem, clienteLogin, logoutCliente, carregarOrdens, banco, clienteLogged, verificandoSessao }}>
                 {children}
             </AuthContext.Provider>
         </>
