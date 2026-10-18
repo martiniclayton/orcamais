@@ -1,33 +1,55 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import type { typeCliente } from '../../types/typeCliente';
-import { API_URL } from '../../services/api';
 import type { OrdemType } from '../../types/OrdemType';
 import { Spinner } from '../Spinner';
-// interface MeuPerfil {
-//     cliente: typeCliente
-// }
+import { apiFetch } from '../../services/apiFetch';
+import { AuthContext } from '../../Context/AuthContext';
 
 export const MeuPerfil = () => {
     const [cliente, setCliente] = useState<typeCliente>()
     const [ordens, setOrdens] = useState<OrdemType[]>([])
 
+    const { logoutCliente } = useContext(AuthContext);
+
     useEffect(() => {
-        fetch(`${API_URL}/cliente/ordens`, {
-            credentials: "include"
-        })
 
-            .then(res => res.json())
-            .then(data => {
-                setOrdens(data.ordens)
-            })
+        const pegarOrdensCliente = async () =>{
+            const response = await apiFetch("/cliente/ordens");
 
-        fetch(`${API_URL}/cliente`, {
-            credentials: "include"
-        })
-        .then(res => res.json())
-        .then(data =>{
+            const data = await response.json();
+
+            if(response.status === 401){
+                alert("Sessão expirada");
+                logoutCliente()
+            }
+
+            if(!response.ok){
+                throw new Error("Erro na requisição");
+            }
+
+            setOrdens(data.ordens);
+        };
+
+        pegarOrdensCliente();
+
+        const pegarCliente = async () =>{
+            const response = await apiFetch("/cliente");
+
+            const data = await response.json();
+
+            if(response.status === 401){
+                alert("sessão expirada")
+                logoutCliente();
+            }
+
+            if(!response.ok){
+                throw new Error("Erro na requisição");
+            }
+
             setCliente(data.cliente)
-        })
+        }
+        pegarCliente();
+
     }, [])
 
     const ordensAtiva: OrdemType[] = ordens.filter(ordem => ordem.status !== "Finalizado")

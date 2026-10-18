@@ -2,15 +2,15 @@ import { useContext, useState } from "react"
 import { Header } from ".././Header"
 import type { Tela } from "../../types/typeTela"
 import { AuthContext } from "../../Context/AuthContext"
-import { API_URL } from "../../services/api"
 import { InputMask } from "@react-input/mask"
+import { apiFetch } from "../../services/apiFetch"
 interface NovaOrdemServicoProps {
     mudartela: (value: Tela) => void
 }
 
 export const NovaOrdemServico = ({ mudartela }: NovaOrdemServicoProps) => {
 
-    const { carregarOrdens } = useContext(AuthContext)
+    const { carregarOrdens, logout } = useContext(AuthContext)
 
     const [nome, setNome] = useState("")
     const [cpf, setCpf] = useState("")
@@ -48,15 +48,29 @@ export const NovaOrdemServico = ({ mudartela }: NovaOrdemServicoProps) => {
         // const token = localStorage.getItem("tokenTrack");
 
         try {
-            const response = await fetch(`${API_URL}/ordem`, {
+            const response = await apiFetch("/ordem", {
                 method: 'POST',
-                credentials: "include",
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(novaOrdem)
             });
 
+
+            // const response = await fetch(`${API_URL}/ordem`, {
+            //     method: 'POST',
+            //     credentials: "include",
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify(novaOrdem)
+            // });
+
+            if(response.status === 401){
+                alert("Sessão expirada");
+                logout()
+            }
+            
             if (!response) {
                 throw new Error("Erro ao cadastrar ordem");
             }

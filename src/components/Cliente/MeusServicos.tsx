@@ -1,11 +1,12 @@
 import { OrderCard } from '.././OrderCard';
 import { NotificacaoCard } from '.././Notificação/NotificacaroCard';
-import { useEffect, useState } from 'react';
-import { API_URL } from '../../services/api';
+import { useContext, useEffect, useState } from 'react';
 import type { typeCliente } from '../../types/typeCliente';
 import type { OrdemType } from '../../types/OrdemType';
 import type { notificacaoData } from '../../types/NotificacoesType';
 import { Spinner } from '../Spinner';
+import { apiFetch } from '../../services/apiFetch';
+import { AuthContext } from '../../Context/AuthContext';
 
 export const MeusServicos = () => {
 
@@ -20,42 +21,89 @@ export const MeusServicos = () => {
     const [ordens, setOrdens] = useState<any[]>([]);
     const [cliente, setCliente] = useState<typeCliente>(clienteDefault);
     const [ordem, setOrdem] = useState<OrdemType | undefined>();
-    const [notificacoes, setNotificacoes] = useState<notificacaoData[]>([])
+    const [notificacoes, setNotificacoes] = useState<notificacaoData[]>([]);
+
+    const { logoutCliente } = useContext(AuthContext);
 
     useEffect(() => {
-        const pegarCliente = async () =>{
-            await fetch(`${API_URL}/notification/cliente`, {
-                credentials: "include"
-            })
-            .then(res => res.json())
-            .then(data =>{
+        const pegarCliente = async () => {
+
+            try {
+                const response = await apiFetch("/notification/cliente");
+
+                const data = await response.json();
+
+                if(response.status === 401){
+                    alert("Sessão expirada");
+                    logoutCliente();
+                }
+
+                if (!response.ok) {
+                    throw new Error("Erro na chamada da API");
+                };
+
                 setNotificacoes(data.notificacoes)
-            })
+            } catch {
+                throw new Error("Erro na requisição");
+            }
         }
 
         const carregarCliente = async () => {
-            fetch(`${API_URL}/cliente`, {
-                credentials: "include"
-            })
-            .then(res => res.json())
-            .then(data =>{
-                setCliente(data.cliente)
-            })
+            try {
+                const response = await apiFetch("/cliente");
+
+                const data = await response.json()
+
+                if(response.status === 401){
+                    alert("Sessão expirada");
+                    logoutCliente();
+                }
+
+                if (!response.ok) {
+                    throw new Error(data.mensagem)
+                };
+
+                setCliente(data.cliente);
+            } catch {
+                throw new Error("Erro na requisição");
+            }
 
         }
 
         const carregarOrdens = async () => {
-            fetch(`${API_URL}/cliente/ordens`, {
-                credentials: "include"
-            })
-            .then(res => res.json())
-            .then(data =>{
+            try {
+                const response = await apiFetch("/cliente/ordens");
+
+                const data = await response.json()
+
+                if(response.status === 401){
+                    alert("Sessão expirada");
+                    logoutCliente();
+                }
+
+                if(!response.ok){
+                    throw new Error("Erro na requsição")
+                };
+
                 setOrdens(data.ordens);
 
                 if(data.ordens && data.ordens.length > 0){
-                    setOrdem(data.ordens[0])
+                    setOrdem(data.ordens[0]);
                 }
-            })
+            } catch{
+                throw new Error("Erro na requisição");
+            }
+            // fetch(`${API_URL}/cliente/ordens`, {
+            //     credentials: "include"
+            // })
+            //     .then(res => res.json())
+            //     .then(data => {
+            //         setOrdens(data.ordens);
+
+            //         if (data.ordens && data.ordens.length > 0) {
+            //             setOrdem(data.ordens[0])
+            //         }
+            //     })
         };
 
         carregarOrdens();
@@ -72,42 +120,42 @@ export const MeusServicos = () => {
                 <h3 className="text-2xl font-bold text-gray-800 mt-1">Qual é o status do meu serviço?</h3>
             </div>
 
-            
-            {ordem ? (
-            <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
-                <div className="bg-gray-50 px-6 py-4 border-b border-gray-200 font-semibold text-gray-700">
-                    {`#O.S ${ordem?.id}`}
-                </div>
-                <div className="p-6 flex flex-col gap-4">
-                    <div>
-                        <h5 className="text-1xl font-bold text-gray-800">{ordem?.tipoServico}</h5>
-                        <p className="text-sm text-gray-500 mt-1">
-                            {`Veículo: ${ordem?.placa}`}
-                        </p>
-                    </div>
 
-                    <div className={` ${ordem?.status === "Em andamento" ? "bg-slate-200" : ordem?.status === "Pronto para retirada" ? "bg-green-50" : ""} border border-gray-100 p-6 rounded-lg`}>
-                        <div className="text-3xl uppercase tracking-wider font-semibold text-gray-400 mb-1">
-                            {ordem?.status}
+            {ordem ? (
+                <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+                    <div className="bg-gray-50 px-6 py-4 border-b border-gray-200 font-semibold text-gray-700">
+                        {`#O.S ${ordem?.id}`}
+                    </div>
+                    <div className="p-6 flex flex-col gap-4">
+                        <div>
+                            <h5 className="text-1xl font-bold text-gray-800">{ordem?.tipoServico}</h5>
+                            <p className="text-sm text-gray-500 mt-1">
+                                {`Veículo: ${ordem?.placa}`}
+                            </p>
                         </div>
-                        <h2 className="text-3xl font-extrabold text-blue-600">
-                        </h2>
+
+                        <div className={` ${ordem?.status === "Em andamento" ? "bg-slate-200" : ordem?.status === "Pronto para retirada" ? "bg-green-50" : ""} border border-gray-100 p-6 rounded-lg`}>
+                            <div className="text-3xl uppercase tracking-wider font-semibold text-gray-400 mb-1">
+                                {ordem?.status}
+                            </div>
+                            <h2 className="text-3xl font-extrabold text-blue-600">
+                            </h2>
+                        </div>
                     </div>
                 </div>
-            </div>
             ) : (
-                <Spinner/>
+                <Spinner />
             )}
 
             {notificacoes ? (
-            <div>
-                <h1 className='text-xl font-bold text-gray-800 mb-2'>Notificação Recente</h1>
-                {notificacoes.slice(-1).toReversed().map((notificacao, index) => (
-                    <NotificacaoCard key={index} titulo={notificacao.titulo} data={notificacao.data} cliente={notificacao.ordens.cliente.nome} id={notificacao.id} placa={notificacao.ordens.placa} tipoServico={notificacao.ordens.tipoServico} status={notificacao.status} cpf={notificacao.ordens.cliente.cpf} />
-                ))}
-            </div>
+                <div>
+                    <h1 className='text-xl font-bold text-gray-800 mb-2'>Notificação Recente</h1>
+                    {notificacoes.slice(-1).toReversed().map((notificacao, index) => (
+                        <NotificacaoCard key={index} titulo={notificacao.titulo} data={notificacao.data} cliente={notificacao.ordens.cliente.nome} id={notificacao.id} placa={notificacao.ordens.placa} tipoServico={notificacao.ordens.tipoServico} status={notificacao.status} cpf={notificacao.ordens.cliente.cpf} />
+                    ))}
+                </div>
             ) : (
-                <Spinner/>
+                <Spinner />
             )}
 
 

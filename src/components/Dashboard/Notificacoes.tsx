@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import type { Tela } from "../../types/typeTela"
 import { Header } from "../Header"
 import { NotificacaoCard } from "../Notificação/NotificacaroCard"
-import { API_URL } from "../../services/api"
 import type { notificacaoData } from "../../types/NotificacoesType"
+import { apiFetch } from "../../services/apiFetch"
+import { AuthContext } from "../../Context/AuthContext"
 
 interface NotificacoesProps{
     mudarTela: (value: Tela) => void
@@ -14,15 +15,20 @@ export const Notificacoes = ({mudarTela}: NotificacoesProps) =>{
     const [notificacoes, setNotificacoes] = useState<notificacaoData[]>([]);
     // const token = localStorage.getItem('tokenTrack');
 
+    const {logout} = useContext(AuthContext)
+
     useEffect(()=>{
 
         const buscarNotificacoes = async () =>{
             try{
-                const response = await fetch(`${API_URL}/notification`, {
-                    credentials: "include"
-                });
+                const response = await apiFetch("/notification");
     
                 const data = await response.json()
+
+                if(response.status === 401){
+                    alert("Sessão expirada");
+                    logout();
+                }
     
                 if(!response.ok){
                     console.log("Erro na requisição das notificações", data.mensagem)

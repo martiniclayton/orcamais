@@ -3,7 +3,7 @@ import type { OrdemType } from "../../types/OrdemType"
 import type { Tela } from "../../types/typeTela"
 import { useContext, useState } from "react"
 import { AuthContext } from "../../Context/AuthContext"
-import { API_URL } from "../../services/api"
+import { apiFetch } from "../../services/apiFetch"
 
 interface TabelaPag {
     tela: string,
@@ -17,7 +17,7 @@ export const TabelaServicos = ({ tela, descricao, tipoTabela, mudarTela, renderi
 
     const [busca, setBusca] = useState("");
 
-    const { carregarOrdens } = useContext(AuthContext)
+    const { carregarOrdens, logout } = useContext(AuthContext)
 
     const ordens = tipoTabela || []
 
@@ -35,15 +35,27 @@ export const TabelaServicos = ({ tela, descricao, tipoTabela, mudarTela, renderi
 
     const atualizarStatus = async (id: number): Promise<void> => {
         try {
-            const response = await fetch(`${API_URL}/ordem/${id}`, {
+            const response = await apiFetch(`/ordem/${id}`, {
                 method: "PATCH",
-                credentials: "include",
                 headers: {
                     'Content-Type': 'application/json',
                 }
-            })
+            });
+
+            // const response = await fetch(`${API_URL}/ordem/${id}`, {
+            //     method: "PATCH",
+            //     credentials: "include",
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     }
+            // })
             
             const data = await response.json();
+
+            if(response.status === 401){
+                alert("Sessão expirada");
+                logout()
+            }
 
             if (!response.ok) {
                 alert(data.mensagem || "Erro ao atualizar ordem");

@@ -2,7 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import { type User } from "../data/mockUsers";
 import { useNavigate } from "react-router-dom";
 import type { OrdemType } from "../types/OrdemType";
-import { API_URL } from "../services/api";
+import { apiFetch } from "../services/apiFetch";
 
 interface IAuthContext {
     user: User | null,
@@ -35,9 +35,12 @@ export const AuthContextProvider = ({ children }: any) => {
     useEffect(() => {
         const verificarSessaoCliente = async () => {
             try {
-                const response = await fetch(`${API_URL}/cliente/auth`, {
-                    credentials: "include"
-                })
+                const response = await apiFetch("/cliente/auth");
+
+                if(clienteLogged) if(response.status === 401){
+                    alert("Sessão expirada");
+                    logoutCliente()
+                }
 
                 if (response.ok) {
                     setClienteLogged(true)
@@ -54,9 +57,12 @@ export const AuthContextProvider = ({ children }: any) => {
 
         const verificarSessao = async () => {
             try {
-                const response = await fetch(`${API_URL}/auth`, {
-                    credentials: "include",
-                })
+                const response = await apiFetch("/auth");
+
+                if(isLoggedIn) if(response.status === 401){
+                    alert("Sessão expirada");
+                    logout()
+                }
 
                 if (response.ok) {
                     const userTrack = localStorage.getItem('userTrack');
@@ -70,6 +76,7 @@ export const AuthContextProvider = ({ children }: any) => {
                     setUser(null),
                         setIsLoggedIn(false);
                     localStorage.removeItem("userTrack");
+                    // navigate("/");
                 }
             } catch (error) {
                 console.error("Erro ao verificar sessão", error);
@@ -88,9 +95,12 @@ export const AuthContextProvider = ({ children }: any) => {
     const carregarOrdens = async (): Promise<void> => {
 
         try {
-            const response = await fetch(`${API_URL}/ordem`, {
-                credentials: "include"
-            })
+            const response = await apiFetch("/ordem",)
+
+            if (response.status === 401) {
+                await logout();
+                return
+            }
 
             if (!response.ok) {
                 throw new Error("Erro ao carregar ordens")
@@ -107,17 +117,27 @@ export const AuthContextProvider = ({ children }: any) => {
     const login = async (email: string, password: string): Promise<boolean> => {
 
         try {
-            const response = await fetch(`${API_URL}/login`, {
+            const response = await apiFetch("/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                credentials: "include",
                 body: JSON.stringify({
                     email,
                     senha: password
                 })
             })
+            // const response = await fetch(`${API_URL}/login`, {
+            //     method: "POST",
+            //     headers: {
+            //         "Content-Type": "application/json"
+            //     },
+            //     credentials: "include",
+            //     body: JSON.stringify({
+            //         email,
+            //         senha: password
+            //     })
+            // })
 
             const data = await response.json();
 
@@ -144,10 +164,13 @@ export const AuthContextProvider = ({ children }: any) => {
     const logout = async (): Promise<void> => {
 
         try {
-            await fetch(`${API_URL}/logout`, {
+            await apiFetch("/logout", {
                 method: "POST",
-                credentials: "include"
-            });
+            })
+            // await fetch(`${API_URL}/logout`, {
+            //     method: "POST",
+            //     credentials: "include"
+            // });
         } catch (err) {
             console.error("Erro ao encerrar sessão no servido", err)
         } finally {
@@ -160,12 +183,21 @@ export const AuthContextProvider = ({ children }: any) => {
         }
     }
 
+    // useEffect(() => {
+    //     registrarExpiracaoSessao(() => {
+    //         void logout();
+    //     });
+
+    //     return () => {
+    //         registrarExpiracaoSessao(() => { });
+    //     };
+    // }, []);
+
     const clienteLogin = async (code: string, cpf: string): Promise<any> => {
 
         try {
-            const resposta = await fetch(`${API_URL}/cliente/acesso`, {
+            const response = await apiFetch("/cliente/acesso", {
                 method: "POST",
-                credentials: "include",
                 headers: {
                     "Content-Type": "application/json"
                 },
@@ -173,11 +205,23 @@ export const AuthContextProvider = ({ children }: any) => {
                     code: code,
                     cpf: cpf
                 })
-            }
-            )
-            const data = await resposta.json()
+            });
 
-            if (!resposta.ok) {
+            // const resposta = await fetch(`${API_URL}/cliente/acesso`, {
+            //     method: "POST",
+            //     credentials: "include",
+            //     headers: {
+            //         "Content-Type": "application/json"
+            //     },
+            //     body: JSON.stringify({
+            //         code: code,
+            //         cpf: cpf
+            //     })
+            // }
+            // )
+            const data = await response.json()
+
+            if (!response.ok) {
                 alert(data.mensagem)
                 return false
             }
@@ -195,10 +239,13 @@ export const AuthContextProvider = ({ children }: any) => {
 
     const logoutCliente = async () => {
         try {
-            await fetch(`${API_URL}/logout/cliente`, {
+            await apiFetch("/logout/cliente", {
                 method: "POST",
-                credentials: "include"
-            });
+            })
+            // await fetch(`${API_URL}/logout/cliente`, {
+            //     method: "POST",
+            //     credentials: "include"
+            // });
 
         } catch (err) {
             console.error("Erro ao encerrar sessão no servido", err)

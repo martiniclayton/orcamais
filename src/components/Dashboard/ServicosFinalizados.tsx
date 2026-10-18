@@ -1,7 +1,8 @@
-import { API_URL } from "../../services/api"
+import { AuthContext } from "../../Context/AuthContext"
+import { apiFetch } from "../../services/apiFetch"
 import type { Tela } from "../../types/typeTela"
 import { TabelaServicos } from "./TabelaServicos"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 
 interface ServicosFinalizadosProps {
     mudarTela: (value: Tela) => void,
@@ -12,17 +13,28 @@ export const ServicosFinalizados = ({ mudarTela }: ServicosFinalizadosProps) => 
     const [bancoFinalizado, setBancoFinalizado] = useState([])
     // const token = localStorage.getItem('tokenTrack')
 
+    const { logout } = useContext(AuthContext);
+
     useEffect(() => {
-        fetch(`${API_URL}/ordem?status=Finalizado`, {
-            credentials: "include"
-        })
-            .then(response => response.json())
-            .then(data => {
-                setBancoFinalizado(data.ordens)
-            })
-            .catch(error => {
-                console.error("Erro ao buscar ordens", error);
-            })
+
+        const pegarOrdensFinalizadas = async () =>{
+            const response = await apiFetch("/ordem?status=Finalizad");
+
+            const data = await response.json();
+
+            if(response.status === 401) {
+                alert("Sessão expirada");
+                logout()
+            };
+
+            if(!response.ok){
+                throw new Error("Erro na requisição");
+            };
+
+            setBancoFinalizado(data.ordens);
+        }
+        pegarOrdensFinalizadas();
+
     }, [])
 
     const quantidade = bancoFinalizado.length

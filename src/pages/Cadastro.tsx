@@ -4,6 +4,7 @@ import type { Prestador } from '../types/typePrestador';
 import { Spinner } from '../components/Spinner';
 import { API_URL } from '../services/api';
 import { InputMask } from '@react-input/mask';
+import { apiFetch } from '../services/apiFetch';
 
 
 
@@ -27,7 +28,7 @@ export const Cadastro = () => {
 
     const validaSenha = [tamanhoSenha, temNumero, temMaiuscula, temEspecial];
 
-    const validarSenha = () =>{
+    const validarSenha = () => {
         const valido = validaSenha.every(item => item === true);
         return valido
     }
@@ -49,7 +50,7 @@ export const Cadastro = () => {
 
         const senhaValida = validarSenha();
 
-        if(!senhaValida){
+        if (!senhaValida) {
             alert("insira uma senha mais forte")
             return
         }
@@ -65,17 +66,23 @@ export const Cadastro = () => {
 
         setLoading(true)
 
-        try{
-            const resposta = await fetch(`${API_URL}/prestadores`, {
+        try {
+            const resposta = await apiFetch("/prestadores", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(user)
             })
+            // const resposta = await fetch(`${API_URL}/prestadores`, {
+            //     method: "POST",
+            //     headers: {
+            //         "Content-Type": "application/json"
+            //     },
+            //     body: JSON.stringify(user)
+            // })
             const dados = await resposta.json();
 
-            if(!resposta.ok) {
+            if (!resposta.ok) {
                 alert(dados.mensagem || "Erro ao cadastrar prestador");
                 return
             }
@@ -188,10 +195,10 @@ export const Cadastro = () => {
                                             onChange={(e) => setSenha(e.target.value)}
                                         />
                                         <ul style={{ fontSize: '0.85rem', color: '#666' }}>
-                                            <li className={ tamanhoSenha ? "text-emerald-600 font-semibold"  : ""}>Mínimo de 8 caracteres</li>
-                                            <li className={ temNumero ? "text-emerald-600 font-semibold"  : ""}>Pelo menos um número</li>
-                                            <li className={ temMaiuscula ? "text-emerald-600 font-semibold"  : ""}>Pelo menos uma letra maiúscula</li>
-                                            <li className={ temEspecial ? "text-emerald-600 font-semibold"  : ""}>Pelo menos um caractere especial (!@#$%&*</li>
+                                            <li className={tamanhoSenha ? "text-emerald-600 font-semibold" : ""}>Mínimo de 8 caracteres</li>
+                                            <li className={temNumero ? "text-emerald-600 font-semibold" : ""}>Pelo menos um número</li>
+                                            <li className={temMaiuscula ? "text-emerald-600 font-semibold" : ""}>Pelo menos uma letra maiúscula</li>
+                                            <li className={temEspecial ? "text-emerald-600 font-semibold" : ""}>Pelo menos um caractere especial (!@#$%&*</li>
                                         </ul>
                                     </div>
 
