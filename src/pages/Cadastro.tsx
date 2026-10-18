@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import type { Prestador } from '../types/typePrestador';
 import { Spinner } from '../components/Spinner';
-import { API_URL } from '../services/api';
 import { InputMask } from '@react-input/mask';
 import { apiFetch } from '../services/apiFetch';
 
