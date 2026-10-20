@@ -1,93 +1,73 @@
-# Projeto Orçamento
-Descrição: Uma aplicação web que informa ao cliente o status do seu serviço e envia notificação via WhatsApp quando contrarar um serviço e quando o status do serviço mudar. Foquei em mecânica.
+# Orça Mais
 
-Funcionalidade: Prestador de serviço (Mecânico), recebe um cliente e fecha um serviço de reparo de seu carro. O prestador cadastra uma ordem de serviço na aplicação e informa para o clinete um códido para ficar acompanhando quando ficar pronto. O cliente pode entrar a qualquer momento e também irá receber uma mensagem por WhatsApp.
+Projeto Full Stack de gerenciamento de ordens de serviço, focado no nicho de oficina mecânica.
 
-FRONT END - VERCEL
-React + TypeScript
+## Problema e Solução
 
-BACK END - RENDER
-Node.js + Express.js + TypeScript + TypeORM + JWT
+### Problema:
+Contato e deslocamento ao estabelecimento de forma frequente apenas para saber como está o andamento do serviço.
 
-BANCO - SQLITE ---- Provisório
+### Solução:
+Um sistema em que o prestador cadastra a ordem de serviço e atualiza o status do andamento. O cliente pode visualizar a qualquer momento como está o status, reduzindo contatos desnecessários e frequentes.
 
-# Tecnologias Utilizadas
-React
-TypeScript
+## Tecnologias Utilizadas
 
+### Frontend:
+React + TypeScript + Tailwind CSS.
 
-# React + TypeScript + Vite
+### Backend:
+Node.js + Express.js + TypeORM + JWT.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### Banco de Dados:
+PostgreSQL.
 
-Currently, two official plugins are available:
+## Repositórios
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### Frontend:
+https://github.com/martiniclayton/orcamais
 
-## React Compiler
+### Backend:
+https://github.com/martiniclayton/orca-mais-backend
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Como executar localmente
 
-## Expanding the ESLint configuration
+### Backend
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Reproduza esses comandos para baixar o repositório em sua máquina:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+git clone https://github.com/martiniclayton/orca-mais-backend.git
+cd orca-mais-backend
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+#### Variáveis de Ambiente
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Depois de instalar as dependências, crie o arquivo .env na pasta raiz do projeto e adicione as seguintes variáveis de ambiente:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- DATABASE_URL=URLAQUI          : conexão com o banco de dados.
+- SECRET_KEY_JWT=CHAVEAQUI      : chave usada para assinar e verificar os tokens JWT.
 
+Para iniciar o backend em modo de desenvolvimento utilize o comando: 
+
+```bash
+npm run dev
 ```
+
+### Frontend
+
+Clone o repositório e instale as dependências:
+
+```bash
+git clone https://github.com/martiniclayton/orcamais.git
+cd orcamais
+npm install
+```
+
+Para iniciar o frontend no modo de desenvolvimento utilize:
+
+```bash
+npm run dev
+```
+
+
