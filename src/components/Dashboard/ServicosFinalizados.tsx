@@ -18,7 +18,7 @@ export const ServicosFinalizados = ({ mudarTela }: ServicosFinalizadosProps) => 
     useEffect(() => {
 
         const pegarOrdensFinalizadas = async () =>{
-            const response = await apiFetch("/ordem?status=Finalizad");
+            const response = await apiFetch("/ordem?status=Finalizado");
 
             const data = await response.json();
 
