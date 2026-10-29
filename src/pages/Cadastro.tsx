@@ -71,6 +71,9 @@ export const Cadastro = () => {
                 headers: {
                     "Content-Type": "application/json"
                 },
+                body: JSON.stringify({
+                    user
+                })
             })
             // const resposta = await fetch(`${API_URL}/prestadores`, {
             //     method: "POST",
