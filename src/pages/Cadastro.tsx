@@ -146,7 +146,7 @@ export const Cadastro = () => {
                                             replacement={{ _: /\d/ }}
                                             className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                                             type="text"
-                                            name="nome"
+                                            name="cpf"
                                             placeholder="000.000.000-00"
                                             value={cpf}
                                             onChange={(e) => setCpf(e.target.value)}
