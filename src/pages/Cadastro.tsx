@@ -72,7 +72,12 @@ export const Cadastro = () => {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    user
+                    nome: nome,
+                    cpf: cpf,
+                    estabelecimento: estabelecimento,
+                    email: email,
+                    telefone: telefone,
+                    senha: senha
                 })
             })
             // const resposta = await fetch(`${API_URL}/prestadores`, {
